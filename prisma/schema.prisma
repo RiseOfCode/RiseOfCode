@@ -1,0 +1,165 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String         @id @default(uuid()) @db.Uuid
+  role            UserRole
+  name            String
+  surname         String
+  nickname        String         @unique
+  email           String?
+  password        String
+  classes         Class[]
+  student_classes ClassStudent[]
+  created_tasks   Task[]
+  task_rating     TaskRating[]
+  task_solving    TaskSolving[]
+
+  @@map("users")
+}
+
+model Class {
+  id              String         @id @default(uuid()) @db.Uuid
+  name            String
+  code            String         @unique
+  teacher_info    String
+  description     String
+  teacher         User           @relation(fields: [teacher_id], references: [id])
+  teacher_id      String         @db.Uuid
+  student_classes ClassStudent[]
+  lessons         Lesson[]
+
+  @@map("classes")
+}
+
+model ClassStudent {
+  class      Class  @relation(fields: [class_id], references: [id])
+  class_id   String @db.Uuid
+  student    User   @relation(fields: [student_id], references: [id])
+  student_id String @db.Uuid
+
+  @@id([class_id, student_id])
+  @@map("class_students")
+}
+
+model Lesson {
+  id       String       @id @default(uuid()) @db.Uuid
+  name     String
+  theory   String
+  class    Class        @relation(fields: [class_id], references: [id])
+  class_id String       @db.Uuid
+  tasks    LessonTask[]
+
+  @@map("lessons")
+}
+
+model Task {
+  id          String        @id @default(uuid()) @db.Uuid
+  name        String
+  description String
+  checker     String
+  teacher     User          @relation(fields: [teacher_id], references: [id])
+  teacher_id  String        @db.Uuid
+  tests       Test[]
+  themes      TaskTheme[]
+  lessons     LessonTask[]
+  rating      TaskRating[]
+  solving     TaskSolving[]
+
+  @@map("tasks")
+}
+
+model Test {
+  id      String @id @default(uuid()) @db.Uuid
+  input   String
+  output  String
+  task    Task   @relation(fields: [task_id], references: [id])
+  task_id String @db.Uuid
+
+  @@map("tests")
+}
+
+model TaskTheme {
+  task_id String @db.Uuid
+  task    Task   @relation(fields: [task_id], references: [id])
+  theme   Theme
+
+  @@id([task_id, theme])
+  @@map("task_themes")
+}
+
+model LessonTask {
+  lesson    Lesson @relation(fields: [lesson_id], references: [id])
+  lesson_id String @db.Uuid
+  task      Task   @relation(fields: [task_id], references: [id])
+  task_id   String @db.Uuid
+
+  @@id([lesson_id, task_id])
+  @@map("lesson_tasks")
+}
+
+model TaskRating {
+  teacher    User   @relation(fields: [teacher_id], references: [id])
+  teacher_id String @db.Uuid
+  task       Task   @relation(fields: [task_id], references: [id])
+  task_id    String @db.Uuid
+  rating     Float
+
+  @@id([teacher_id, task_id])
+  @@map("tasks_rating")
+}
+
+model TaskSolving {
+  id               String           @id @default(uuid()) @db.Uuid
+  user             User             @relation(fields: [user_id], references: [id])
+  user_id          String           @db.Uuid
+  task             Task             @relation(fields: [task_id], references: [id])
+  task_id          String           @db.Uuid
+  solving_attempts SolvingAttempt[]
+
+  @@map("tasks_solving")
+}
+
+model SolvingAttempt {
+  id              String      @id @default(uuid()) @db.Uuid
+  date            DateTime
+  comment         String
+  task_status     TaskStatus
+  task_solving    TaskSolving @relation(fields: [task_solving_id], references: [id])
+  task_solving_id String      @db.Uuid
+
+  @@map("solving_attempts")
+}
+
+model Theory {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  file String
+
+  @@map("constant_theory")
+}
+
+enum UserRole {
+  TEACHER
+  STUDENT
+}
+
+enum Theme {
+  CYCLES
+  OTHER
+}
+
+enum TaskStatus {
+  NOT_SOLVED
+  PROCESSED
+  SOLVED
+}
