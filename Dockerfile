@@ -1,4 +1,4 @@
-FROM node:12.22-alpine
+FROM node:19.4.0
 
 ARG ssh_pub_key
 
