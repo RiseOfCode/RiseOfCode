@@ -4,10 +4,15 @@ import { RenderModule } from 'nest-next';
 import { NODE_ENV } from 'src/shared/constants/env';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ClassModule } from './class/class.module';
 
 declare const module: any;
 
-@Module({})
+@Module({
+  imports: [ClassModule],
+  controllers: [AppController],
+  providers: [AppService],
+})
 export class AppModule {
   public static initialize(): DynamicModule {
     const renderModule =
