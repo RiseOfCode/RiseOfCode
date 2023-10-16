@@ -2,7 +2,7 @@
   "name": "next-nest-example",
   "version": "0.0.1",
   "description": "",
-  "author": "Alexey Yakovlev <alexeyyakovlev0359@gmail.com>",
+  "author": "",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -25,7 +25,6 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
-    "@nestjs/swagger": "^7.1.13",
     "@prisma/client": "5.4.2",
     "nest-next": "https://github.com/yakovlev-alexey/nest-next/tarball/base-path-dist",
     "next": "^11.0.1",
