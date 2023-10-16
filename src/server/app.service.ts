@@ -9,9 +9,6 @@ const BLOG_POSTS = [
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
   getBlogPosts() {
     return from(BLOG_POSTS).pipe(toArray());
   }
