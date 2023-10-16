@@ -21,6 +21,14 @@ export class AppController {
     return {};
   }
 
+  @Get('/class')
+  @Render('class')
+  class() {
+    return {
+      title: 'Класс',
+    };
+  }
+
   @Get(':id')
   @Render('[id]')
   @UseInterceptors(ParamsInterceptor, ConfigInterceptor)
