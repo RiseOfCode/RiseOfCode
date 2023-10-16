@@ -23,7 +23,8 @@ export class AppController {
 
   @Get('/class')
   @Render('class')
-  class() {
+  @UseInterceptors(ParamsInterceptor, ConfigInterceptor)
+  public class() {
     return {
       title: 'Класс',
     };

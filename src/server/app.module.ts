@@ -8,7 +8,11 @@ import { ClassModule } from './class/class.module';
 
 declare const module: any;
 
-@Module({})
+@Module({
+  imports: [ClassModule],
+  controllers: [AppController],
+  providers: [AppService],
+})
 export class AppModule {
   public static initialize(): DynamicModule {
     const renderModule =
@@ -25,7 +29,7 @@ export class AppModule {
 
     return {
       module: AppModule,
-      imports: [renderModule, ClassModule],
+      imports: [renderModule],
       controllers: [AppController],
       providers: [AppService],
     };
