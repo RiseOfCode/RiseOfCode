@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { ClassReturnDto } from './class.returnDto';
+import { ClassReturnDto } from './class.return.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { ClassUpdateDto } from './class.update.dto';
 

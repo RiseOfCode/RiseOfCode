@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { ApiTags } from '@nestjs/swagger';
-import { ClassReturnDto } from './class.returnDto';
+import { ClassReturnDto } from './class.return.dto';
 import { ClassUpdateDto } from './class.update.dto';
 @ApiTags('class')
 @Controller('class')
