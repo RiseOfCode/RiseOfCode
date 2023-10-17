@@ -23,6 +23,20 @@ export class ClassService {
   }
 
   async deleteClass(id: string) {
+    const lessons = await this.prisma.lesson.findMany({
+      where: {
+        class_id: id,
+      },
+    });
+
+    for (const lesson of lessons) {
+      await this.prisma.lessonTask.deleteMany({
+        where: {
+          lesson_id: lesson.id,
+        },
+      });
+    }
+
     await this.prisma.lesson.deleteMany({
       where: {
         class_id: id,
