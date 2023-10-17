@@ -2,18 +2,18 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { ClassReturnDto } from './class.returnDto';
 import { v4 as uuidv4 } from 'uuid';
-import { ClassCreateDto } from './class.createDto';
+import { ClassUpdateDto } from './class.update.dto';
 
 @Injectable()
 export class ClassService {
   constructor(private prisma: PrismaService) {}
 
-  async addClass(teacher_id: string, name: string): Promise<ClassReturnDto> {
+  async addClass(teacherId: string, name: string): Promise<ClassReturnDto> {
     return new ClassReturnDto(
       await this.prisma.class.create({
         data: {
           name: name,
-          teacher_id: teacher_id,
+          teacher_id: teacherId,
           code: uuidv4(),
           teacher_info: '',
           description: '',
@@ -66,54 +66,51 @@ export class ClassService {
     );
   }
 
-  async findAll(teacher_id: string): Promise<ClassReturnDto[]> {
-    const classes_arr = await this.prisma.class.findMany({
+  async findByTeacher(teacherId: string): Promise<ClassReturnDto[]> {
+    const classesArr = await this.prisma.class.findMany({
       where: {
-        teacher_id: teacher_id,
+        teacher_id: teacherId,
       },
     });
-    if (classes_arr == null) throw new NotFoundException();
+    if (classesArr == null) throw new NotFoundException();
     const classes: any[] = [];
-    classes_arr.forEach((cl) => {
+    classesArr.forEach((cl) => {
       classes[classes.length] = new ClassReturnDto(cl);
     });
     return classes;
   }
 
-  async changeClass(
-    id: string,
-    the_class: ClassCreateDto,
-  ): Promise<ClassReturnDto> {
+  async changeClass(id: string, dto: ClassUpdateDto): Promise<ClassReturnDto> {
     return new ClassReturnDto(
       await this.prisma.class.update({
         where: {
           id,
         },
         data: {
-          name: the_class.name,
-          teacher_info: the_class.teacher_info,
-          description: the_class.description,
+          name: dto.name,
+          teacher_info: dto.teacherInfo,
+          description: dto.description,
         },
       }),
     );
   }
 
-  async addUserByCode(code: string, student_id: string) {
-    const the_class = await this.prisma.class.findFirst({
+  async addUserByCode(code: string, studentId: string) {
+    const dbClass = await this.prisma.class.findFirst({
       where: {
         code: code,
       },
     });
-    if (the_class == null) throw new NotFoundException();
+    if (dbClass == null) throw new NotFoundException();
     await this.prisma.classStudent.create({
       data: {
-        student_id: student_id,
-        class_id: the_class.id,
+        student_id: studentId,
+        class_id: dbClass.id,
       },
     });
   }
 
-  async addUserByNickname(nickname: string, class_id: string) {
+  async addUserByNickname(nickname: string, classId: string) {
     const student = await this.prisma.user.findFirst({
       where: {
         nickname: nickname,
@@ -123,7 +120,7 @@ export class ClassService {
     await this.prisma.classStudent.create({
       data: {
         student_id: student.id,
-        class_id: class_id,
+        class_id: classId,
       },
     });
   }

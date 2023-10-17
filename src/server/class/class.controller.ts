@@ -12,60 +12,60 @@ import {
 import { ClassService } from './class.service';
 import { ApiTags } from '@nestjs/swagger';
 import { ClassReturnDto } from './class.returnDto';
-import { ClassCreateDto } from './class.createDto';
+import { ClassUpdateDto } from './class.update.dto';
 @ApiTags('class')
 @Controller('class')
 export class ClassController {
   constructor(private classService: ClassService) {}
 
-  @Post(':teacher_id')
+  @Post(':teacherId')
   async addClass(
-    @Param('teacher_id', ParseUUIDPipe) teacher_id: string,
+    @Param('teacherId', ParseUUIDPipe) teacherId: string,
     @Query('name') name: string,
   ): Promise<ClassReturnDto> {
-    return this.classService.addClass(teacher_id, name);
+    return this.classService.addClass(teacherId, name);
   }
 
-  @Post('/adding/code')
+  @Post('/add/code')
   async addUserByCode(
     @Query('code') code: string,
-    @Query('student_id') student_id: string,
+    @Query('studentId') studentId: string,
   ) {
-    return this.classService.addUserByCode(code, student_id);
+    return this.classService.addUserByCode(code, studentId);
   }
 
-  @Post('/adding/nickname')
+  @Post('/add/nickname')
   async addUserByNickname(
     @Query('nickname') nickname: string,
-    @Query('class_id') class_id: string,
+    @Query('classId') classId: string,
   ) {
-    return this.classService.addUserByNickname(nickname, class_id);
+    return this.classService.addUserByNickname(nickname, classId);
   }
 
-  @Get(':class_id')
+  @Get(':classId')
   async findClass(
-    @Param('class_id', ParseUUIDPipe) class_id: string,
+    @Param('classId', ParseUUIDPipe) classId: string,
   ): Promise<ClassReturnDto> {
-    return this.classService.findClass(class_id);
+    return this.classService.findClass(classId);
   }
 
-  @Get('/teacher/:teacher_id')
-  async findAll(
-    @Param('teacher_id', ParseUUIDPipe) teacher_id: string,
+  @Get('/teacher/:teacherId')
+  async findByTeacher(
+    @Param('teacherId', ParseUUIDPipe) teacherId: string,
   ): Promise<ClassReturnDto[]> {
-    return this.classService.findAll(teacher_id);
+    return this.classService.findByTeacher(teacherId);
   }
 
-  @Delete(':class_id')
-  async deleteClass(@Param('class_id', ParseUUIDPipe) class_id: string) {
-    await this.classService.deleteClass(class_id);
+  @Delete(':classId')
+  async deleteClass(@Param('classId', ParseUUIDPipe) classId: string) {
+    await this.classService.deleteClass(classId);
   }
 
-  @Put(':class_id')
+  @Put(':classId')
   async changeClass(
-    @Param('class_id', ParseUUIDPipe) class_id: string,
-    @Body() Class: ClassCreateDto,
+    @Param('classId', ParseUUIDPipe) classId: string,
+    @Body() Class: ClassUpdateDto,
   ): Promise<ClassReturnDto> {
-    return this.classService.changeClass(class_id, Class);
+    return this.classService.changeClass(classId, Class);
   }
 }

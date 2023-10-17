@@ -1,10 +1,10 @@
-export class ClassCreateDto {
+export class ClassUpdateDto {
   constructor() {
     this.name = '';
     this.description = '';
-    this.teacher_info = '';
+    this.teacherInfo = '';
   }
   name: string;
   description: string;
-  teacher_info: string;
+  teacherInfo: string;
 }
