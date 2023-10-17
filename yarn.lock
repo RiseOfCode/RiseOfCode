@@ -4199,7 +4199,7 @@ prettier@^2.3.2:
 
 prisma@^5.4.2:
   version "5.4.2"
-  resolved "https://registry.npmjs.org/prisma/-/prisma-5.4.2.tgz"
+  resolved "https://registry.yarnpkg.com/prisma/-/prisma-5.4.2.tgz#7eac9276439ec7073ec697c6c0dfa259d96e955e"
   integrity sha512-GDMZwZy7mysB2oXU+angQqJ90iaPFdD0rHaZNkn+dio5NRkGLmMqmXs31//tg/qXT3iB0cTQwnGGQNuirhSTZg==
   dependencies:
     "@prisma/engines" "5.4.2"
