@@ -1,10 +1,10 @@
-import { ProgressTaskDto } from './progress.task.dto';
+import { ProgressTaskStatusDto } from './progress.taskStatus.dto';
 
 export class ProgressLessonDto {
   constructor(
     name: string,
     solvedTasksAmount: number,
-    tasks: ProgressTaskDto[],
+    tasks: ProgressTaskStatusDto[],
   ) {
     this.name = name;
     this.solvedTasksAmount = solvedTasksAmount;
@@ -12,5 +12,5 @@ export class ProgressLessonDto {
   }
   name: string;
   solvedTasksAmount: number;
-  tasks: ProgressTaskDto[];
+  tasks: ProgressTaskStatusDto[];
 }

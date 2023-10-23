@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { ProgressLessonDto } from './progress.lesson.dto';
-import { ProgressTaskDto } from './progress.task.dto';
+import { ProgressTaskStatusDto } from './progress.taskStatus.dto';
+import { ProgressTeacherDto } from './progress.teacher.dto';
+import { ProgressTaskAttemptsDto } from './progress.taskAttempts.dto';
 
 @Injectable()
 export class ProgressService {
@@ -20,7 +22,7 @@ export class ProgressService {
     const lessons: any[] = [];
 
     for (const lesson of lessonsArr) {
-      const lesson_name = lesson.name;
+      const lessonName = lesson.name;
       const taskArr = await this.prisma.lessonTask.findMany({
         where: {
           lesson_id: lesson.id,
@@ -31,13 +33,13 @@ export class ProgressService {
       let solvedTaskAmount = 0;
 
       for (const task of taskArr) {
-        const task_info = await this.prisma.task.findUniqueOrThrow({
+        const taskInfo = await this.prisma.task.findUniqueOrThrow({
           where: {
             id: task.task_id,
           },
         });
 
-        const task_name = task_info.name;
+        const taskName = taskInfo.name;
         const taskSolving = await this.prisma.taskSolving.findFirstOrThrow({
           where: {
             user_id: userId,
@@ -61,15 +63,66 @@ export class ProgressService {
         if (finalTaskStatus == 'SOLVED') {
           solvedTaskAmount++;
         }
-        tasks[tasks.length] = new ProgressTaskDto(task_name, finalTaskStatus);
+        tasks[tasks.length] = new ProgressTaskStatusDto(
+          taskName,
+          finalTaskStatus,
+        );
       }
 
       lessons[lessons.length] = new ProgressLessonDto(
-        lesson_name,
+        lessonName,
         solvedTaskAmount,
         tasks,
       );
     }
     return lessons;
+  }
+
+  async findProgressForTeacher(
+    lessonId: string,
+  ): Promise<ProgressTeacherDto[]> {
+    const taskArr = await this.prisma.lessonTask.findMany({
+      where: {
+        lesson_id: lessonId,
+      },
+    });
+
+    const tasks: any[] = [];
+
+    for (const task of taskArr) {
+      const taskInfo = await this.prisma.task.findUniqueOrThrow({
+        where: {
+          id: task.task_id,
+        },
+      });
+
+      const taskName = taskInfo.name;
+      const taskSolvingArr = await this.prisma.taskSolving.findMany({
+        where: {
+          task_id: task.task_id,
+        },
+      });
+      const taskAttempts: any[] = [];
+      for (const taskSolving of taskSolvingArr) {
+        const solvingAttemptsArr = await this.prisma.solvingAttempt.findMany({
+          where: {
+            task_solving_id: taskSolving.id,
+          },
+        });
+        let result = '-';
+        solvingAttemptsArr.forEach((attempt) => {
+          if (attempt.task_status == 'SOLVED') {
+            result = '+';
+          }
+        });
+        taskAttempts[taskAttempts.length] = new ProgressTaskAttemptsDto(
+          result,
+          solvingAttemptsArr.length,
+          taskSolving.user_id,
+        );
+      }
+      tasks[tasks.length] = new ProgressTeacherDto(taskName, taskAttempts);
+    }
+    return tasks;
   }
 }

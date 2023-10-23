@@ -1,6 +1,6 @@
 import { TaskStatus } from '@prisma/client';
 
-export class ProgressTaskDto {
+export class ProgressTaskStatusDto {
   constructor(name: string, status: TaskStatus) {
     this.name = name;
     this.status = status;
