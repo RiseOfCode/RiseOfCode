@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { ProgressLessonDto } from './progress.lesson.dto';
 import { ProgressTaskStatusDto } from './progress.taskStatus.dto';
-import { ProgressTeacherDto } from './progress.teacher.dto';
+import { ProgressTaskDto } from './progress.task.dto';
 import { ProgressTaskAttemptsDto } from './progress.taskAttempts.dto';
 
 @Injectable()
@@ -78,9 +78,7 @@ export class ProgressService {
     return lessons;
   }
 
-  async findProgressForTeacher(
-    lessonId: string,
-  ): Promise<ProgressTeacherDto[]> {
+  async findProgressForTeacher(lessonId: string): Promise<ProgressTaskDto[]> {
     const taskArr = await this.prisma.lessonTask.findMany({
       where: {
         lesson_id: lessonId,
@@ -121,7 +119,7 @@ export class ProgressService {
           taskSolving.user_id,
         );
       }
-      tasks[tasks.length] = new ProgressTeacherDto(taskName, taskAttempts);
+      tasks[tasks.length] = new ProgressTaskDto(taskName, taskAttempts);
     }
     return tasks;
   }

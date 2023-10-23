@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ProgressService } from './progress.service';
 import { ApiTags } from '@nestjs/swagger';
 import { ProgressLessonDto } from './progress.lesson.dto';
-import { ProgressTeacherDto } from './progress.teacher.dto';
+import { ProgressTaskDto } from './progress.task.dto';
 @ApiTags('progress')
 @Controller('progress')
 export class ProgressController {
@@ -19,7 +19,7 @@ export class ProgressController {
   @Get('/teacher')
   async findProgressForTeacher(
     @Query('lessonId') lessonId: string,
-  ): Promise<ProgressTeacherDto[]> {
+  ): Promise<ProgressTaskDto[]> {
     return this.progressService.findProgressForTeacher(lessonId);
   }
 }
