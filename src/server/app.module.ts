@@ -5,11 +5,12 @@ import { NODE_ENV } from 'src/shared/constants/env';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClassModule } from './class/class.module';
+import { ProgressModule } from './progress/progress.module';
 
 declare const module: any;
 
 @Module({
-  imports: [ClassModule],
+  imports: [ClassModule, ProgressModule],
   controllers: [AppController],
   providers: [AppService],
 })
