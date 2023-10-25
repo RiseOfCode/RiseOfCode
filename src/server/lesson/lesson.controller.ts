@@ -34,7 +34,7 @@ export class LessonController {
   }
 
   @Get('/class/:classId')
-  async findByLesson(
+  async findByClass(
     @Param('classId', ParseUUIDPipe) classId: string,
   ): Promise<LessonReturnDto[]> {
     return this.lessonService.findByClass(classId);
