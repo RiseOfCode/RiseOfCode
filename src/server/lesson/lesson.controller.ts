@@ -9,7 +9,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBody } from '@nestjs/swagger';
 import { LessonReturnDto } from './lesson.return.dto';
 import { LessonService } from './lesson.service';
 import { LessonUpdateDto } from './lesson.update.dto';
@@ -21,9 +21,9 @@ export class LessonController {
   @Post(':classId')
   async addLesson(
     @Param('classId', ParseUUIDPipe) classId: string,
-    @Query('name') name: string,
+    @Body() Lesson: LessonUpdateDto,
   ): Promise<LessonReturnDto> {
-    return this.lessonService.addLesson(classId, name);
+    return this.lessonService.addLesson(classId, Lesson);
   }
 
   @Get(':lessonId')
