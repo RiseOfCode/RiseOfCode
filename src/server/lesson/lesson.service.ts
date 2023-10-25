@@ -8,22 +8,18 @@ import { asWindowsPath } from '@angular-devkit/core';
 export class LessonService {
   constructor(private prisma: PrismaService) {}
 
-  async addLesson(
-    classId: string,
-    { name, theory }: { name: string; theory?: string },
-  ): Promise<LessonReturnDto> {
+  async addLesson(classId: string): Promise<LessonReturnDto> {
     const classInfo = await this.prisma.class.findUnique({
       where: { id: classId },
     });
     if (!classInfo) {
       throw new Error(`Class with id ${classId} not found`);
     }
-    const theoryValue = theory !== undefined ? theory : '';
     const lesson = await this.prisma.lesson.create({
       data: {
-        name: name,
+        name: 'Новый урок',
         class_id: classId,
-        theory: theoryValue,
+        theory: '',
       },
     });
     return new LessonReturnDto(lesson, classInfo);

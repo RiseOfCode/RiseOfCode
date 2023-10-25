@@ -21,9 +21,8 @@ export class LessonController {
   @Post(':classId')
   async addLesson(
     @Param('classId', ParseUUIDPipe) classId: string,
-    @Body() Lesson: LessonUpdateDto,
   ): Promise<LessonReturnDto> {
-    return this.lessonService.addLesson(classId, Lesson);
+    return this.lessonService.addLesson(classId);
   }
 
   @Get(':lessonId')
