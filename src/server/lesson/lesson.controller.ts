@@ -19,23 +19,22 @@ export class LessonController {
   constructor(private lessonService: LessonService) {}
 
   @Post(':classId')
-  async addClass(
+  async addLesson(
     @Param('classId', ParseUUIDPipe) classId: string,
     @Query('name') name: string,
-    @Query('theory') theory: string,
   ): Promise<LessonReturnDto> {
-    return this.lessonService.addLesson(classId, name, theory);
+    return this.lessonService.addLesson(classId, name);
   }
 
   @Get(':lessonId')
-  async findClass(
+  async findLesson(
     @Param('lessonId', ParseUUIDPipe) lessonId: string,
   ): Promise<LessonReturnDto> {
     return this.lessonService.findLesson(lessonId);
   }
 
   @Get('/class/:classId')
-  async findByClass(
+  async findByLesson(
     @Param('classId', ParseUUIDPipe) classId: string,
   ): Promise<LessonReturnDto[]> {
     return this.lessonService.findByClass(classId);

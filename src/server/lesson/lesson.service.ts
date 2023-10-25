@@ -10,14 +10,13 @@ export class LessonService {
   async addLesson(
     classId: string,
     name: string,
-    theory: string | null,
   ): Promise<LessonReturnDto> {
     return new LessonReturnDto(
       await this.prisma.lesson.create({
         data: {
           name: name,
           class_id: classId,
-          theory: theory !== null ? theory : '',
+          theory: '',
         },
       }),
     );
@@ -42,9 +41,6 @@ export class LessonService {
       await this.prisma.lesson.findUniqueOrThrow({
         where: {
           id,
-        },
-        include: {
-          tasks: true,
         },
       }),
     );

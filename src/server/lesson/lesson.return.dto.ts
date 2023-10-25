@@ -1,4 +1,4 @@
-import { Lesson, LessonTask } from '@prisma/client';
+import { Lesson } from '@prisma/client';
 
 export class LessonReturnDto {
   constructor(dbLesson: Lesson) {
