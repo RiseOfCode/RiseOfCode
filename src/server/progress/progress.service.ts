@@ -55,14 +55,13 @@ export class ProgressService {
           },
         });
         let finalTaskStatus = solvingAttemptsArr[0].task_status;
-        solvingAttemptsArr.forEach((attempt) => {
-          if (attempt.task_status == 'SOLVED') {
-            finalTaskStatus = attempt.task_status;
-          }
-        });
-        if (finalTaskStatus == 'SOLVED') {
+        if (
+          solvingAttemptsArr.some((attempt) => attempt.task_status == 'SOLVED')
+        ) {
+          finalTaskStatus = 'SOLVED';
           solvedTaskAmount++;
         }
+
         tasks[tasks.length] = new ProgressTaskStatusDto(
           taskName,
           finalTaskStatus,
@@ -85,6 +84,24 @@ export class ProgressService {
       },
     });
 
+    const lesson = await this.prisma.lesson.findUniqueOrThrow({
+      where: {
+        id: lessonId,
+      },
+    });
+
+    const userClassArr = await this.prisma.classStudent.findMany({
+      where: {
+        class_id: lesson.class_id,
+      },
+    });
+
+    const usersIdArr: any[] = [];
+
+    for (const userClass of userClassArr) {
+      usersIdArr[usersIdArr.length] = userClass.student_id;
+    }
+
     const tasks: any[] = [];
 
     for (const task of taskArr) {
@@ -100,6 +117,7 @@ export class ProgressService {
           task_id: task.task_id,
         },
       });
+
       const taskAttempts: any[] = [];
       for (const taskSolving of taskSolvingArr) {
         const solvingAttemptsArr = await this.prisma.solvingAttempt.findMany({
@@ -107,17 +125,30 @@ export class ProgressService {
             task_solving_id: taskSolving.id,
           },
         });
-        let result = '-';
-        solvingAttemptsArr.forEach((attempt) => {
-          if (attempt.task_status == 'SOLVED') {
+
+        const user = await this.prisma.user.findUniqueOrThrow({
+          where: {
+            id: taskSolving.user_id,
+          },
+        });
+
+        // if (user.id in usersIdArr) {
+        if (usersIdArr.some((usersId) => usersId == user.id)) {
+          let result = '-';
+          if (
+            solvingAttemptsArr.some(
+              (attempt) => attempt.task_status == 'SOLVED',
+            )
+          ) {
             result = '+';
           }
-        });
-        taskAttempts[taskAttempts.length] = new ProgressTaskAttemptsDto(
-          result,
-          solvingAttemptsArr.length,
-          taskSolving.user_id,
-        );
+          taskAttempts[taskAttempts.length] = new ProgressTaskAttemptsDto(
+            result,
+            solvingAttemptsArr.length,
+            user.name,
+            user.surname,
+          );
+        }
       }
       tasks[tasks.length] = new ProgressTaskDto(taskName, taskAttempts);
     }

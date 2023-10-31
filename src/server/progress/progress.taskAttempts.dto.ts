@@ -1,10 +1,17 @@
 export class ProgressTaskAttemptsDto {
-  constructor(result: string, attempsAmount: number, studentId: string) {
+  constructor(
+    result: string,
+    attempsAmount: number,
+    studentName: string,
+    studentSurname: string,
+  ) {
     this.result = result;
     this.attempsAmount = attempsAmount;
-    this.studentId = studentId;
+    this.studentName = studentName;
+    this.studentSurname = studentSurname;
   }
   result: string;
   attempsAmount: number;
-  studentId: string;
+  studentName: string;
+  studentSurname: string;
 }
