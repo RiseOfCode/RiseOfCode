@@ -17,46 +17,46 @@ export class ProgressService {
       where: {
         class_id: classId,
       },
+      include: {
+        tasks: true,
+      },
     });
 
     const lessons: any[] = [];
 
     for (const lesson of lessonsArr) {
       const lessonName = lesson.name;
-      const taskArr = await this.prisma.lessonTask.findMany({
-        where: {
-          lesson_id: lesson.id,
-        },
-      });
-
       const tasks: any[] = [];
       let solvedTaskAmount = 0;
 
-      for (const task of taskArr) {
+      for (const task of lesson.tasks) {
         const taskInfo = await this.prisma.task.findUniqueOrThrow({
           where: {
             id: task.task_id,
           },
+          include: {
+            solving: {
+              where: {
+                user_id: userId,
+              },
+              include: {
+                solving_attempts: {
+                  orderBy: {
+                    date: 'desc',
+                  },
+                },
+              },
+            },
+          },
         });
 
         const taskName = taskInfo.name;
-        const taskSolving = await this.prisma.taskSolving.findFirstOrThrow({
-          where: {
-            user_id: userId,
-            task_id: task.task_id,
-          },
-        });
-        const solvingAttemptsArr = await this.prisma.solvingAttempt.findMany({
-          where: {
-            task_solving_id: taskSolving.id,
-          },
-          orderBy: {
-            date: 'desc',
-          },
-        });
-        let finalTaskStatus = solvingAttemptsArr[0].task_status;
+        let finalTaskStatus =
+          taskInfo.solving[0].solving_attempts[0].task_status;
         if (
-          solvingAttemptsArr.some((attempt) => attempt.task_status == 'SOLVED')
+          taskInfo.solving[0].solving_attempts.some(
+            (attempt) => attempt.task_status == 'SOLVED',
+          )
         ) {
           finalTaskStatus = 'SOLVED';
           solvedTaskAmount++;
@@ -78,65 +78,52 @@ export class ProgressService {
   }
 
   async findProgressForTeacher(lessonId: string): Promise<ProgressTaskDto[]> {
-    const taskArr = await this.prisma.lessonTask.findMany({
-      where: {
-        lesson_id: lessonId,
-      },
-    });
-
     const lesson = await this.prisma.lesson.findUniqueOrThrow({
       where: {
         id: lessonId,
       },
-    });
-
-    const userClassArr = await this.prisma.classStudent.findMany({
-      where: {
-        class_id: lesson.class_id,
+      include: {
+        tasks: true,
       },
     });
 
-    const usersIdArr: any[] = [];
-
-    for (const userClass of userClassArr) {
-      usersIdArr[usersIdArr.length] = userClass.student_id;
-    }
-
     const tasks: any[] = [];
 
-    for (const task of taskArr) {
+    for (const task of lesson.tasks) {
       const taskInfo = await this.prisma.task.findUniqueOrThrow({
         where: {
           id: task.task_id,
         },
-      });
-
-      const taskName = taskInfo.name;
-      const taskSolvingArr = await this.prisma.taskSolving.findMany({
-        where: {
-          task_id: task.task_id,
+        include: {
+          solving: {
+            include: {
+              solving_attempts: true,
+            },
+          },
         },
       });
 
-      const taskAttempts: any[] = [];
-      for (const taskSolving of taskSolvingArr) {
-        const solvingAttemptsArr = await this.prisma.solvingAttempt.findMany({
-          where: {
-            task_solving_id: taskSolving.id,
-          },
-        });
+      const taskName = taskInfo.name;
 
+      const taskAttempts: any[] = [];
+      for (const taskSolving of taskInfo.solving) {
         const user = await this.prisma.user.findUniqueOrThrow({
           where: {
             id: taskSolving.user_id,
           },
+          include: {
+            student_classes: true,
+          },
         });
 
-        // if (user.id in usersIdArr) {
-        if (usersIdArr.some((usersId) => usersId == user.id)) {
+        if (
+          user.student_classes.some(
+            (userClass) => userClass.class_id == lesson.class_id,
+          )
+        ) {
           let result = '-';
           if (
-            solvingAttemptsArr.some(
+            taskSolving.solving_attempts.some(
               (attempt) => attempt.task_status == 'SOLVED',
             )
           ) {
@@ -144,7 +131,7 @@ export class ProgressService {
           }
           taskAttempts[taskAttempts.length] = new ProgressTaskAttemptsDto(
             result,
-            solvingAttemptsArr.length,
+            taskSolving.solving_attempts.length,
             user.name,
             user.surname,
           );
