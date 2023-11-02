@@ -14,6 +14,7 @@ async function bootstrap() {
     .setDescription('The RiseOfCode App API description')
     .setVersion('1.0')
     .addTag('class')
+    .addTag('progress')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
