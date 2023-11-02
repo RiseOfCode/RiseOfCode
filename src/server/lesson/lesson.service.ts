@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { LessonReturnDto } from './lesson.return.dto';
-import { LessonUpdateDto } from './lesson.update.dto';
+import { LessonReturnDto } from './dto/lesson.return.dto';
+import { LessonUpdateDto } from './dto/lesson.update.dto';
 import { asWindowsPath } from '@angular-devkit/core';
 
 @Injectable()

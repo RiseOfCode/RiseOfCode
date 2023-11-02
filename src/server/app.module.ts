@@ -7,11 +7,12 @@ import { AppService } from './app.service';
 import { ClassModule } from './class/class.module';
 import { ProgressModule } from './progress/progress.module';
 import { LessonModule } from './lesson/lesson.module';
+import { TaskModule } from './task/task.module';
 
 declare const module: any;
 
 @Module({
-  imports: [ClassModule, ProgressModule, LessonModule],
+  imports: [ClassModule, ProgressModule, LessonModule, TaskModule],
   controllers: [AppController],
   providers: [AppService],
 })

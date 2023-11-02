@@ -11,10 +11,10 @@ import {
 } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { ApiTags } from '@nestjs/swagger';
-import { ClassReturnDto } from './class.return.dto';
-import { ClassUpdateDto } from './class.update.dto';
+import { ClassReturnDto } from './dto/class.return.dto';
+import { ClassUpdateDto } from './dto/class.update.dto';
 @ApiTags('class')
-@Controller('class')
+@Controller('api/class')
 export class ClassController {
   constructor(private classService: ClassService) {}
 

@@ -1,8 +1,8 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ProgressService } from './progress.service';
 import { ApiTags } from '@nestjs/swagger';
-import { ProgressLessonDto } from './progress.lesson.dto';
-import { ProgressTaskDto } from './progress.task.dto';
+import { ProgressLessonDto } from './dto/progress.lesson.dto';
+import { ProgressTaskDto } from './dto/progress.task.dto';
 @ApiTags('progress')
 @Controller('progress')
 export class ProgressController {
