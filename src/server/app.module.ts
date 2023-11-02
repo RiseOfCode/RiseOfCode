@@ -6,11 +6,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClassModule } from './class/class.module';
 import { ProgressModule } from './progress/progress.module';
+import { LessonModule } from './lesson/lesson.module';
 
 declare const module: any;
 
 @Module({
-  imports: [ClassModule, ProgressModule],
+  imports: [ClassModule, ProgressModule, LessonModule],
   controllers: [AppController],
   providers: [AppService],
 })
