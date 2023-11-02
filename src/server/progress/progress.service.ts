@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { ProgressLessonDto } from './progress.lesson.dto';
-import { ProgressTaskStatusDto } from './progress.taskStatus.dto';
-import { ProgressTaskDto } from './progress.task.dto';
-import { ProgressTaskAttemptsDto } from './progress.taskAttempts.dto';
+import { ProgressLessonDto } from './dto/progress.lesson.dto';
+import { ProgressTaskStatusDto } from './dto/progress.task.status.dto';
+import { ProgressTaskDto } from './dto/progress.task.dto';
+import { ProgressTaskAttemptsDto } from './dto/progress.task.attempts.dto';
 
 @Injectable()
 export class ProgressService {

@@ -1,4 +1,4 @@
-import { ProgressTaskStatusDto } from './progress.taskStatus.dto';
+import { ProgressTaskStatusDto } from './progress.task.status.dto';
 
 export class ProgressLessonDto {
   constructor(

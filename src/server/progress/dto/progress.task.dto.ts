@@ -1,4 +1,4 @@
-import { ProgressTaskAttemptsDto } from './progress.taskAttempts.dto';
+import { ProgressTaskAttemptsDto } from './progress.task.attempts.dto';
 
 export class ProgressTaskDto {
   constructor(name: string, attempts: ProgressTaskAttemptsDto[]) {

@@ -10,9 +10,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiBody } from '@nestjs/swagger';
-import { LessonReturnDto } from './lesson.return.dto';
+import { LessonReturnDto } from './dto/lesson.return.dto';
 import { LessonService } from './lesson.service';
-import { LessonUpdateDto } from './lesson.update.dto';
+import { LessonUpdateDto } from './dto/lesson.update.dto';
 @ApiTags('lesson')
 @Controller('lesson')
 export class LessonController {
