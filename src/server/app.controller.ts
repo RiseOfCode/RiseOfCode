@@ -23,7 +23,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get('somepage')
+  @Get('account')
   getSomePage(@Req() req: RequestWithUser) {
     return req.user;
   }
@@ -35,20 +35,20 @@ export class AppController {
     return {};
   }
 
-  @Get(':id')
-  @Render('[id]')
-  @UseInterceptors(ParamsInterceptor, ConfigInterceptor)
-  public blogPost() {
-    return {};
-  }
+  // @Get(':id')
+  // @Render('[id]')
+  // @UseInterceptors(ParamsInterceptor, ConfigInterceptor)
+  // public blogPost() {
+  //   return {};
+  // }
 
-  @Get('/api/blog-posts')
-  public listBlogPosts() {
-    return this.appService.getBlogPosts();
-  }
-
-  @Get('/api/blog-posts/:id')
-  public getBlogPostById(@Param('id', new ParseIntPipe()) id: number) {
-    return this.appService.getBlogPost(id);
-  }
+  // @Get('/api/blog-posts')
+  // public listBlogPosts() {
+  //   return this.appService.getBlogPosts();
+  // }
+  //
+  // @Get('/api/blog-posts/:id')
+  // public getBlogPostById(@Param('id', new ParseIntPipe()) id: number) {
+  //   return this.appService.getBlogPost(id);
+  // }
 }
