@@ -1,40 +1,60 @@
 import styles from './index.module.css';
-import { i18n } from './i18n';
-import Logo from '../UI/Logo';
-import React, { useState, useEffect } from 'react';
-// import {
-//   Auth,
-//   getAuth,
-//   GoogleAuthProvider,
-//   signInWithPopup,
-// } from 'firebase/auth';
-import Button from '../UI/Button';
+import React from 'react';
 
 const SignIn = () => {
-  // const [auth, setAuth] = useState<Auth | null>(null);
-  //
-  // useEffect(() => {
-  //   setAuth(getAuth());
-  // }, []);
-  //
-  const handleSignInWithGoogle = () => {
-    console.log('xexexe');
-    //   if (auth) {
-    //     const googleProvider = new GoogleAuthProvider();
-    //
-    //     signInWithPopup(auth, googleProvider);
-    //   }
+  const handleAuth = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const nicknameElement = document.getElementById(
+        'nickname',
+      ) as HTMLInputElement;
+      const nickname = nicknameElement ? nicknameElement.value : '';
+
+      const passwordElement = document.getElementById(
+        'password',
+      ) as HTMLInputElement;
+      const password = passwordElement ? passwordElement.value : '';
+
+      const user = {
+        nickname,
+        password,
+      };
+
+      const response = await fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.access_token);
+        console.log('User sign in successfully');
+      } else {
+        console.error('Failed to sign in');
+      }
+    } catch (error) {
+      console.error('An error occurred', error);
+    }
   };
 
   return (
     <div className={styles.container}>
-      <Logo />
-      <form>
-        <div>
-          <Button type="blue" onClick={handleSignInWithGoogle}>
-            {i18n('login_by_google')}
-          </Button>
+      <form className={styles.form} onSubmit={handleAuth}>
+        <div className={styles.formGroup}>
+          <label htmlFor="nickname">Nickname:</label>
+          <input type="text" id="nickname" name="nickname" />
         </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" name="password" />
+        </div>
+
+        <button type="submit" className={styles.submitButton}>
+          Войти
+        </button>
       </form>
     </div>
   );

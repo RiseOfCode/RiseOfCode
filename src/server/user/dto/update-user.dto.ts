@@ -3,7 +3,6 @@ export class UpdateUserDto {
     this.name = '';
     this.surname = '';
     this.nickname = '';
-    this.nickname = '';
     this.email = '';
     this.password = '';
   }

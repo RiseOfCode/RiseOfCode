@@ -3,12 +3,7 @@ import logoIcon from './logo.svg';
 import styles from './index.module.css';
 
 const Logo = () => {
-  return (
-    <div
-      dangerouslySetInnerHTML={{ __html: logoIcon }}
-      className={styles.logo}
-    />
-  );
+  return <div>Тут лого</div>;
 };
 
 export default Logo;

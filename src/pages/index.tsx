@@ -1,40 +1,41 @@
+import React from 'react';
+import SignIn from './SignIn';
+import Logo from './UI/Logo';
+import SignUp from './SignUp';
 import Link from 'next/link';
-import { FC } from 'react';
-import { useFeature } from 'src/client/hooks/useFeatures';
-import { buildServerSideProps } from 'src/client/ssr/buildServerSideProps';
-import { BlogPost } from 'src/shared/types/blog-post';
-import { fetch } from 'src/shared/utils/fetch';
+const Home = () => {
+  // const navigate = useNavigate();
+  // const navigateToSignIn = (url: string) => {
+  //   navigate(url, { replace: true });
+  // };
 
-type THomeProps = {
-  blogPosts: BlogPost[];
-};
-
-const Home: FC<THomeProps> = ({ blogPosts }) => {
-  const linkFeature = useFeature('blog_link');
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
+    console.log('sign out');
+  };
 
   return (
     <div>
-      <h1>Home</h1>
-      {blogPosts.map(({ title, id }) => (
-        <div key={id}>
-          {linkFeature ? (
-            <>
-              {title}
-              <Link href={`/${id}`}> Link</Link>
-            </>
-          ) : (
-            <Link href={`/${id}`}>{title}</Link>
-          )}
-        </div>
-      ))}
+      <Logo />
+      <button
+        onClick={handleSignOut}
+        style={{ position: 'absolute', top: 0, right: 0 }}
+      >
+        Log out
+      </button>
+      {/*<SignUp />*/}
+      <SignIn />
+      <Link href="/somepage">
+        <a>Go to some page</a>
+      </Link>
+      {/*<SomePage></SomePage>*/}
+      {/*<Router>*/}
+      {/*<Route path="/" element={SignIn} />*/}
+      {/*<Route path="/somepage" element={SomePage} />*/}
+      {/*</Router>*/}
     </div>
   );
 };
-
-export const getServerSideProps = buildServerSideProps<THomeProps>(async () => {
-  const blogPosts = await fetch('/api/blog-posts');
-
-  return { blogPosts };
-});
 
 export default Home;
