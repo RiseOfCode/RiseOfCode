@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {useRouter} from "next/router";
+import { useRouter } from 'next/router';
 
 const LocalHeader = () => {
   const router = useRouter();
   const [token, setToken] = useState<boolean>(false);
   const handleSignOut = () => {
     localStorage.removeItem('token');
-    router.push('/').then((r) => console.log('User sign in successfully'));
+    router.push('/').then((r) => console.log('User sign out successfully'));
     console.log('sign out');
   };
 

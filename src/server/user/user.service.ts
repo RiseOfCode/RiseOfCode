@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -28,6 +29,22 @@ export class UserService {
         },
       }),
     );
+  }
+
+  async findUsersByNick(nickname: string): Promise<CreateUserDto[] | null> {
+    const users = await this.prisma.user.findMany({
+      where: {
+        nickname: {
+          startsWith: nickname,
+        },
+      },
+    });
+
+    if (users) {
+      return users.map((user) => new CreateUserDto(user));
+    } else {
+      return null;
+    }
   }
 
   async findUserByNick(nickname: string): Promise<CreateUserDto> {
@@ -63,5 +80,23 @@ export class UserService {
       return null;
     }
     return users;
+  }
+
+  async changeUser(id: string, user: UpdateUserDto): Promise<CreateUserDto> {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+
+    const updateUserWithHashedPassword: UpdateUserDto = {
+      ...user,
+      password: hashedPassword,
+    };
+
+    return new CreateUserDto(
+      await this.prisma.user.update({
+        where: {
+          id,
+        },
+        data: updateUserWithHashedPassword,
+      }),
+    );
   }
 }
