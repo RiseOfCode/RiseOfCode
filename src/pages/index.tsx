@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import LocalHeader from './UI/Header';
+import LocalHeader from '../client/components/UI/Header';
 import styles from './styles/signin.module.css';
-import SubmitButton from './UI/SubmitButton';
+import SubmitButton from '../client/components/UI/SubmitButton';
 const Home = () => {
   const router = useRouter();
   const handleAuth = async (event: React.FormEvent<HTMLFormElement>) => {

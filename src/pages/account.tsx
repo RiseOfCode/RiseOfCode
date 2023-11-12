@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from './styles/signin.module.css';
-import LocalHeader from './UI/Header';
-import SubmitButton from './UI/SubmitButton';
+import LocalHeader from '../client/components/UI/Header';
+import SubmitButton from '../client/components/UI/SubmitButton';
 
 const Account = () => {
   const router = useRouter();
