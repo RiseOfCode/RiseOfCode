@@ -1,40 +1,78 @@
+import React from 'react';
 import Link from 'next/link';
-import { FC } from 'react';
-import { useFeature } from 'src/client/hooks/useFeatures';
-import { buildServerSideProps } from 'src/client/ssr/buildServerSideProps';
-import { BlogPost } from 'src/shared/types/blog-post';
-import { fetch } from 'src/shared/utils/fetch';
+import { useRouter } from 'next/router';
+import LocalHeader from './UI/Header';
+import styles from './styles/signin.module.css';
+import SubmitButton from './UI/SubmitButton';
+const Home = () => {
+  const router = useRouter();
+  const handleAuth = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const nicknameElement = document.getElementById(
+        'nickname',
+      ) as HTMLInputElement;
+      const nickname = nicknameElement ? nicknameElement.value : '';
 
-type THomeProps = {
-  blogPosts: BlogPost[];
-};
+      const passwordElement = document.getElementById(
+        'password',
+      ) as HTMLInputElement;
+      const password = passwordElement ? passwordElement.value : '';
 
-const Home: FC<THomeProps> = ({ blogPosts }) => {
-  const linkFeature = useFeature('blog_link');
+      const user = {
+        nickname,
+        password,
+      };
 
+      const response = await fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.access_token);
+        router
+          .push('/account')
+          .then((r) => console.log('User sign in successfully'));
+      } else {
+        alert('Ошибка! Попробуйте еще раз!');
+        console.error('Failed to sign in');
+      }
+    } catch (error) {
+      console.error('An error occurred', error);
+    }
+  };
   return (
-    <div>
-      <h1>Home</h1>
-      {blogPosts.map(({ title, id }) => (
-        <div key={id}>
-          {linkFeature ? (
-            <>
-              {title}
-              <Link href={`/${id}`}> Link</Link>
-            </>
-          ) : (
-            <Link href={`/${id}`}>{title}</Link>
-          )}
+    <div className={styles.mainContainer}>
+      <LocalHeader />
+      <div className={styles.container}>
+        <form onSubmit={handleAuth}>
+          <ul className={styles.wrapper}>
+            <li className={styles.formRow}>
+              <label htmlFor="nickname">Логин:</label>
+              <input type="text" id="nickname" name="nickname" />
+            </li>
+
+            <li className={styles.formRow}>
+              <label htmlFor="password">Пароль:</label>
+              <input type="password" id="password" name="password" />
+            </li>
+
+            <li className={styles.formRow}>
+              <SubmitButton title="Войти"></SubmitButton>
+            </li>
+          </ul>
+        </form>
+        <div>
+          Нет аккаунта? <Link href="/singup">Зарегистрироваться</Link>
         </div>
-      ))}
+      </div>
     </div>
   );
 };
-
-export const getServerSideProps = buildServerSideProps<THomeProps>(async () => {
-  const blogPosts = await fetch('/api/blog-posts');
-
-  return { blogPosts };
-});
 
 export default Home;

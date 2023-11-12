@@ -5,6 +5,8 @@ import { NODE_ENV } from 'src/shared/constants/env';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClassModule } from './class/class.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './middleware/auth/auth.module';
 import { ProgressModule } from './progress/progress.module';
 import { LessonModule } from './lesson/lesson.module';
 import { TaskModule } from './task/task.module';
@@ -12,7 +14,7 @@ import { TaskModule } from './task/task.module';
 declare const module: any;
 
 @Module({
-  imports: [ClassModule, ProgressModule, LessonModule, TaskModule],
+  imports: [ClassModule, ProgressModule, LessonModule, TaskModule, UserModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
