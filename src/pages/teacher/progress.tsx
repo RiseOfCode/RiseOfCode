@@ -25,13 +25,17 @@ const Classes = () => {
   console.log(lessons);
 
   const getProgress = async ({ lessonId }: { lessonId: string }) => {
-    await fetch(`/progress/teacher?lessonId=${lessonId}`).then((response) =>
-      response.json(),
-    ); // .then((data) => setTasks(data));
+    return await fetch(`/progress/teacher?lessonId=${lessonId}`).then(
+      (response) => response.json(),
+    );
   };
 
-  const handleLesson = (lessonId) => {
-    console.log(lessonId);
+  const [isShown, setIsShown] = useState(false);
+  const [tableData, setTableData] = useState([]);
+  const handleLesson = async (lessonId) => {
+    const data = (await getProgress({ lessonId: lessonId })).slice();
+    setIsShown(true);
+    setTableData(data);
   };
 
   return (
@@ -50,7 +54,26 @@ const Classes = () => {
           trigger={<button>Выбрать урок</button>}
           AllLessons={lessons}
         />
+        {isShown && <Table data={tableData} />}
       </div>
+    </div>
+  );
+};
+
+const Table = ({ data }) => {
+  return (
+    <div>
+      {data.map((task) => (
+        <div>
+          <p>{task.name}</p>
+          {task.attempts.map((attempt) => (
+            <div>
+              <p>{attempt.studentName + ' ' + attempt.studentSurname}</p>
+              <p>{attempt.result + attempt.attempsAmount}</p>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
