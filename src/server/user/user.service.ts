@@ -21,14 +21,26 @@ export class UserService {
     });
   }
 
-  async findUserById(id: string): Promise<CreateUserDto> {
-    return new CreateUserDto(
-      await this.prisma.user.findUniqueOrThrow({
-        where: {
-          id,
-        },
-      }),
-    );
+  async findUserById(id: string) {
+    const user = this.prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        role: true,
+        name: true,
+        surname: true,
+        nickname: true,
+        email: true,
+        password: true,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+    return user;
   }
 
   async findUsersByNick(nickname: string): Promise<CreateUserDto[] | null> {
@@ -62,6 +74,15 @@ export class UserService {
       where: {
         id,
       },
+      select: {
+        id: true,
+        role: true,
+        name: true,
+        surname: true,
+        nickname: true,
+        email: true,
+        password: true,
+      },
     });
   }
 
@@ -69,6 +90,7 @@ export class UserService {
     const users = this.prisma.user.findMany({
       select: {
         id: true,
+        role: true,
         name: true,
         surname: true,
         nickname: true,
@@ -82,7 +104,7 @@ export class UserService {
     return users;
   }
 
-  async changeUser(id: string, user: UpdateUserDto): Promise<CreateUserDto> {
+  async changeUser(id: string, user: UpdateUserDto){
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
     const updateUserWithHashedPassword: UpdateUserDto = {
