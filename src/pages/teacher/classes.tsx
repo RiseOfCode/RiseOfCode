@@ -43,7 +43,7 @@ const Classes = () => {
     await postNewClass({
       name: className,
       teacherId: constTeacherId,
-    }).then((response) => window.location.reload());
+    }).then((response) => router.push(`/teacher/description`));
   };
 
   const deleteLessons = async (classId) => {
