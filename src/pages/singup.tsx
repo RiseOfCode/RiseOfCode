@@ -1,8 +1,8 @@
 import styles from './styles/signin.module.css';
 import React from 'react';
 import Link from 'next/link';
-import LocalHeader from './UI/Header';
-import SubmitButton from './UI/SubmitButton';
+import LocalHeader from '../client/components/UI/Header';
+import SubmitButton from '../client/components/UI/SubmitButton';
 import { useRouter } from 'next/router';
 
 const SignUp = () => {
