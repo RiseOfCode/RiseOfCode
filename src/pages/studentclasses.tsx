@@ -1,9 +1,10 @@
-import styles from '../styles/classes.module.css';
+import styles from './styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-const Classes = () => {
+const Studentclasses = () => {
   const constStudentId = '7046f06e-7291-11ee-b962-0242ac120002';
 
+  const router = useRouter();
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
@@ -31,18 +32,13 @@ const Classes = () => {
   const changeClassCode = (e) => {
     classCode = e.target.value;
   };
-
+  const [seed, setSeed] = useState(1);
   const addClass = async () => {
     await postClassStudent({
       code: classCode,
       studentId: constStudentId,
     });
-    window.location.reload();
-  };
-  const router = useRouter();
-  const goToLessons = (classId) => (e) => {
-    localStorage.setItem('classId', classId);
-    router.push('/student/description');
+    setSeed(Math.random());
   };
 
   return (
@@ -60,27 +56,35 @@ const Classes = () => {
             name="className"
             onChange={changeClassCode}
           />
-          <button onClick={addClass} className={styles.createClass}>
+          <button onClick={addClass} className={styles.createClassBtn}>
             добавиться
           </button>
         </div>
-        <div className={styles.classes}>
-          {classes.map((cl) => (
-            <div className={styles.classesPiece}>
-              <p className={styles.className}>{cl.name}</p>
-              {/*<p className={styles.teacherName}>{cl.teacherName}</p>*/}
-              <button
-                className={styles.goToClassBtn}
-                onClick={goToLessons(cl.id)}
-              >
-                к урокам
-              </button>
-            </div>
-          ))}
-        </div>
+        <ClassesList classes={classes} key={seed} />
       </div>
     </div>
   );
 };
 
-export default Classes;
+const ClassesList = ({ classes }) => {
+  const router = useRouter();
+  const goToLessons = (classId) => (e) => {
+    localStorage.setItem('classId', classId);
+    router.push('/studentdescription');
+  };
+
+  return (
+    <div className={styles.classes}>
+      {classes.map((cl) => (
+        <div className={styles.classesPiece}>
+          <p className={styles.className}>{cl.name}</p>
+          <button className={styles.goToClassBtn} onClick={goToLessons(cl.id)}>
+            к урокам
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Studentclasses;

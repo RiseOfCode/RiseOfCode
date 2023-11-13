@@ -1,10 +1,12 @@
-import styles from '../styles/description.module.css';
+import styles from './styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 const Classes = () => {
-  const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
+  const constClassId = localStorage.getItem('classId');
 
   const [classInfo, setClassInfo] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,34 +71,37 @@ const Classes = () => {
         <p>Rise of Code</p>
       </div>
       <div className={styles.navMenu}>
-        <Link href={`/teacher/description`}>Описание</Link>
-        <Link href={`/teacher/lessons`}>Уроки</Link>
-        <Link href={`/teacher/students`}>Ученики</Link>
-        <Link href={`/teacher/progress`}>Прогресс</Link>
+        <Link href={`/teacherdescription`}>Описание</Link>
+        <Link href={`/teacherlessons`}>Уроки</Link>
+        <Link href={`/teacherstudents`}>Ученики</Link>
+        <Link href={`/teacherprogress`}>Прогресс</Link>
       </div>
       <div className={styles.main}>
+        <p className={styles.descText}>Название</p>
         <div className={styles.desc}>
           <input
             type="text"
-            className={styles.descText}
+            className={styles.descInput}
             name="name"
             onChange={changeName}
             defaultValue={classInfo.name}
           />
         </div>
+        <p className={styles.descText}>Информация о преподавателе</p>
         <div className={styles.desc}>
           <input
             type="text"
-            className={styles.descText}
+            className={styles.descInput}
             name="teacherInfo"
             onChange={changeTeacherInfo}
             defaultValue={classInfo.teacherInfo}
           />
         </div>
+        <p className={styles.descText}>Описание</p>
         <div className={styles.desc}>
           <input
             type="text"
-            className={styles.descText}
+            className={styles.descInput}
             name="description"
             onChange={changeDescription}
             defaultValue={classInfo.description}

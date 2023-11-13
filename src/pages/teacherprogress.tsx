@@ -1,10 +1,13 @@
-import styles from '../styles/description.module.css';
+import styles from './styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 const Classes = () => {
-  const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
+  // const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
+  const constClassId = localStorage.getItem('classId');
 
   const [lessons, setLessons] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchLessonData = async () => {
@@ -44,14 +47,14 @@ const Classes = () => {
         <p>Rise of Code</p>
       </div>
       <div className={styles.navMenu}>
-        <Link href={`/teacher/description`}>Описание</Link>
-        <Link href={`/teacher/lessons`}>Уроки</Link>
-        <Link href={`/teacher/students`}>Ученики</Link>
-        <Link href={`/teacher/progress`}>Прогресс</Link>
+        <Link href={`/teacherdescription`}>Описание</Link>
+        <Link href={`/teacherlessons`}>Уроки</Link>
+        <Link href={`/teacherstudents`}>Ученики</Link>
+        <Link href={`/teacherprogress`}>Прогресс</Link>
       </div>
       <div className={styles.main}>
         <Dropdown
-          trigger={<button>Выбрать урок</button>}
+          trigger={<button className={styles.lessonsBtn}>Выбрать урок</button>}
           AllLessons={lessons}
         />
         {isShown && <Table data={tableData} />}

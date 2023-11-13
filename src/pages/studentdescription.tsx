@@ -1,11 +1,13 @@
-import styles from '../styles/description.module.css';
+import styles from './styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 const Classes = () => {
-  // const constStudentId = '7046f06e-7291-11ee-b962-0242ac120002';
-  const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
+  // const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
+  const constClassId = localStorage.getItem('classId');
 
   const [classInfo, setClassInfo] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,9 +24,9 @@ const Classes = () => {
         <p>Rise of Code</p>
       </div>
       <div className={styles.navMenu}>
-        <Link href={`/student/description`}>Описание</Link>
-        <Link href={`/student/lessons`}>Уроки</Link>
-        <Link href={`/teacher/progress`}>Прогресс</Link>
+        <Link href={`/studentdescription`}>Описание</Link>
+        <Link href={`/studentlessons`}>Уроки</Link>
+        <Link href={`/studentprogress`}>Прогресс</Link>
       </div>
 
       <div>
