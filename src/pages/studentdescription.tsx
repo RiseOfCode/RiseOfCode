@@ -1,0 +1,49 @@
+import styles from './styles/description.module.css';
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+const Classes = () => {
+  // const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
+  const constClassId = localStorage.getItem('classId');
+
+  const [classInfo, setClassInfo] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetch(`/api/class/${constClassId}`)
+        .then((response) => response.json())
+        .then((data) => setClassInfo(data));
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <div className={styles.pageContainer}>
+      <div className={styles.header}>
+        <p>Rise of Code</p>
+      </div>
+      <div className={styles.navMenu}>
+        <Link href={`/studentdescription`}>Описание</Link>
+        <Link href={`/studentlessons`}>Уроки</Link>
+        <Link href={`/studentprogress`}>Прогресс</Link>
+      </div>
+
+      <div>
+        <div className={styles.main}>
+          <div className={styles.desc}>
+            <p className={styles.descText}>{classInfo.name}</p>
+          </div>
+          <div className={styles.desc}>
+            <p className={styles.descText}>{classInfo.teacherInfo}</p>
+          </div>
+          <div className={styles.desc}>
+            <p className={styles.descText}>{classInfo.description}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Classes;

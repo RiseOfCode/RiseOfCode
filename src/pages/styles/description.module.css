@@ -1,0 +1,47 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.navMenu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    width: 400px;
+}
+
+.desc {
+
+}
+
+.descText {
+    width: 500px;
+}
+
+.descInput {
+    width: 500px;
+    margin: 5px;
+    padding: 5px;
+}
+
+.saveChangesBtn {
+
+}
