@@ -12,7 +12,7 @@ const Account = () => {
     const fetchData = async () => {
       const token = localStorage.getItem('token');
       try {
-        const response = await fetch('http://localhost:3000/account', {
+        const response = await fetch('/account', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

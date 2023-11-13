@@ -43,7 +43,7 @@ const SignUp = () => {
         password,
       };
 
-      const response = await fetch('http://localhost:3000/user/create', {
+      const response = await fetch('api/user/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
