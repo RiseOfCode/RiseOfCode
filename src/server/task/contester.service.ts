@@ -9,8 +9,6 @@ import {
 import { $Enums } from '.prisma/client';
 import TaskStatus = $Enums.TaskStatus;
 import * as process from 'process';
-import { string } from "prop-types";
-import { Equals } from "class-validator";
 
 @Injectable()
 export class ContesterService {
@@ -87,7 +85,7 @@ export class ContesterService {
     code: string,
     input: string,
   ): Promise<ContesterResultDto> {
-    const form = new FormData();
+    const form = new URLSearchParams();
     form.append('widget_form[custom_data]', '');
     form.append('widget_form[time_limit]', '5');
     if (token != null) form.append('widget_form[_token]', token);
@@ -117,7 +115,6 @@ export class ContesterService {
         },
       );
       statusResult = (await statusResponse.json()) as ContesterResultDto;
-      console.log(statusResult);
     }
     return statusResult;
   }
@@ -129,8 +126,6 @@ export class ContesterService {
   ): Promise<TaskStatus> {
     switch (result.status) {
       case 15: {
-        console.log(result.output.data);
-        console.log(output);
         if (result.output.data == output) return TaskStatus.SOLVED;
         else {
           await this.prisma.solvingAttempt.update({
