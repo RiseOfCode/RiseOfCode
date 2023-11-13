@@ -14,7 +14,14 @@ import { TaskModule } from './task/task.module';
 declare const module: any;
 
 @Module({
-  imports: [ClassModule, ProgressModule, LessonModule, TaskModule, UserModule, AuthModule],
+  imports: [
+    ClassModule,
+    ProgressModule,
+    LessonModule,
+    TaskModule,
+    UserModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

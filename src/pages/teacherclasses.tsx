@@ -1,6 +1,7 @@
 import styles from './styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import LocalHeader from "../client/components/UI/Header";
 const Teacherclasses = () => {
   const constTeacherId = '7046ea06-7291-11ee-b962-0242ac120002';
 
@@ -59,9 +60,7 @@ const Teacherclasses = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.header}>
-        <p>Rise of Code</p>
-      </div>
+      <LocalHeader />
       <div className={styles.main}>
         <p>Классы</p>
         <div className={styles.addClass}>

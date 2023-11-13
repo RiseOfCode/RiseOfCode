@@ -43,7 +43,7 @@ const SignUp = () => {
         password,
       };
 
-      const response = await fetch('http://localhost:3000/user/create', {
+      const response = await fetch('api/user/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,6 @@ const SignUp = () => {
       if (response.ok) {
         console.log('User added successfully');
       } else {
-        alert('Это имя пользователя уже занято!');
         console.error('Failed to add user');
       }
     } catch (error) {

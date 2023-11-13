@@ -3,16 +3,18 @@ import { useRouter } from 'next/router';
 import styles from './styles/signin.module.css';
 import LocalHeader from '../client/components/UI/Header';
 import SubmitButton from '../client/components/UI/SubmitButton';
+import Link from 'next/link';
 
 const Account = () => {
   const router = useRouter();
   const [accountData, setAccountData] = useState(null);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem('token');
       try {
-        const response = await fetch('http://localhost:3000/account', {
+        const response = await fetch('/account', {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -68,6 +70,7 @@ const Account = () => {
           </ul>
         </form>
       </div>
+      <Link href="/studentclasses">Классы</Link>
     </div>
   );
 };

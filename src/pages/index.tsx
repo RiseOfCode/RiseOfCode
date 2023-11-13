@@ -24,7 +24,7 @@ const Home = () => {
         password,
       };
 
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch('/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,8 +36,8 @@ const Home = () => {
         const data = await response.json();
         localStorage.setItem('token', data.access_token);
         router
-          .push('/account')
-          .then((r) => console.log('User sign in successfully'));
+          .push('/studentclasses')
+          .then(() => console.log('User sign in successfully'));
       } else {
         alert('Ошибка! Попробуйте еще раз!');
         console.error('Failed to sign in');

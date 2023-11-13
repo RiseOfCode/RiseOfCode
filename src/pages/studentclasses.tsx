@@ -1,8 +1,9 @@
 import styles from './styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import LocalHeader from '../client/components/UI/Header';
 const Studentclasses = () => {
-  const constStudentId = '7046f06e-7291-11ee-b962-0242ac120002';
+  const constStudentId = '453372ec-4b1f-4485-bc84-25d60e9eec6e';
 
   const router = useRouter();
   const [classes, setClasses] = useState([]);
@@ -43,9 +44,7 @@ const Studentclasses = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.header}>
-        <p>Rise of Code</p>
-      </div>
+      <LocalHeader />
       <div className={styles.main}>
         <p>Классы</p>
         <div className={styles.addClass}>
@@ -68,7 +67,7 @@ const Studentclasses = () => {
 
 const ClassesList = ({ classes }) => {
   const router = useRouter();
-  const goToLessons = (classId) => (e) => {
+  const goToLessons = (classId : string) => () => {
     localStorage.setItem('classId', classId);
     router.push('/studentdescription');
   };

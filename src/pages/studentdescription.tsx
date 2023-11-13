@@ -2,6 +2,7 @@ import styles from './styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import LocalHeader from "../client/components/UI/Header";
 const Classes = () => {
   // const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
   const constClassId = localStorage.getItem('classId');
@@ -20,9 +21,7 @@ const Classes = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <div className={styles.header}>
-        <p>Rise of Code</p>
-      </div>
+      <LocalHeader />
       <div className={styles.navMenu}>
         <Link href={`/studentdescription`}>Описание</Link>
         <Link href={`/studentlessons`}>Уроки</Link>
