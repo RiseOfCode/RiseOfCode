@@ -23,9 +23,9 @@ const TeacherProgress = () => {
     const fetchLessonData = async () => {
       await fetch(`/lesson/class/${constClassId}`)
         .then((response) => response.json())
-        .then((data) =>
+        .then(({ data }: { data: any }) =>
           setLessons(
-            data.map((lesson) => (
+            data.map(({ lesson }: { lesson: any }) => (
               <button onClick={(e: any) => handleLesson(lesson.id)}>
                 {lesson.name}
               </button>
