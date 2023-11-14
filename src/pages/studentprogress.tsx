@@ -6,7 +6,6 @@ import LocalHeader from '../client/components/UI/Header';
 const StudentProgress = () => {
   // const constStudentId = '7046f06e-7291-11ee-b962-0242ac120002';
   const constStudentId = '453372ec-4b1f-4485-bc84-25d60e9eec6e';
-  const constClassId = localStorage.getItem('classId') ?? '';
 
   const [progress, setProgress] = useState([
     { solvedTasksAmount: 0, name: '', tasks: [{ name: '', status: '' }] },
@@ -14,6 +13,7 @@ const StudentProgress = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const constClassId = localStorage.getItem('classId') ?? '';
     const fetchData = async () => {
       await fetch(
         `/progress/student?userId=${constStudentId}&classId=${constClassId}`,

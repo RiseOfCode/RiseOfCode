@@ -4,8 +4,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LocalHeader from '../client/components/UI/Header';
 const TeacherDescription = () => {
-  const constClassId = localStorage.getItem('classId') ?? '';
-
   const [classInfo, setClassInfo] = useState({
     teacherInfo: '',
     description: '',
@@ -14,6 +12,7 @@ const TeacherDescription = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const constClassId = localStorage.getItem('classId') ?? '';
     const fetchData = async () => {
       await fetch(`/api/class/${constClassId}`)
         .then((response) => response.json())
@@ -61,6 +60,7 @@ const TeacherDescription = () => {
   };
 
   const saveChanges = async () => {
+    const constClassId = localStorage.getItem('classId') ?? '';
     await changeClassInfo({
       classId: constClassId,
       name: name,

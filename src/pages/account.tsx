@@ -8,10 +8,10 @@ import Link from 'next/link';
 const Account = () => {
   const router = useRouter();
   const [accountData, setAccountData] = useState(null);
-  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchData = async () => {
+      const token = localStorage.getItem('token');
       try {
         const response = await fetch('/account', {
           method: 'GET',

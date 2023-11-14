@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import LocalHeader from '../client/components/UI/Header';
 const StudentDescription = () => {
   // const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
-  const constClassId = localStorage.getItem('classId') ?? '';
 
   const [classInfo, setClassInfo] = useState({
     name: '',
@@ -15,6 +14,7 @@ const StudentDescription = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const constClassId = localStorage.getItem('classId') ?? '';
     const fetchData = async () => {
       await fetch(`/api/class/${constClassId}`)
         .then((response) => response.json())
