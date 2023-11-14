@@ -1,13 +1,22 @@
 import styles from './styles/description.module.css';
-import React, { useEffect, useState } from 'react';
+import React, {
+  JSXElementConstructor,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import LocalHeader from "../client/components/UI/Header";
-const Classes = () => {
+import LocalHeader from '../client/components/UI/Header';
+const TeacherProgress = () => {
   // const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
-  const constClassId = localStorage.getItem('classId');
+  const constClassId = localStorage.getItem('classId') ?? '';
 
-  const [lessons, setLessons] = useState([]);
+  const [lessons, setLessons] = useState<
+    [ReactElement<{ onClick: () => void }, string | JSXElementConstructor<any>>]
+  >([
+    <button onClick={(e: any) => handleLesson({ lessonId: '' })}>name</button>,
+  ]);
   const router = useRouter();
 
   useEffect(() => {
@@ -36,7 +45,7 @@ const Classes = () => {
 
   const [isShown, setIsShown] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const handleLesson = async (lessonId) => {
+  const handleLesson = async ({ lessonId }: { lessonId: string }) => {
     const data = (await getProgress({ lessonId: lessonId })).slice();
     setIsShown(true);
     setTableData(data);
@@ -62,7 +71,19 @@ const Classes = () => {
   );
 };
 
-const Table = ({ data }) => {
+const Table = ({
+  data,
+}: {
+  data: {
+    name: string;
+    attempts: {
+      studentName: string;
+      studentSurname: string;
+      result: string;
+      attempsAmount: string;
+    }[];
+  }[];
+}) => {
   return (
     <div>
       {data.map((task) => (
@@ -80,7 +101,18 @@ const Table = ({ data }) => {
   );
 };
 
-const Dropdown = ({ trigger, AllLessons }) => {
+const Dropdown = ({
+  trigger,
+  AllLessons,
+}: {
+  trigger: ReactElement<
+    { onClick: () => void },
+    string | JSXElementConstructor<any>
+  >;
+  AllLessons: [
+    ReactElement<{ onClick: () => void }, string | JSXElementConstructor<any>>,
+  ];
+}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(!open);
@@ -108,4 +140,4 @@ const Dropdown = ({ trigger, AllLessons }) => {
   );
 };
 
-export default Classes;
+export default TeacherProgress;

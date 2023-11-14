@@ -2,11 +2,15 @@ import styles from './styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import LocalHeader from "../client/components/UI/Header";
-const Classes = () => {
-  const constClassId = localStorage.getItem('classId');
+import LocalHeader from '../client/components/UI/Header';
+const TeacherDescription = () => {
+  const constClassId = localStorage.getItem('classId') ?? '';
 
-  const [classInfo, setClassInfo] = useState([]);
+  const [classInfo, setClassInfo] = useState({
+    teacherInfo: '',
+    description: '',
+    name: '',
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -46,13 +50,13 @@ const Classes = () => {
   let teacherInfo = classInfo.teacherInfo;
   let description = classInfo.description;
   let name = classInfo.name;
-  const changeTeacherInfo = (e) => {
+  const changeTeacherInfo = ({ e }: { e: any }) => {
     teacherInfo = e.target.value;
   };
-  const changeDescription = (e) => {
+  const changeDescription = ({ e }: { e: any }) => {
     description = e.target.value;
   };
-  const changeName = (e) => {
+  const changeName = ({ e }: { e: any }) => {
     name = e.target.value;
   };
 
@@ -82,7 +86,7 @@ const Classes = () => {
             type="text"
             className={styles.descInput}
             name="name"
-            onChange={changeName}
+            onChange={(e: any) => changeName}
             defaultValue={classInfo.name}
           />
         </div>
@@ -92,7 +96,7 @@ const Classes = () => {
             type="text"
             className={styles.descInput}
             name="teacherInfo"
-            onChange={changeTeacherInfo}
+            onChange={(e: any) => changeTeacherInfo}
             defaultValue={classInfo.teacherInfo}
           />
         </div>
@@ -102,7 +106,7 @@ const Classes = () => {
             type="text"
             className={styles.descInput}
             name="description"
-            onChange={changeDescription}
+            onChange={(e: any) => changeDescription}
             defaultValue={classInfo.description}
           />
         </div>
@@ -114,4 +118,4 @@ const Classes = () => {
   );
 };
 
-export default Classes;
+export default TeacherDescription;

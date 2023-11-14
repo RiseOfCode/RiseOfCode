@@ -2,11 +2,11 @@ import styles from './styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../client/components/UI/Header';
-const Studentclasses = () => {
+const StudentClasses = () => {
   const constStudentId = '453372ec-4b1f-4485-bc84-25d60e9eec6e';
 
   const router = useRouter();
-  const [classes, setClasses] = useState([]);
+  const [classes, setClasses] = useState([{ name: '', id: '' }]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +30,7 @@ const Studentclasses = () => {
   };
 
   let classCode = '';
-  const changeClassCode = (e) => {
+  const changeClassCode = ({ e }: { e: any }) => {
     classCode = e.target.value;
   };
   const [seed, setSeed] = useState(1);
@@ -53,7 +53,7 @@ const Studentclasses = () => {
             type="text"
             className={styles.newClass}
             name="className"
-            onChange={changeClassCode}
+            onChange={(e: any) => changeClassCode}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
             добавиться
@@ -65,9 +65,13 @@ const Studentclasses = () => {
   );
 };
 
-const ClassesList = ({ classes }) => {
+const ClassesList = ({
+  classes,
+}: {
+  classes: { name: string; id: string }[];
+}) => {
   const router = useRouter();
-  const goToLessons = (classId : string) => () => {
+  const goToLessons = (classId: string) => () => {
     localStorage.setItem('classId', classId);
     router.push('/studentdescription');
   };
@@ -86,4 +90,4 @@ const ClassesList = ({ classes }) => {
   );
 };
 
-export default Studentclasses;
+export default StudentClasses;

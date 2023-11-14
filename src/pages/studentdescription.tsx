@@ -2,12 +2,16 @@ import styles from './styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import LocalHeader from "../client/components/UI/Header";
-const Classes = () => {
+import LocalHeader from '../client/components/UI/Header';
+const StudentDescription = () => {
   // const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
-  const constClassId = localStorage.getItem('classId');
+  const constClassId = localStorage.getItem('classId') ?? '';
 
-  const [classInfo, setClassInfo] = useState([]);
+  const [classInfo, setClassInfo] = useState({
+    name: '',
+    teacherInfo: '',
+    description: '',
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -45,4 +49,4 @@ const Classes = () => {
   );
 };
 
-export default Classes;
+export default StudentDescription;

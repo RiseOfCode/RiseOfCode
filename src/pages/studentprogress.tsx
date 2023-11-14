@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LocalHeader from '../client/components/UI/Header';
-const Classes = () => {
+const StudentProgress = () => {
   // const constStudentId = '7046f06e-7291-11ee-b962-0242ac120002';
   const constStudentId = '453372ec-4b1f-4485-bc84-25d60e9eec6e';
-  const constClassId = localStorage.getItem('classId');
+  const constClassId = localStorage.getItem('classId') ?? '';
 
-  const [progress, setProgress] = useState([]);
+  const [progress, setProgress] = useState([
+    { solvedTasksAmount: 0, name: '', tasks: [{ name: '', status: '' }] },
+  ]);
   const router = useRouter();
 
   useEffect(() => {
@@ -51,4 +53,4 @@ const Classes = () => {
   );
 };
 
-export default Classes;
+export default StudentProgress;

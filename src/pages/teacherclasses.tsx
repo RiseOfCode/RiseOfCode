@@ -1,11 +1,11 @@
 import styles from './styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import LocalHeader from "../client/components/UI/Header";
-const Teacherclasses = () => {
+import LocalHeader from '../client/components/UI/Header';
+const TeacherClasses = () => {
   const constTeacherId = '7046ea06-7291-11ee-b962-0242ac120002';
 
-  const [classes, setClasses] = useState([]);
+  const [classes, setClasses] = useState([{ name: '', id: '' }]);
   const router = useRouter();
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Teacherclasses = () => {
   };
 
   let className = '';
-  const changeClassName = (e) => {
+  const changeClassName = ({ e }: { e: any }) => {
     className = e.target.value;
   };
 
@@ -47,13 +47,13 @@ const Teacherclasses = () => {
     }).then((response) => window.location.reload());
   };
 
-  const deleteLessons = async (classId) => {
+  const deleteLessons = async ({ classId }: { classId: any }) => {
     await deleteClass({ classId: classId }).then((response) =>
       window.location.reload(),
     );
   };
 
-  const goToLessons = (classId) => {
+  const goToLessons = ({ classId }: { classId: any }) => {
     localStorage.setItem('classId', classId);
     router.push(`/teacherdescription`);
   };
@@ -69,7 +69,7 @@ const Teacherclasses = () => {
             type="text"
             className={styles.newClass}
             name="className"
-            onChange={changeClassName}
+            onChange={(e: any) => changeClassName}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
             создать
@@ -82,13 +82,13 @@ const Teacherclasses = () => {
               <div>
                 <button
                   className={styles.goToClassBtn}
-                  onClick={(e: any) => goToLessons(cl.id)}
+                  onClick={(e: any) => goToLessons({ classId: cl.id })}
                 >
                   к урокам
                 </button>
                 <button
                   className={styles.deleteClassBtn}
-                  onClick={(e: any) => deleteLessons(cl.id)}
+                  onClick={(e: any) => deleteLessons({ classId: cl.id })}
                 >
                   удалить
                 </button>
@@ -101,4 +101,4 @@ const Teacherclasses = () => {
   );
 };
 
-export default Teacherclasses;
+export default TeacherClasses;
