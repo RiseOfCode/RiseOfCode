@@ -11,7 +11,15 @@ const LocalHeader = () => {
   };
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const cookies = document.cookie.split(';');
+    let storedToken = null;
+
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'authToken') {
+        storedToken = value;
+      }
+    });
     if (storedToken) {
       setToken(true);
     }

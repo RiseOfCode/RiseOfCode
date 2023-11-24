@@ -1,40 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import styles from './styles/signin.module.css';
 import LocalHeader from '../client/components/UI/Header';
 import SubmitButton from '../client/components/UI/SubmitButton';
 
 const Account = () => {
-  const router = useRouter();
-  const [accountData, setAccountData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await fetch('/account', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setAccountData(data);
-        } else {
-          console.error('Failed to fetch account details');
-        }
-      } catch (error) {
-        console.error('An error occurred', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (!accountData) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className={styles.mainContainer}>
       <LocalHeader />

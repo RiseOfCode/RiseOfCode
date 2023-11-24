@@ -33,8 +33,6 @@ const Home = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.access_token);
         router
           .push('/account')
           .then((r) => console.log('User sign in successfully'));
