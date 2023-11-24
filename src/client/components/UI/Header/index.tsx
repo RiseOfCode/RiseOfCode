@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const LocalHeader = () => {
   const router = useRouter();
@@ -27,7 +28,12 @@ const LocalHeader = () => {
 
   return (
     <div>
-      <div>Rise of Code</div>
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+        <div>Rise of Code</div>
+        <div>
+          <Link href="/account">Аккаунт</Link>
+        </div>
+      </div>
       {token && (
         <button
           onClick={handleSignOut}

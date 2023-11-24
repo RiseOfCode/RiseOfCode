@@ -13,7 +13,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/server/main.js",
     "start:next": "next dev",
-    "start:dev": "NODE_ENV=development nest build --webpack --webpackPath webpack-hmr.config.js --watch --path tsconfig.server.json",
+    "start:dev": "NODE_ENV=development NODE_OPTIONS=--openssl-legacy-provider nest build --webpack --webpackPath webpack-hmr.config.js --watch --path tsconfig.server.json",
     "start:debug": "nest start --path ./tsconfig.server.json --debug --watch",
     "start:docker": "docker run --rm -p 3000:3000 -p 7655:22 -it $(docker build --build-arg ssh_pub_key=\"$(cat ~/.ssh/id_rsa.pub)\" -q .)",
     "start:ssh": "ssh -o StrictHostKeyChecking=no -L 9221:localhost:9229 root@localhost -p 7655",
@@ -22,6 +22,7 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.tsx?\" --fix"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^8.0.0",

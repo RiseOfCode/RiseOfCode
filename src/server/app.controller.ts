@@ -33,6 +33,12 @@ export class AppController {
     return req.user;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('studentclasses')
+  getStudentClasses(@Req() req: RequestWithUser) {
+    return req.user;
+  }
+
   @Get('/')
   @Render('index')
   @UseInterceptors(ParamsInterceptor, ConfigInterceptor)

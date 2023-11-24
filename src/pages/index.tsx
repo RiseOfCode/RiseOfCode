@@ -34,8 +34,8 @@ const Home = () => {
 
       if (response.ok) {
         router
-          .push('/account')
-          .then((r) => console.log('User sign in successfully'));
+          .push('/studentclasses')
+          .then(() => console.log('User sign in successfully'));
       } else {
         alert('Ошибка! Попробуйте еще раз!');
         console.error('Failed to sign in');

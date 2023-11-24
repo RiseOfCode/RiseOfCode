@@ -80,6 +80,24 @@ export class ClassService {
     return classes;
   }
 
+  async findByStudent(studentId: string): Promise<ClassReturnDto[]> {
+    const studentClass = await this.prisma.classStudent.findMany({
+      where: {
+        student_id: studentId,
+      },
+    });
+    const classes: any[] = [];
+    for (const st of studentClass) {
+      const classInfo = await this.prisma.class.findUniqueOrThrow({
+        where: {
+          id: st.class_id,
+        },
+      });
+      classes[classes.length] = new ClassReturnDto(classInfo);
+    }
+    return classes;
+  }
+
   async changeClass(id: string, dto: ClassUpdateDto): Promise<ClassReturnDto> {
     return new ClassReturnDto(
       await this.prisma.class.update({
