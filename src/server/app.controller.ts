@@ -14,7 +14,7 @@ import { AppService } from './app.service';
 import { ParamsInterceptor } from './params.interceptor';
 import { ConfigInterceptor } from './config.interceptor';
 import { JwtAuthGuard } from './middleware/auth/jwt-auth.guard';
-import { Request, Response } from 'express';
+import type { Request } from 'express';
 
 @Controller()
 export class AppController {
