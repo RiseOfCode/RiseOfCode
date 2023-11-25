@@ -14,8 +14,7 @@ import { AppService } from './app.service';
 import { ParamsInterceptor } from './params.interceptor';
 import { ConfigInterceptor } from './config.interceptor';
 import { JwtAuthGuard } from './middleware/auth/jwt-auth.guard';
-import { Request } from 'express';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { User } from '@prisma/client';
 interface RequestWithUser extends Request {
   user: User;
@@ -45,9 +44,4 @@ export class AppController {
   home() {
     return {};
   }
-  //
-  // @Get('logout')
-  // async logout(@Res({ passthrough: true }) res: Response) {
-  //   res.cookie('authToken', '', { expires: new Date() });
-  // }
 }
