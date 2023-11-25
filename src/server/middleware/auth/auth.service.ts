@@ -13,7 +13,11 @@ export class AuthService {
   async login(user: any): Promise<string> {
     const payload = { username: user.username, sub: user.userId };
     const authToken = this.jwtService.sign(payload);
-    return `authToken=${authToken}; HttpOnly; Path=/; Max-Age=400000000}`;
+    return `authToken=${authToken}; Path=/; Max-Age=400000000}`;
+  }
+
+  async logout(): Promise<string> {
+    return `authToken=; Path=/; Max-Age=400000000}`;
   }
 
   async validateUser(username: string, pass: string): Promise<any> {

@@ -34,6 +34,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('studentclasses')
+  @Render('studentclasses')
   getStudentClasses(@Req() req: RequestWithUser) {
     return req.user;
   }
@@ -44,9 +45,9 @@ export class AppController {
   home() {
     return {};
   }
-
-  @Get('signout')
-  async logout(@Res({ passthrough: true }) res: Response) {
-    res.cookie('authToken', '', { expires: new Date() });
-  }
+  //
+  // @Get('logout')
+  // async logout(@Res({ passthrough: true }) res: Response) {
+  //   res.cookie('authToken', '', { expires: new Date() });
+  // }
 }

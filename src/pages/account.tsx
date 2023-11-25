@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styles from './styles/signin.module.css';
 import LocalHeader from '../client/components/UI/Header';
 import SubmitButton from '../client/components/UI/SubmitButton';
-import Link from 'next/link';
 
 const Account = () => {
   return (
@@ -38,7 +37,6 @@ const Account = () => {
           </ul>
         </form>
       </div>
-      <Link href="/studentclasses">Классы</Link>
     </div>
   );
 };

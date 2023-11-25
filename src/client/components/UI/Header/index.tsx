@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
 
 const LocalHeader = () => {
   const router = useRouter();
   const [token, setToken] = useState<boolean>(false);
-  const handleSignOut = () => {
-    localStorage.removeItem('token');
-    router.push('/').then((r) => console.log('User sign out successfully'));
-    console.log('sign out');
+  const handleSignOut = async () => {
+    const response = await fetch('/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      router.push('/').then(() => console.log('User sign out successfully'));
+    } else {
+      console.error('Failed to sign out');
+    }
   };
 
   useEffect(() => {
-    const cookies = document.cookie.split(';');
-    let storedToken = null;
-
-    cookies.forEach((cookie) => {
-      const [name, value] = cookie.trim().split('=');
-      if (name === 'authToken') {
-        storedToken = value;
-      }
-    });
-    if (storedToken) {
+    const cookie = Cookies.get('authToken');
+    if (cookie) {
       setToken(true);
     }
   }, []);
