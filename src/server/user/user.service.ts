@@ -50,6 +50,15 @@ export class UserService {
           startsWith: nickname,
         },
       },
+      select: {
+        id: true,
+        role: true,
+        name: true,
+        surname: true,
+        nickname: true,
+        email: true,
+        password: true,
+      },
     });
 
     if (users) {
@@ -104,7 +113,7 @@ export class UserService {
     return users;
   }
 
-  async changeUser(id: string, user: UpdateUserDto){
+  async changeUser(id: string, user: UpdateUserDto) {
     const hashedPassword = await bcrypt.hash(user.password, 10);
 
     const updateUserWithHashedPassword: UpdateUserDto = {

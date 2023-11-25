@@ -17,7 +17,6 @@ import { JwtAuthGuard } from './middleware/auth/jwt-auth.guard';
 import { Request } from 'express';
 import { Response } from 'express';
 import { User } from '@prisma/client';
-import { AuthGuard } from '@nestjs/passport';
 interface RequestWithUser extends Request {
   user: User;
 }
@@ -29,7 +28,7 @@ export class AppController {
   @Get('account')
   @UseGuards(JwtAuthGuard)
   @Render('account')
-  getSomePage(@Req() req: RequestWithUser, @Res() response: Response) {
+  account(@Req() req: RequestWithUser, @Res() res: Response) {
     return req.user;
   }
 

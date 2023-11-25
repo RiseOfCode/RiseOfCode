@@ -1,8 +1,9 @@
-import { Controller, Post, UseGuards, Req, Res } from '@nestjs/common';
+import {Controller, Post, UseGuards, Req, Res, Get} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { User } from '@prisma/client';
+import {JwtAuthGuard} from "./jwt-auth.guard";
 interface RequestWithUser extends Request {
   user: User;
 }

@@ -5,16 +5,6 @@ import { Request } from 'express';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  // constructor() {
-  //   super({
-  //     jwtFromRequest: ExtractJwt.fromExtractors([
-  //       JwtStrategy.extractJWT,
-  //       ExtractJwt.fromAuthHeaderAsBearerToken(),
-  //     ]),
-  //     ignoreExpiration: false,
-  //     secretOrKey: '39dkf93kdf032fD!kdfj3j2r3kdf@',
-  //   });
-  // }
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -25,13 +15,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       ignoreExpiration: false,
       secretOrKey: '39dkf93kdf032fD!kdfj3j2r3kdf@',
     });
-  }
-
-  private static extractJWT(req: Request): string | null {
-    if (req.cookies && 'authToken' in req.cookies) {
-      return req.cookies.token;
-    }
-    return null;
   }
 
   async validate(payload: any) {
