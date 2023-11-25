@@ -54,7 +54,6 @@ const SignUp = () => {
       if (response.ok) {
         console.log('User added successfully');
       } else {
-        alert('Это имя пользователя уже занято!');
         console.error('Failed to add user');
       }
     } catch (error) {

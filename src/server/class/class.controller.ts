@@ -56,6 +56,13 @@ export class ClassController {
     return this.classService.findByTeacher(teacherId);
   }
 
+  @Get('/student/:studentId')
+  async findByStudent(
+    @Param('studentId', ParseUUIDPipe) studentId: string,
+  ): Promise<ClassReturnDto[]> {
+    return this.classService.findByStudent(studentId);
+  }
+
   @Delete(':classId')
   async deleteClass(@Param('classId', ParseUUIDPipe) classId: string) {
     await this.classService.deleteClass(classId);

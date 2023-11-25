@@ -5,11 +5,13 @@ import { initializeFetch } from 'src/shared/utils/fetch';
 
 class App extends NextApp<AppProps> {
   appData: AppData;
+  // authData: any;
 
   constructor(props: AppProps) {
     super(props);
 
     this.appData = props.pageProps.appData || {};
+    // this.authData = props.pageProps.authData || {};
 
     initializeFetch(this.appData.basePath);
   }
@@ -20,9 +22,19 @@ class App extends NextApp<AppProps> {
     return (
       <AppDataContext.Provider value={this.appData}>
         <Component {...pageProps} />
+        {/*<Component {...pageProps} authData={this.authData} />*/}
       </AppDataContext.Provider>
     );
   }
 }
+
+// App.getInitialProps = async (appContext) => {
+//   const appProps = await NextApp.getInitialProps(appContext);
+//
+//   const authData =
+//     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTk4ODQ5MjIsImV4cCI6MTY5OTkyMDkyMn0.faSFDh_Mjr3mVXeif5UApTDhOKAMu85QnQwihBeOgNw';
+//
+//   return { ...appProps, authData };
+// };
 
 export default App;

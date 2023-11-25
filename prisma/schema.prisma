@@ -131,7 +131,7 @@ model TaskSolving {
 
 model SolvingAttempt {
   id              String      @id @default(uuid()) @db.Uuid
-  date            DateTime
+  date            DateTime    @default(now())
   comment         String
   task_status     TaskStatus
   task_solving    TaskSolving @relation(fields: [task_solving_id], references: [id])
@@ -173,7 +173,9 @@ enum Theme {
 }
 
 enum TaskStatus {
-  NOT_SOLVED
-  PROCESSED
+  WRONG_ANSWER_ERROR
+  COMPILATION_ERROR
+  TIME_LIMIT_ERROR
+  PROCESSING
   SOLVED
 }

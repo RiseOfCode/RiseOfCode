@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Post,
   Query,
+  Req,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { StudentTaskReturnDto } from './dto/student.task.return.dto';
@@ -15,10 +16,16 @@ import { TaskCreateDto } from './dto/task.create.dto';
 import { TeacherTaskReturnDto } from './dto/teacher.task.return.dto';
 import { TaskService } from './task.service';
 import { TaskFilterDto } from './dto/task.filter.dto';
+import { Request } from 'express';
+import { ContesterService } from './contester.service';
+import { ContesterCodeDto } from "./dto/contester.code.dto";
 @ApiTags('task')
 @Controller('api/task')
 export class TaskController {
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private contesterService: ContesterService,
+  ) {}
 
   @Get('student/:studentId/lesson/:lessonId')
   async getTasksForStudentLesson(
@@ -88,5 +95,14 @@ export class TaskController {
     @Query('rating') rating: number,
   ) {
     return this.taskService.estimateTask(teacherId, taskId, rating);
+  }
+
+  @Post(':userId/solve/:taskId')
+  async solve(
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Param('taskId', ParseUUIDPipe) taskId: string,
+    @Body() dto: ContesterCodeDto,
+  ) {
+    return this.contesterService.solve(userId, taskId, dto.code);
   }
 }
