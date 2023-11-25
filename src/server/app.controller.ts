@@ -23,7 +23,7 @@ export class AppController {
   @Get('account')
   @UseGuards(JwtAuthGuard)
   @Render('account')
-  account(@Req() req: Request, @Res() res: Response) {
+  account(@Req() req: Request) {
     return req.user;
   }
 

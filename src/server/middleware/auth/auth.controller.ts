@@ -17,7 +17,7 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Req() req: Request, @Res() res: Response) {
+  async logout(@Res() res: Response) {
     const cookie = this.authService.logout();
     res.setHeader('Set-Cookie', await cookie);
     return res.send();
