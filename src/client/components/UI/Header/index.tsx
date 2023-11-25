@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
+import account from './account.png';
+import SubmitButton from '../SubmitButton';
 
 const LocalHeader = () => {
   const router = useRouter();
@@ -30,20 +32,45 @@ const LocalHeader = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
-        <div>Rise of Code</div>
-        <div>
-          <Link href="/account">Аккаунт</Link>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '80px',
+        }}
+      >
+        <div style={{ margin: 'auto' }}>Rise of Code</div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '5px',
+            }}
+          >
+            <Link href="/account">
+              <img
+                src={account.src}
+                width="25"
+                height="25"
+                style={{ marginTop: '10px' }}
+              ></img>
+            </Link>
+          </div>
+          {token && (
+            <SubmitButton
+              onClick={handleSignOut}
+              title={'Log out'}
+            ></SubmitButton>
+          )}
         </div>
       </div>
-      {token && (
-        <button
-          onClick={handleSignOut}
-          style={{ position: 'absolute', top: 0, right: 0 }}
-        >
-          Log out
-        </button>
-      )}
     </div>
   );
 };

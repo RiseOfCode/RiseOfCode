@@ -24,14 +24,14 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Render('account')
   account(@Req() req: Request) {
-    return req.user;
+    return {};
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('studentclasses')
   @Render('studentclasses')
   getStudentClasses(@Req() req: Request) {
-    return req.user;
+    return {};
   }
 
   @Get('/')
