@@ -15,10 +15,6 @@ import { ParamsInterceptor } from './params.interceptor';
 import { ConfigInterceptor } from './config.interceptor';
 import { JwtAuthGuard } from './middleware/auth/jwt-auth.guard';
 import { Request, Response } from 'express';
-import { User } from '@prisma/client';
-interface RequestWithUser extends Request {
-  user: User;
-}
 
 @Controller()
 export class AppController {
@@ -27,14 +23,14 @@ export class AppController {
   @Get('account')
   @UseGuards(JwtAuthGuard)
   @Render('account')
-  account(@Req() req: RequestWithUser, @Res() res: Response) {
+  account(@Req() req: Request, @Res() res: Response) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('studentclasses')
   @Render('studentclasses')
-  getStudentClasses(@Req() req: RequestWithUser) {
+  getStudentClasses(@Req() req: Request) {
     return req.user;
   }
 
