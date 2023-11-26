@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../client/components/UI/Header';
 const StudentClasses = () => {
-  const constStudentId = '453372ec-4b1f-4485-bc84-25d60e9eec6e';
+  const constStudentId = '42d59598-9548-41a3-bb42-d76635abb35c';
 
   const router = useRouter();
   const [classes, setClasses] = useState([{ name: '', id: '' }]);

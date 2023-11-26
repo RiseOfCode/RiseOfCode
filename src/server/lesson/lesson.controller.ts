@@ -14,7 +14,7 @@ import { LessonReturnDto } from './dto/lesson.return.dto';
 import { LessonService } from './lesson.service';
 import { LessonUpdateDto } from './dto/lesson.update.dto';
 @ApiTags('lesson')
-@Controller('lesson')
+@Controller('api/lesson')
 export class LessonController {
   constructor(private lessonService: LessonService) {}
 

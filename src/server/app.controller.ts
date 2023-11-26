@@ -34,6 +34,24 @@ export class AppController {
     return req.user;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('studentlessons')
+  getStudentLessons(@Req() req: RequestWithUser) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('studentdescription')
+  getStudentDescription(@Req() req: RequestWithUser) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('studentprogress')
+  getStudentProgress(@Req() req: RequestWithUser) {
+    return req.user;
+  }
+
   @Get('/')
   @Render('index')
   @UseInterceptors(ParamsInterceptor, ConfigInterceptor)
@@ -41,20 +59,15 @@ export class AppController {
     return {};
   }
 
-  // @Get(':id')
-  // @Render('[id]')
-  // @UseInterceptors(ParamsInterceptor, ConfigInterceptor)
-  // public blogPost() {
-  //   return {};
-  // }
+  @Get('/lessons/:id')
+  @Render('lesson')
+  lesson(@Req() req: RequestWithUser) {
+    return req.user;
+  }
 
-  // @Get('/api/blog-posts')
-  // public listBlogPosts() {
-  //   return this.appService.getBlogPosts();
-  // }
-  //
-  // @Get('/api/blog-posts/:id')
-  // public getBlogPostById(@Param('id', new ParseIntPipe()) id: number) {
-  //   return this.appService.getBlogPost(id);
-  // }
+  @Get('/lessons/:id/tasks/:taskId')
+  @Render('task')
+  task(@Req() req: RequestWithUser) {
+    return req.user;
+  }
 }
