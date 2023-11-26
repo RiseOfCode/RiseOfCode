@@ -14,12 +14,12 @@ export class ContesterSubmitDto {
 
 export class ContesterSubmitDataDto {
   constructor() {
-    this.id = '';
+    this.id = 0;
     this.api_id = 0;
     this.language_id = 22;
   }
 
-  id: string;
+  id: number;
   api_id: number;
   language_id: number;
 }
