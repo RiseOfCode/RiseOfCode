@@ -1,7 +1,7 @@
-import { Controller, Post, UseGuards, Req, Res, Get} from '@nestjs/common';
+import { Controller, Post, UseGuards, Req, Res, Get } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
