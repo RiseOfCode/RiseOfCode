@@ -1,7 +1,7 @@
-import styles from './styles/classes.module.css';
+import styles from '../styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import LocalHeader from '../client/components/UI/Header';
+import LocalHeader from '../../client/components/UI/Header';
 const TeacherClasses = () => {
   const constTeacherId = '7046ea06-7291-11ee-b962-0242ac120002';
 

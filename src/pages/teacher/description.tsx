@@ -1,8 +1,8 @@
-import styles from './styles/description.module.css';
+import styles from '../styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import LocalHeader from '../client/components/UI/Header';
+import LocalHeader from '../../client/components/UI/Header';
 const TeacherDescription = () => {
   const [classInfo, setClassInfo] = useState({
     teacherInfo: '',

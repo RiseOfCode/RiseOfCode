@@ -70,7 +70,7 @@ const Account = () => {
           </ul>
         </form>
       </div>
-      <Link href="/studentclasses">Классы</Link>
+      <Link href="/student/classes">Классы</Link>
     </div>
   );
 };

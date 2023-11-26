@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
-import styles from "./styles/classes.module.css";
-import LocalHeader from "../client/components/UI/Header";
+import styles from "../styles/classes.module.css";
+import LocalHeader from "../../client/components/UI/Header";
 import StudentPages from "./Header";
 
 const LessonsList = ({ lessons }: { lessons: { name: string; id: string }[] }) => {

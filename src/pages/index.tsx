@@ -36,7 +36,7 @@ const Home = () => {
         const data = await response.json();
         localStorage.setItem('token', data.access_token);
         router
-          .push('/studentclasses')
+          .push('/student/classes')
           .then(() => console.log('User sign in successfully'));
       } else {
         alert('Ошибка! Попробуйте еще раз!');

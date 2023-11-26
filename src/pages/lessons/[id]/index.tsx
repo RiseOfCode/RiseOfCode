@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from "../../styles/classes.module.css";
 import LocalHeader from "../../../client/components/UI/Header";
-import StudentPages from "../../Header";
+import StudentPages from "../../student/Header";
 
 const TasksList = ({ tasks }: { tasks: { name: string; id: string }[] }) => {
     const router = useRouter();
 
+    const { id } = router.query;
     const handleLessonClick = (taskId: string) => {
-        router.push(`/lessons/${router.query}/task/${taskId}`);
+        router.push(`/lessons/${id}/task/${taskId}`);
     };
 
     return (

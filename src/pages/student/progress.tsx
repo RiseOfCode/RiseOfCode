@@ -1,8 +1,8 @@
-import styles from './styles/description.module.css';
+import styles from '../styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import LocalHeader from '../client/components/UI/Header';
+import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from "./Header";
 const StudentProgress = () => {
   const constStudentId = '42d59598-9548-41a3-bb42-d76635abb35c';

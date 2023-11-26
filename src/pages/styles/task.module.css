@@ -1,0 +1,40 @@
+.lessonName {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.textarea {
+    width: 30%;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.file-input {
+    margin-bottom: 10px;
+}
+
+.button {
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/*.button:hover {*/
+/*    background-color: #45a049;*/
+/*}*/
+
+.taskName {
+    text-align: left;
+}
