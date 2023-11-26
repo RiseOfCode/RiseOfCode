@@ -275,5 +275,15 @@ export class TaskService {
           rating: Number(rating),
         },
       });
+    else
+      await this.prisma.taskRating.updateMany({
+        where: {
+          teacher_id: teacherId,
+          task_id: taskId,
+        },
+        data: {
+          rating: Number(rating),
+        },
+      });
   }
 }
