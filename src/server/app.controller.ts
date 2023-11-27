@@ -94,4 +94,9 @@ export class AppController {
   task(@Req() req: RequestWithUser) {
     return req.user;
   }
+
+  @Get('/teacher/tasks/bank')
+  tasksBank(@Req() req: RequestWithUser) {
+    return req.user;
+  }
 }

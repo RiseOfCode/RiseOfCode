@@ -24,6 +24,7 @@ const LocalHeader = () => {
         <div>Rise of Code</div>
         <div>
           <Link href="/account">Аккаунт</Link>
+          <Link href="/teacher/tasks/bank">Банк задач</Link>
         </div>
       </div>
       {token && (
