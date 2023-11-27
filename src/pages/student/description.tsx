@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
-import StudentPages from "./Header";
+import StudentPages from './Header';
 const StudentDescription = () => {
-
   const [classInfo, setClassInfo] = useState({
     name: '',
     teacherInfo: '',
@@ -26,7 +25,7 @@ const StudentDescription = () => {
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <h2>{classInfo ? classInfo.name : ""}</h2>
+      <h2>{classInfo ? classInfo.name : ''}</h2>
       <StudentPages />
 
       <div>
