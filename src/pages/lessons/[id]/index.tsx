@@ -4,43 +4,55 @@ import styles from '../../styles/classes.module.css';
 import LocalHeader from '../../../client/components/UI/Header';
 import StudentPages from '../../student/Header';
 
-const TasksList = ({ tasks }: { tasks: {
-        finalAttempt: { status: string } | null; name: string; id: string }[] }) => {
-    const router = useRouter();
+const TasksList = ({
+  tasks,
+}: {
+  tasks: {
+    finalAttempt: { status: string } | null;
+    name: string;
+    id: string;
+  }[];
+}) => {
+  const router = useRouter();
 
   const { id } = router.query;
   const handleLessonClick = (taskId: string) => {
     router.push(`/lessons/${id}/task/${taskId}`);
   };
 
-    return (
-        <div className={styles.classes}>
-            {tasks.length > 0 ? (
-                tasks.map((task) => (
-                    <div className={styles.classesPiece} key={task.id}>
-                        <p className={styles.className}>{task.name}</p>
-                        <p>{task.finalAttempt ? task.finalAttempt.status : ''}</p>
-                        <button className={styles.goToClassBtn} onClick={() => handleLessonClick(task.id)}>
-                            Решить
-                        </button>
-                    </div>
-                ))
-            ) : (
-                <p>В этом уроке пока нет задач</p>
-            )}
-        </div>
-    );
+  return (
+    <div className={styles.classes}>
+      {tasks.length > 0 ? (
+        tasks.map((task) => (
+          <div className={styles.classesPiece} key={task.id}>
+            <p className={styles.className}>{task.name}</p>
+            <p>{task.finalAttempt ? task.finalAttempt.status : ''}</p>
+            <button
+              className={styles.goToClassBtn}
+              onClick={() => handleLessonClick(task.id)}
+            >
+              Решить
+            </button>
+          </div>
+        ))
+      ) : (
+        <p>В этом уроке пока нет задач</p>
+      )}
+    </div>
+  );
 };
 const LessonPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
-    const [lessonData, setLessonData] = useState(null);
-    const [tasks, setTasks] = useState([{
-        id: '',
-        name: '',
-        finalAttempt: null
-    }]);
+  const [lessonData, setLessonData] = useState(null);
+  const [tasks, setTasks] = useState([
+    {
+      id: '',
+      name: '',
+      finalAttempt: null,
+    },
+  ]);
 
   const userId = '42d59598-9548-41a3-bb42-d76635abb35c';
 
