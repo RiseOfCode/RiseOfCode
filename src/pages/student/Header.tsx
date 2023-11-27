@@ -1,9 +1,14 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from '../styles/class-header.module.css';
+import { useEffect } from 'react';
 
 const StudentPages = () => {
-  const page = window.location.pathname;
+  let page = '';
+
+  useEffect(() => {
+    page = window.location.pathname;
+  }, []);
 
   return (
     <div>

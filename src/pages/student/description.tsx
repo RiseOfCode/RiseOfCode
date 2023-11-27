@@ -13,8 +13,8 @@ const StudentDescription = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const constClassId = localStorage.getItem('classId') ?? '';
     const fetchData = async () => {
+      const constClassId = localStorage.getItem('classId') ?? '';
       await fetch(`/api/class/${constClassId}`)
         .then((response) => response.json())
         .then((data) => setClassInfo(data));

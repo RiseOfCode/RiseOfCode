@@ -19,9 +19,8 @@ const StudentProgress = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const constClassId = localStorage.getItem('classId') ?? '';
-
     const fetchClass = async () => {
+      const constClassId = localStorage.getItem('classId') ?? '';
       try {
         const response = await fetch(`/api/class/${constClassId}`);
         if (response.ok) {
@@ -35,6 +34,7 @@ const StudentProgress = () => {
       }
     };
     const fetchData = async () => {
+      const constClassId = localStorage.getItem('classId') ?? '';
       await fetch(
         `/progress/student?userId=${constStudentId}&classId=${constClassId}`,
       )
