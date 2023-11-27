@@ -59,16 +59,18 @@ export class ContesterService {
     const token = html
       .querySelector('input[name="widget_form[_token]"]')
       .getAttribute('value');
-
-    task.tests.forEach(async (test) => {
-      const result = await this.runTest(token, code, test.input);
+    for (let i = 0; i < task.tests.length; i++) {
+      const result = await this.runTest(token, code, task.tests[i].input);
       const status = await this.chooseAndUpdateStatus(
         attempt.id,
         result.data[0],
-        test.output,
+        task.tests[i].output,
       );
       if (status != TaskStatus.SOLVED) return;
-    });
+      const sleep = (ms: number | undefined) =>
+        new Promise((r) => setTimeout(r, ms));
+      await sleep(3000);
+    }
 
     await this.prisma.solvingAttempt.update({
       where: {
