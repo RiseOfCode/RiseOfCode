@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import jwt from "jsonwebtoken";
 
 @Injectable()
 export class UserService {
@@ -41,6 +42,11 @@ export class UserService {
       return null;
     }
     return user;
+  }
+
+  async findUserByToken(token: string) {
+    const decodedToken = jwt.verify(token, '39dkf93kdf032fD!kdfj3j2r3kdf@');
+    return decodedToken;
   }
 
   async findUsersByNick(nickname: string): Promise<CreateUserDto[] | null> {

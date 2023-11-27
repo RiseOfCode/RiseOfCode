@@ -14,16 +14,21 @@ import { AppService } from './app.service';
 import { ParamsInterceptor } from './params.interceptor';
 import { ConfigInterceptor } from './config.interceptor';
 import { JwtAuthGuard } from './middleware/auth/jwt-auth.guard';
-import type { Request } from 'express';
+import type { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import { UserService } from './user/user.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private userService: UserService,
+  ) {}
 
   @Get('account')
   @UseGuards(JwtAuthGuard)
   @Render('account')
-  account(@Req() req: Request) {
+  async account(@Req() req: Request, @Res() res: Response) {
     return {};
   }
 
