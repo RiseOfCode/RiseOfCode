@@ -4,7 +4,8 @@ import styles from "../../styles/classes.module.css";
 import LocalHeader from "../../../client/components/UI/Header";
 import StudentPages from "../../student/Header";
 
-const TasksList = ({ tasks }: { tasks: { name: string; id: string }[] }) => {
+const TasksList = ({ tasks }: { tasks: {
+        finalAttempt: { status: string } | null; name: string; id: string }[] }) => {
     const router = useRouter();
 
     const { id } = router.query;
@@ -18,6 +19,7 @@ const TasksList = ({ tasks }: { tasks: { name: string; id: string }[] }) => {
                 tasks.map((task) => (
                     <div className={styles.classesPiece} key={task.id}>
                         <p className={styles.className}>{task.name}</p>
+                        <p>{task.finalAttempt ? task.finalAttempt.status : ''}</p>
                         <button className={styles.goToClassBtn} onClick={() => handleLessonClick(task.id)}>
                             Решить
                         </button>
@@ -36,7 +38,8 @@ const LessonPage = () => {
     const [lessonData, setLessonData] = useState(null);
     const [tasks, setTasks] = useState([{
         id: '',
-        name: ''
+        name: '',
+        finalAttempt: null
     }]);
 
     const userId = '42d59598-9548-41a3-bb42-d76635abb35c';

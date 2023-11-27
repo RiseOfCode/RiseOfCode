@@ -15,7 +15,9 @@ const TaskPage = () => {
     const [task, setTask] = useState({
         id: '',
         name: '',
-        description: ''
+        description: '',
+        attempts: [{date: '', status: '', comment: ''}],
+        finalAttempt: null,
     });
     const [lessonData, setLessonData] = useState({
         id: '',
@@ -26,6 +28,20 @@ const TaskPage = () => {
         teacherInfo: '',
         description: '',
     });
+
+    const fetchTask = async () => {
+        try {
+            const tasksResponse = await fetch(`/api/task/student/${userId}/${taskId}`);
+            if (tasksResponse.ok) {
+                const tasksData = await tasksResponse.json();
+                setTask(tasksData);
+            } else {
+                console.error('Failed to fetch tasks');
+            }
+        } catch (error) {
+            console.error('An error occurred', error);
+        }
+    };
 
     useEffect(() => {
         const fetchClass = async () => {
@@ -80,7 +96,49 @@ const TaskPage = () => {
     };
 
     const handleSubmit = async () => {
+        const requestData = {
+            code: textAnswer.replace(/\n/g, ' '),
+        };
 
+        try {
+            await fetch(`/api/task/${userId}/solve/${task.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            });
+            fetchTask();
+        } catch (error) {}
+    };
+
+    const renderAttemptsTable = () => {
+        if (!task.attempts || task.attempts.length === 0) {
+            return <p>No attempts available.</p>;
+        }
+
+        return (
+          <table className={styles.attemptsTable}>
+              <thead>
+              <tr>
+                  <th>N</th>
+                  <th>Время</th>
+                  <th>Статус</th>
+                  <th>Комментарий</th>
+              </tr>
+              </thead>
+              <tbody>
+              {task.attempts.map((attempt, index) => (
+                <tr key={task.attempts.length - index}>
+                    <td>{task.attempts.length - index}</td>
+                    <td>{new Date(attempt.date).toLocaleString()}</td>
+                    <td className={attempt.status === 'SOLVED' ? styles.solved : attempt.status === 'PROCESSING' ? '' : styles.wa }>{attempt.status}</td>
+                    <td>{attempt.comment}</td>
+                </tr>
+              ))}
+              </tbody>
+          </table>
+        );
     };
 
     return (
@@ -108,6 +166,8 @@ const TaskPage = () => {
             <button className={styles.button} onClick={handleSubmit}>
                 Отправить
             </button>
+
+            {renderAttemptsTable()}
         </div>
     );
 

@@ -23,7 +23,7 @@
 
 .button {
     padding: 10px 20px;
-    text-align: center;
+    text-align: start;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
@@ -37,4 +37,33 @@
 
 .taskName {
     text-align: left;
+}
+
+.attemptsTable {
+    width: 60%;
+    margin: auto;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.attemptsTable th, .attemptsTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.attemptsTable th {
+    background-color: #f2f2f2;
+}
+
+/*.attemptsTable tbody tr:nth-child(even) {*/
+/*    background-color: #f9f9f9;*/
+/*}*/
+
+.solved {
+    color: darkseagreen;
+}
+
+.wa {
+    color: darkred;
 }
