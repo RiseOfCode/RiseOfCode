@@ -10,7 +10,6 @@ const TaskPage = () => {
   const userId = '42d59598-9548-41a3-bb42-d76635abb35c';
 
   const { id, taskId } = router.query;
-  const classId = localStorage.getItem('classId');
 
   const [task, setTask] = useState({
     id: '',
@@ -59,6 +58,7 @@ const TaskPage = () => {
   };
 
   useEffect(() => {
+    const classId = localStorage.getItem('classId');
     const fetchClass = async () => {
       try {
         const response = await fetch(`/api/class/${classId}`);
@@ -98,7 +98,7 @@ const TaskPage = () => {
 
     fetchClass();
     fetchLesson();
-  }, [classId, id, taskId]);
+  }, []);
 
   const [textAnswer, setTextAnswer] = useState('');
   const handleTextAnswerChange = (
