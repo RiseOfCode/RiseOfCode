@@ -15,7 +15,6 @@ import { ParamsInterceptor } from './params.interceptor';
 import { ConfigInterceptor } from './config.interceptor';
 import { JwtAuthGuard } from './middleware/auth/jwt-auth.guard';
 import type { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import { UserService } from './user/user.service';
 
 @Controller()
