@@ -11,7 +11,6 @@ const StudentDescription = () => {
     teacherInfo: '',
     description: '',
   });
-  const router = useRouter();
 
   useEffect(() => {
     const constClassId = localStorage.getItem('classId') ?? '';

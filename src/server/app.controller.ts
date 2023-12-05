@@ -4,7 +4,9 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Render, Req,
+  Render,
+  Req,
+  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -12,26 +14,28 @@ import { AppService } from './app.service';
 import { ParamsInterceptor } from './params.interceptor';
 import { ConfigInterceptor } from './config.interceptor';
 import { JwtAuthGuard } from './middleware/auth/jwt-auth.guard';
-import { Request } from 'express';
-import { User } from '@prisma/client';
-interface RequestWithUser extends Request {
-  user: User;
-}
+import type { Request, Response } from 'express';
+import { UserService } from './user/user.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private userService: UserService,
+  ) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('account')
-  getSomePage(@Req() req: RequestWithUser) {
-    return req.user;
+  @UseGuards(JwtAuthGuard)
+  @Render('account')
+  async account(@Req() req: Request, @Res() res: Response) {
+    return {};
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('studentclasses')
-  getStudentClasses(@Req() req: RequestWithUser) {
-    return req.user;
+  @Render('studentclasses')
+  getStudentClasses(@Req() req: Request) {
+    return {};
   }
 
   @Get('/')
@@ -40,21 +44,4 @@ export class AppController {
   home() {
     return {};
   }
-
-  // @Get(':id')
-  // @Render('[id]')
-  // @UseInterceptors(ParamsInterceptor, ConfigInterceptor)
-  // public blogPost() {
-  //   return {};
-  // }
-
-  // @Get('/api/blog-posts')
-  // public listBlogPosts() {
-  //   return this.appService.getBlogPosts();
-  // }
-  //
-  // @Get('/api/blog-posts/:id')
-  // public getBlogPostById(@Param('id', new ParseIntPipe()) id: number) {
-  //   return this.appService.getBlogPost(id);
-  // }
 }
