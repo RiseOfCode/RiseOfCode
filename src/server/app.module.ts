@@ -9,7 +9,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './middleware/auth/auth.module';
 import { ProgressModule } from './progress/progress.module';
 import { LessonModule } from './lesson/lesson.module';
-import { TaskModule } from './task/task.module';
+// import { TaskModule } from './task/task.module';
 
 declare const module: any;
 
@@ -18,7 +18,7 @@ declare const module: any;
     ClassModule,
     ProgressModule,
     LessonModule,
-    TaskModule,
+    // TaskModule,
     UserModule,
     AuthModule,
   ],
