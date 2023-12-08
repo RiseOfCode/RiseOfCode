@@ -52,7 +52,7 @@ const SignUp = () => {
       });
 
       if (response.ok) {
-        console.log('User added successfully');
+        router.push('/').then(() => console.log('User added successfully'));
       } else {
         console.error('Failed to add user');
       }

@@ -59,6 +59,18 @@ export class UserController {
   }
 
   @ApiOperation({
+    summary: 'Find user by token',
+  })
+  @Get('/ac/:token')
+  async findUserByToken(@Param('token') token: string) {
+    const user = await this.userService.findUserByToken(token);
+    if (user == null) {
+      throw new NotFoundException('Not found');
+    }
+    return user;
+  }
+
+  @ApiOperation({
     summary: 'Get all students',
   })
   @Get('users')

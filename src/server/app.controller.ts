@@ -4,7 +4,9 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Render, Req,
+  Render,
+  Req,
+  Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -12,67 +14,69 @@ import { AppService } from './app.service';
 import { ParamsInterceptor } from './params.interceptor';
 import { ConfigInterceptor } from './config.interceptor';
 import { JwtAuthGuard } from './middleware/auth/jwt-auth.guard';
-import { Request } from 'express';
-import { User } from '@prisma/client';
-interface RequestWithUser extends Request {
-  user: User;
-}
+import type { Request, Response } from 'express';
+import { UserService } from './user/user.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private userService: UserService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('account')
-  getSomePage(@Req() req: RequestWithUser) {
-    return req.user;
+  @UseGuards(JwtAuthGuard)
+  @Render('account')
+  async account(@Req() req: Request, @Res() res: Response) {
+    return {};
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('student/classes')
-  getStudentClasses(@Req() req: RequestWithUser) {
+  getStudentClasses(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('student/lessons')
-  getStudentLessons(@Req() req: RequestWithUser) {
+  getStudentLessons(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('student/description')
-  getStudentDescription(@Req() req: RequestWithUser) {
+  getStudentDescription(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('student/progress')
-  getStudentProgress(@Req() req: RequestWithUser) {
+  getStudentProgress(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('teacher/classes')
-  getTeacherClasses(@Req() req: RequestWithUser) {
+  getTeacherClasses(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('teacher/lessons')
-  getTeacherLessons(@Req() req: RequestWithUser) {
+  getTeacherLessons(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('teacher/description')
-  getTeacherDescription(@Req() req: RequestWithUser) {
+  getTeacherDescription(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('teacher/progress')
-  getTeacherProgress(@Req() req: RequestWithUser) {
+  getTeacherProgress(@Req() req: Request) {
     return req.user;
   }
 
@@ -85,13 +89,13 @@ export class AppController {
 
   @Get('/lessons/:id')
   @Render('lesson')
-  lesson(@Req() req: RequestWithUser) {
+  lesson(@Req() req: Request) {
     return req.user;
   }
 
   @Get('/lessons/:id/tasks/:taskId')
   @Render('task')
-  task(@Req() req: RequestWithUser) {
+  task(@Req() req: Request) {
     return req.user;
   }
 }

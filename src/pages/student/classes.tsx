@@ -5,7 +5,6 @@ import LocalHeader from '../../client/components/UI/Header';
 const StudentClasses = () => {
   const constStudentId = '42d59598-9548-41a3-bb42-d76635abb35c';
 
-  const router = useRouter();
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
 
   useEffect(() => {

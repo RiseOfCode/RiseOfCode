@@ -2,11 +2,11 @@ import { User as PrismaUser, UserRole as PrismaUserRole } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
-  // @ApiProperty({
-  //   description: 'ID of the user',
-  //   example: '1234567890',
-  // })
-  // id: string;
+  @ApiProperty({
+    description: 'ID of the user',
+    example: '1234567890',
+  })
+  id: string;
 
   @ApiProperty({
     enum: ['STUDENT', 'TEACHER'],
@@ -44,7 +44,7 @@ export class CreateUserDto {
   password: string;
 
   constructor(dbUser: PrismaUser) {
-    // this.id = dbUser.id;
+    this.id = dbUser.id;
     this.role = dbUser.role as PrismaUserRole;
     this.name = dbUser.name;
     this.surname = dbUser.surname;

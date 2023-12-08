@@ -10,11 +10,15 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(user: any): Promise<{ access_token: string }> {
-    const payload = { username: user.username, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async login(user: any): Promise<string> {
+    console.log(user.userId);
+    const payload = { nickname: user.nickname, id: user.id };
+    const authToken = this.jwtService.sign(payload);
+    return `authToken=${authToken}; Path=/; Max-Age=400000000}`;
+  }
+
+  async logout(): Promise<string> {
+    return `authToken=; Path=/; Max-Age=400000000}`;
   }
 
   async validateUser(username: string, pass: string): Promise<any> {
