@@ -1,13 +1,14 @@
-import styles from './styles/classes.module.css';
+import styles from '../styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import LocalHeader from '../client/components/UI/Header';
+import LocalHeader from '../../client/components/UI/Header';
 const StudentClasses = () => {
-  const constStudentId = '453372ec-4b1f-4485-bc84-25d60e9eec6e';
+  const constStudentId = '42d59598-9548-41a3-bb42-d76635abb35c';
 
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
 
   useEffect(() => {
+    const constClassId = localStorage.getItem('classId') ?? '';
     const fetchData = async () => {
       await fetch(`/api/class/student/${constStudentId}`)
         .then((response) => response.json())
@@ -72,7 +73,7 @@ const ClassesList = ({
   const router = useRouter();
   const goToLessons = (classId: string) => () => {
     localStorage.setItem('classId', classId);
-    router.push('/studentdescription');
+    router.push('/student/description');
   };
 
   return (

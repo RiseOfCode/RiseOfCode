@@ -1,39 +1,57 @@
-import styles from './styles/description.module.css';
+import styles from '../styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import LocalHeader from '../client/components/UI/Header';
+import LocalHeader from '../../client/components/UI/Header';
+import StudentPages from './Header';
 const StudentProgress = () => {
-  // const constStudentId = '7046f06e-7291-11ee-b962-0242ac120002';
-  const constStudentId = '453372ec-4b1f-4485-bc84-25d60e9eec6e';
+  const constStudentId = '42d59598-9548-41a3-bb42-d76635abb35c';
 
   const [progress, setProgress] = useState([
     { solvedTasksAmount: 0, name: '', tasks: [{ name: '', status: '' }] },
   ]);
+  const [classData, setClassData] = useState({
+    name: '',
+    teacherInfo: '',
+    description: '',
+  });
+
   const router = useRouter();
 
   useEffect(() => {
-    const constClassId = localStorage.getItem('classId') ?? '';
+    const fetchClass = async () => {
+      const constClassId = localStorage.getItem('classId') ?? '';
+      try {
+        const response = await fetch(`/api/class/${constClassId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setClassData(data);
+        } else {
+          console.error('Failed to fetch class details');
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    };
     const fetchData = async () => {
+      const constClassId = localStorage.getItem('classId') ?? '';
       await fetch(
         `/progress/student?userId=${constStudentId}&classId=${constClassId}`,
       )
         .then((response) => response.json())
         .then((data) => setProgress(data));
     };
+    fetchClass();
     fetchData();
   }, []);
 
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <div className={styles.navMenu}>
-        <Link href={`/studentdescription`}>Описание</Link>
-        <Link href={`/studentlessons`}>Уроки</Link>
-        <Link href={`/studentprogress`}>Прогресс</Link>
-      </div>
+      <h2>{classData ? classData.name : ''}</h2>
+      <StudentPages />
+
       <div className={styles.main}>
-        <p>Прогресс</p>
         {progress.map((pr) => (
           <div className={styles.lessonProgress}>
             <p className={styles.lessonName}>{pr.name}</p>

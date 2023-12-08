@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styles from './styles/signin.module.css';
 import LocalHeader from '../client/components/UI/Header';
 import SubmitButton from '../client/components/UI/SubmitButton';
@@ -160,6 +162,7 @@ const Account = () => {
           </ul>
         </form>
       </div>
+      <Link href="/student/classes">Классы</Link>
     </div>
   );
 };
