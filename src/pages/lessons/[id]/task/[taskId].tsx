@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../../styles/task.module.css';
 import LocalHeader from '../../../../client/components/UI/Header';
@@ -10,7 +10,6 @@ const TaskPage = () => {
   const userId = '42d59598-9548-41a3-bb42-d76635abb35c';
 
   const { id, taskId } = router.query;
-  const classId = localStorage.getItem('classId');
 
   const [task, setTask] = useState({
     id: '',
@@ -29,6 +28,19 @@ const TaskPage = () => {
     description: '',
   });
 
+  const [newAttempt, setNewAttempt] = useState<{
+    date: string;
+    status: string;
+    comment: string;
+  } | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const clearFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
   const fetchTask = async () => {
     try {
       const tasksResponse = await fetch(
@@ -46,6 +58,7 @@ const TaskPage = () => {
   };
 
   useEffect(() => {
+    const classId = localStorage.getItem('classId');
     const fetchClass = async () => {
       try {
         const response = await fetch(`/api/class/${classId}`);
@@ -85,7 +98,7 @@ const TaskPage = () => {
 
     fetchClass();
     fetchLesson();
-  }, [classId, id, taskId]);
+  }, []);
 
   const [textAnswer, setTextAnswer] = useState('');
   const handleTextAnswerChange = (
@@ -99,23 +112,60 @@ const TaskPage = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.currentTarget.files?.[0] || null;
     setFile(selectedFile);
+
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const fileContent = e.target?.result as string;
+        setTextAnswer(fileContent);
+      };
+      reader.readAsText(selectedFile);
+    }
   };
 
   const handleSubmit = async () => {
-    const requestData = {
-      code: textAnswer.replace(/\n/g, ' '),
-    };
+    let requestData: { code: string } = { code: '' };
 
-    try {
-      await fetch(`/api/task/${userId}/solve/${task.id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      });
-      fetchTask();
-    } catch (error) {}
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const fileContent = e.target?.result as string;
+        requestData = { code: fileContent.replace(/\n/g, ' ') };
+        sendRequest();
+      };
+      reader.readAsText(file);
+      setFile(null);
+      clearFileInput();
+    } else {
+      if (textAnswer == '') {
+        alert('Вставьте код для отправки');
+      } else {
+        requestData = { code: textAnswer.replace(/\n/g, ' ') };
+        sendRequest();
+      }
+    }
+
+    setTextAnswer('');
+    async function sendRequest() {
+      try {
+        setNewAttempt({
+          date: new Date().toLocaleString(),
+          status: 'PROCESSING',
+          comment: '',
+        });
+        const response = await fetch(`/api/task/${userId}/solve/${task.id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+        });
+        fetchTask();
+        setNewAttempt(null);
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    }
   };
 
   const renderAttemptsTable = () => {
@@ -134,6 +184,14 @@ const TaskPage = () => {
           </tr>
         </thead>
         <tbody>
+          {newAttempt && (
+            <tr>
+              <td>{task.attempts.length + 1}</td>
+              <td>{newAttempt.date}</td>
+              <td className={styles.processing}>{newAttempt.status}</td>
+              <td>{newAttempt.comment}</td>
+            </tr>
+          )}
           {task.attempts.map((attempt, index) => (
             <tr key={task.attempts.length - index}>
               <td>{task.attempts.length - index}</td>
@@ -176,7 +234,9 @@ const TaskPage = () => {
       <input
         className={`${styles.fileInput} ${styles.button}`}
         type="file"
+        accept=".pas"
         onChange={handleFileChange}
+        ref={fileInputRef}
       />
 
       <button className={styles.button} onClick={handleSubmit}>

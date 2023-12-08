@@ -24,6 +24,7 @@ export class AppController {
     private userService: UserService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('account')
   @UseGuards(JwtAuthGuard)
   @Render('account')
@@ -32,10 +33,51 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('studentclasses')
-  @Render('studentclasses')
+  @Get('student/classes')
   getStudentClasses(@Req() req: Request) {
-    return {};
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('student/lessons')
+  getStudentLessons(@Req() req: Request) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('student/description')
+  getStudentDescription(@Req() req: Request) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('student/progress')
+  getStudentProgress(@Req() req: Request) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('teacher/classes')
+  getTeacherClasses(@Req() req: Request) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('teacher/lessons')
+  getTeacherLessons(@Req() req: Request) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('teacher/description')
+  getTeacherDescription(@Req() req: Request) {
+    return req.user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('teacher/progress')
+  getTeacherProgress(@Req() req: Request) {
+    return req.user;
   }
 
   @Get('/')
@@ -43,5 +85,17 @@ export class AppController {
   @UseInterceptors(ParamsInterceptor, ConfigInterceptor)
   home() {
     return {};
+  }
+
+  @Get('/lessons/:id')
+  @Render('lesson')
+  lesson(@Req() req: Request) {
+    return req.user;
+  }
+
+  @Get('/lessons/:id/tasks/:taskId')
+  @Render('task')
+  task(@Req() req: Request) {
+    return req.user;
   }
 }

@@ -56,8 +56,6 @@ const LessonPage = () => {
 
   const userId = '42d59598-9548-41a3-bb42-d76635abb35c';
 
-  const classId = localStorage.getItem('classId');
-
   const [classData, setClassData] = useState({
     name: '',
     teacherInfo: '',
@@ -65,6 +63,8 @@ const LessonPage = () => {
   });
 
   useEffect(() => {
+    const classId = localStorage.getItem('classId');
+
     const fetchClass = async () => {
       try {
         const response = await fetch(`/api/class/${classId}`);

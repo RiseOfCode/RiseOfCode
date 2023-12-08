@@ -33,8 +33,6 @@ const LessonsList = ({
 };
 
 const StudentLessons = () => {
-  const classId = localStorage.getItem('classId');
-
   const [classData, setClassData] = useState({
     name: '',
     teacherInfo: '',
@@ -45,6 +43,7 @@ const StudentLessons = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const classId = localStorage.getItem('classId');
     const fetchData = async () => {
       try {
         const response = await fetch(`/api/class/${classId}`);
@@ -77,7 +76,7 @@ const StudentLessons = () => {
       fetchData();
       fetchLessons();
     }
-  }, [classId]);
+  });
 
   return (
     <div className={styles.pageContainer}>

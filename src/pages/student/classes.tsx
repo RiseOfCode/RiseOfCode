@@ -8,6 +8,7 @@ const StudentClasses = () => {
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
 
   useEffect(() => {
+    const constClassId = localStorage.getItem('classId') ?? '';
     const fetchData = async () => {
       await fetch(`/api/class/student/${constStudentId}`)
         .then((response) => response.json())
