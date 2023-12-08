@@ -108,6 +108,7 @@ export class ContesterService {
     );
     const submitResult = (await submitResponse.json()) as ContesterSubmitDto;
 
+    console.log(submitResult.data.id);
     let statusResult = new ContesterResultDto();
     while (statusResult.data[0].executing) {
       const statusResponse = await fetch(

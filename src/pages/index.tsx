@@ -33,8 +33,6 @@ const Home = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.access_token);
         router
           .push('/student/classes')
           .then(() => console.log('User sign in successfully'));
