@@ -13,7 +13,7 @@ import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {UpdatePasswordDto} from "./dto/update-password.dto";
+import { UpdatePasswordDto } from './dto/update-password.dto';
 @ApiTags('user')
 @Controller('api/user')
 export class UserController {
