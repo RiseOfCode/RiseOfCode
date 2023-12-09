@@ -13,6 +13,7 @@ import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import {UpdatePasswordDto} from "./dto/update-password.dto";
 @ApiTags('user')
 @Controller('api/user')
 export class UserController {
@@ -88,5 +89,13 @@ export class UserController {
     @Body() User: UpdateUserDto,
   ): Promise<CreateUserDto> {
     return this.userService.changeUser(userId, User);
+  }
+
+  @Put('/pass/:userId')
+  async changePassword(
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Body() password: UpdatePasswordDto,
+  ): Promise<CreateUserDto | null> {
+    return this.userService.changePassword(userId, password);
   }
 }
