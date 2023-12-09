@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
+import Cookies from 'js-cookie';
 const StudentProgress = () => {
-  const constStudentId = '42d59598-9548-41a3-bb42-d76635abb35c';
-
+  const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [progress, setProgress] = useState([
     { solvedTasksAmount: 0, name: '', tasks: [{ name: '', status: '' }] },
   ]);
@@ -17,6 +17,18 @@ const StudentProgress = () => {
   });
 
   const router = useRouter();
+
+  useEffect(() => {
+    const cookie = Cookies.get('authToken').toString();
+    const fetchUserId = async () => {
+      await fetch(`/api/user/ac/${cookie}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUserShort(data);
+        });
+    };
+    fetchUserId();
+  }, []);
 
   useEffect(() => {
     const fetchClass = async () => {
@@ -36,7 +48,7 @@ const StudentProgress = () => {
     const fetchData = async () => {
       const constClassId = localStorage.getItem('classId') ?? '';
       await fetch(
-        `/progress/student?userId=${constStudentId}&classId=${constClassId}`,
+        `/progress/student?userId=${userShort.id}&classId=${constClassId}`,
       )
         .then((response) => response.json())
         .then((data) => setProgress(data));

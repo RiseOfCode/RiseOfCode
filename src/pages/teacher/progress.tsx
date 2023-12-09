@@ -9,8 +9,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 const TeacherProgress = () => {
-  // const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
-
   const [lessons, setLessons] = useState<
     [ReactElement<{ onClick: () => void }, string | JSXElementConstructor<any>>]
   >([

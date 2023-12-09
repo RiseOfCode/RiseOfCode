@@ -2,15 +2,27 @@ import styles from '../styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
+import Cookies from 'js-cookie';
 const StudentClasses = () => {
-  const constStudentId = '42d59598-9548-41a3-bb42-d76635abb35c';
-
+  const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
+
+  useEffect(() => {
+    const cookie = Cookies.get('authToken').toString();
+    const fetchUserId = async () => {
+      await fetch(`/api/user/ac/${cookie}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUserShort(data);
+        });
+    };
+    fetchUserId();
+  }, []);
 
   useEffect(() => {
     const constClassId = localStorage.getItem('classId') ?? '';
     const fetchData = async () => {
-      await fetch(`/api/class/student/${constStudentId}`)
+      await fetch(`/api/class/student/${userShort.id}`)
         .then((response) => response.json())
         .then((data) => setClasses(data));
     };
@@ -37,7 +49,7 @@ const StudentClasses = () => {
   const addClass = async () => {
     await postClassStudent({
       code: classCode,
-      studentId: constStudentId,
+      studentId: userShort.id,
     });
     setSeed(Math.random());
   };

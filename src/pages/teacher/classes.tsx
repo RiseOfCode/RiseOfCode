@@ -2,15 +2,27 @@ import styles from '../styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
+import Cookies from 'js-cookie';
 const TeacherClasses = () => {
-  const constTeacherId = '7046ea06-7291-11ee-b962-0242ac120002';
-
+  const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
   const router = useRouter();
 
   useEffect(() => {
+    const cookie = Cookies.get('authToken').toString();
+    const fetchUserId = async () => {
+      await fetch(`/api/user/ac/${cookie}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUserShort(data);
+        });
+    };
+    fetchUserId();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
-      await fetch(`/api/class/teacher/${constTeacherId}`)
+      await fetch(`/api/class/teacher/${userShort.id}`)
         .then((response) => response.json())
         .then((data) => setClasses(data));
     };
@@ -43,7 +55,7 @@ const TeacherClasses = () => {
   const addClass = async () => {
     await postNewClass({
       name: className,
-      teacherId: constTeacherId,
+      teacherId: userShort.id,
     }).then((response) => window.location.reload());
   };
 
@@ -55,7 +67,7 @@ const TeacherClasses = () => {
 
   const goToLessons = ({ classId }: { classId: any }) => {
     localStorage.setItem('classId', classId);
-    router.push(`/teacherdescription`);
+    router.push(`/teacher/description`);
   };
 
   return (
