@@ -30,7 +30,7 @@
     justify-content: center;
     border: 1px solid #000000;
     border-radius: 10px;
-    background-color: #9fb09e;
+    background-color: #D0E6CF;
 }
 
 .newClass {
@@ -42,9 +42,9 @@
 .createClassBtn {
     padding: 3px;
     margin: 5px;
-    background-color: #174344;
+    background-color: #236566;
     color: #ffffff;
-    border-color: #174344;
+    border-color: #236566;
     border-radius: 5px;
 }
 

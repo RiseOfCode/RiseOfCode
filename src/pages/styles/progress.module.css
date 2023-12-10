@@ -42,10 +42,10 @@
     align-items: center;
     justify-content: space-between;
     width: 500px;
-    background-color: #9fb09e;
-    border: 1px solid #174344;
+    background-color: #D0E6CF;
+    border: 1px solid #236566;
     border-radius: 3px;
-    box-shadow: 3px 3px 1px 0 #174344;
+    box-shadow: 3px 3px 1px 0 #236566;
     margin: 10px;
     padding: 0 5px 0 5px;
 }
