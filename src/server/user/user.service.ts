@@ -3,7 +3,8 @@ import { PrismaService } from '../prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class UserService {
@@ -120,20 +121,39 @@ export class UserService {
   }
 
   async changeUser(id: string, user: UpdateUserDto) {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-
-    const updateUserWithHashedPassword: UpdateUserDto = {
-      ...user,
-      password: hashedPassword,
-    };
-
     return new CreateUserDto(
       await this.prisma.user.update({
         where: {
           id,
         },
-        data: updateUserWithHashedPassword,
+        data: user,
       }),
     );
+  }
+
+  async changePassword(id: string, password: UpdatePasswordDto) {
+    const user = await this.findUserById(id);
+    if (user) {
+      const match = await bcrypt.compare(password.passwordOld, user.password);
+      if (match) {
+        const hashedPassword = await bcrypt.hash(password.password, 10);
+        const updateUserWithHashedPassword = {
+          password: hashedPassword,
+        };
+
+        return new CreateUserDto(
+          await this.prisma.user.update({
+            where: {
+              id,
+            },
+            data: updateUserWithHashedPassword,
+          }),
+        );
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 }

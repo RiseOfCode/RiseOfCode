@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import styles from './styles/signin.module.css';
 import LocalHeader from '../client/components/UI/Header';
 import SubmitButton from '../client/components/UI/SubmitButton';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 const Account = () => {
+  const router = useRouter();
   const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [user, setUser] = useState({
     nickname: '',
@@ -67,17 +67,11 @@ const Account = () => {
     const emailElement = document.getElementById('email') as HTMLInputElement;
     const email = emailElement.value ? emailElement.value : user.email;
 
-    const passwordElement = document.getElementById(
-      'password',
-    ) as HTMLInputElement;
-    const password = passwordElement ? passwordElement.value : 'asd';
-
     const updateUserDto = {
       name,
       surname,
       nickname,
       email,
-      password,
     };
 
     try {
@@ -90,9 +84,46 @@ const Account = () => {
       });
 
       if (response.ok) {
-        console.log('User added successfully');
+        router
+          .push('/student/classes')
+          .then(() => console.log('User successfully changed data'));
       } else {
-        console.error('Failed to add user');
+        console.error('Failed to change data');
+      }
+    } catch (error) {
+      console.error('An error occurred', error);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    const passwordElement = document.getElementById(
+      'password',
+    ) as HTMLInputElement;
+    const password = passwordElement ? passwordElement.value : '';
+    const passwordOldElement = document.getElementById(
+      'passwordOld',
+    ) as HTMLInputElement;
+    const passwordOld = passwordOldElement ? passwordOldElement.value : '';
+
+    const updatePasswordDto = {
+      passwordOld,
+      password,
+    };
+    try {
+      const response = await fetch(`api/user/pass/${userShort.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatePasswordDto),
+      });
+
+      if (response.ok) {
+        router
+          .push('/student/classes')
+          .then(() => console.log('User successfully changed password'));
+      } else {
+        console.error('Failed to change password');
       }
     } catch (error) {
       console.error('An error occurred', error);
@@ -145,24 +176,48 @@ const Account = () => {
                 placeholder={user.nickname}
               />
             </li>
-
-            <li className={styles.formRow}>
-              <label htmlFor="password">Пароль:</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder={'****'}
-              />
-            </li>
-            <SubmitButton title="Изменить"></SubmitButton>
             <li className={styles.formRow}>
               <SubmitButton title="Сохранить"></SubmitButton>
             </li>
           </ul>
         </form>
+        <p>Смена пароля</p>
+        <div
+          style={{
+            border: '1px solid #ccc',
+            padding: '20px',
+            borderRadius: '25px',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <div>
+            <label htmlFor="password">Старый Пароль:</label>
+            <input
+              style={{ width: '94px', margin: '0 10px 0 10px', padding: '5px' }}
+              type="password"
+              id="passwordOld"
+              name="passwordOld"
+              placeholder={'****'}
+            />
+          </div>
+          <div style={{ margin: '20px 0 10px 0' }}>
+            <label htmlFor="password"> Новый Пароль:</label>
+            <input
+              style={{ width: '94px', margin: '0 10px 0 17px', padding: '5px' }}
+              type="password"
+              id="password"
+              name="password"
+              placeholder={'****'}
+            />
+          </div>
+          <SubmitButton
+            style={{ margin: 'auto' }}
+            title="Изменить"
+            onClick={handleChangePassword}
+          ></SubmitButton>
+        </div>
       </div>
-      <Link href="/student/classes">Классы</Link>
     </div>
   );
 };
