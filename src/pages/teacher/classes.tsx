@@ -50,16 +50,18 @@ const TeacherClasses = () => {
   };
 
   const addClass = async () => {
-    await postNewClass({
-      name: className,
-      teacherId: userShort.id,
-    }).then(() => window.location.reload());
+    if (className == '') {
+      alert('Введите название класса');
+    } else {
+      await postNewClass({
+        name: className,
+        teacherId: userShort.id,
+      }).then(() => window.location.reload());
+    }
   };
 
   const deleteLessons = async ({ classId }: { classId: any }) => {
-    await deleteClass({ classId: classId }).then((response) =>
-      window.location.reload(),
-    );
+    await deleteClass({ classId: classId });
   };
 
   const goToLessons = ({ classId }: { classId: any }) => {
@@ -79,6 +81,7 @@ const TeacherClasses = () => {
             className={styles.newClass}
             name="className"
             value={className}
+            placeholder="Введите имя класса"
             onChange={changeClassName}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
@@ -98,7 +101,15 @@ const TeacherClasses = () => {
                 </button>
                 <button
                   className={styles.deleteClassBtn}
-                  onClick={(e: any) => deleteLessons({ classId: cl.id })}
+                  // onClick={(e: any) => deleteLessons({ classId: cl.id })}
+                  onClick={() => {
+                    const confirmBox = window.confirm('Хотите удалить класс?');
+                    if (confirmBox) {
+                      deleteLessons({ classId: cl.id }).then(() =>
+                        window.location.reload(),
+                      );
+                    }
+                  }}
                 >
                   удалить
                 </button>

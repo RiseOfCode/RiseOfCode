@@ -34,6 +34,12 @@ const StudentClasses = () => {
   }) => {
     await fetch(`/api/class/add/code?code=${code}&studentId=${studentId}`, {
       method: 'POST',
+    }).then((response) => {
+      if (!response.ok) {
+        alert('Код класса неверен, попробуйте еще раз');
+      } else {
+        window.location.reload();
+      }
     });
   };
 
@@ -45,7 +51,7 @@ const StudentClasses = () => {
     await postClassStudent({
       code: classCode,
       studentId: userShort.id,
-    }).then(() => window.location.reload());
+    });
   };
 
   return (
@@ -60,6 +66,7 @@ const StudentClasses = () => {
             className={styles.newClass}
             name="className"
             value={classCode}
+            placeholder="Введите код класса"
             onChange={changeClassCode}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
