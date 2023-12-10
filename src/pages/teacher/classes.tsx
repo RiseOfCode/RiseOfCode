@@ -44,16 +44,16 @@ const TeacherClasses = () => {
     });
   };
 
-  let className = '';
-  const changeClassName = ({ e }: { e: any }) => {
-    className = e.target.value;
+  const [className, setClassName] = useState('');
+  const changeClassName = (event: any) => {
+    setClassName(event.target.value);
   };
 
   const addClass = async () => {
     await postNewClass({
       name: className,
       teacherId: userShort.id,
-    }).then((response) => window.location.reload());
+    }).then(() => window.location.reload());
   };
 
   const deleteLessons = async ({ classId }: { classId: any }) => {
@@ -71,14 +71,15 @@ const TeacherClasses = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <div className={styles.main}>
-        <p>Классы</p>
+        <p className={styles.headText}>Классы</p>
         <div className={styles.addClass}>
           <p>Создать класс</p>
           <input
             type="text"
             className={styles.newClass}
             name="className"
-            onChange={(e: any) => changeClassName}
+            value={className}
+            onChange={changeClassName}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
             создать

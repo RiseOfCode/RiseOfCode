@@ -45,8 +45,7 @@ const StudentClasses = () => {
     await postClassStudent({
       code: classCode,
       studentId: userShort.id,
-    });
-    window.location.reload();
+    }).then(() => window.location.reload());
   };
 
   return (
