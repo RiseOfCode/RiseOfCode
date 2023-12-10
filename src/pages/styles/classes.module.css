@@ -19,6 +19,10 @@
     justify-content: center;
 }
 
+.headText {
+    font-size: x-large;
+}
+
 .addClass {
     display: flex;
     flex-direction: column;
@@ -26,6 +30,7 @@
     justify-content: center;
     border: 1px solid #000000;
     border-radius: 10px;
+    background-color: #9fb09e;
 }
 
 .newClass {
@@ -37,6 +42,10 @@
 .createClassBtn {
     padding: 3px;
     margin: 5px;
+    background-color: #174344;
+    color: #ffffff;
+    border-color: #174344;
+    border-radius: 5px;
 }
 
 .classes {
@@ -53,9 +62,11 @@
     justify-content: space-between;
     padding: 5px;
     margin: 5px;
-    border: 1px solid #000000;
+    border: 1px solid #ec9b59;
     border-radius: 10px;
     width: 500px;
+    background-color: #f4d8cd;
+    box-shadow: 3px 3px 3px 0 #ec9b59;
 }
 
 .className {
@@ -64,10 +75,18 @@
 
 .goToClassBtn {
     margin: 2px;
+    background-color: #ec9b59;
+    color: #ffffff;
+    border-color: #ec9b59;
+    border-radius: 5px;
 }
 
 .deleteClassBtn {
     margin: 2px;
+    background-color: #ec9b59;
+    color: #ffffff;
+    border-color: #ec9b59;
+    border-radius: 5px;
 }
 
 .teacherName {

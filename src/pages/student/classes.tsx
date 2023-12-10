@@ -54,7 +54,7 @@ const StudentClasses = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <div className={styles.main}>
-        <p>Классы</p>
+        <p className={styles.headText}>Классы</p>
         <div className={styles.addClass}>
           <p>Добавиться в класс</p>
           <input
