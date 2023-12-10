@@ -1,12 +1,9 @@
-import styles from '../styles/description.module.css';
+import styles from '../styles/progress.module.css';
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
+import Cookies from 'js-cookie';
 const StudentProgress = () => {
-  const constStudentId = '42d59598-9548-41a3-bb42-d76635abb35c';
-
   const [progress, setProgress] = useState([
     { solvedTasksAmount: 0, name: '', tasks: [{ name: '', status: '' }] },
   ]);
@@ -16,16 +13,21 @@ const StudentProgress = () => {
     description: '',
   });
 
-  const router = useRouter();
-
   useEffect(() => {
-    const fetchClass = async () => {
+    const fetchData = async (userId: string, classId: string) => {
+      // const constClassId = localStorage.getItem('classId') ?? '';
+      await fetch(`/progress/student?userId=${userId}&classId=${classId}`)
+        .then((response) => response.json())
+        .then((data) => setProgress(data));
+    };
+    const fetchClass = async (userId: string) => {
       const constClassId = localStorage.getItem('classId') ?? '';
       try {
         const response = await fetch(`/api/class/${constClassId}`);
         if (response.ok) {
           const data = await response.json();
           setClassData(data);
+          fetchData(userId, constClassId);
         } else {
           console.error('Failed to fetch class details');
         }
@@ -33,16 +35,17 @@ const StudentProgress = () => {
         console.error('An error occurred', error);
       }
     };
-    const fetchData = async () => {
-      const constClassId = localStorage.getItem('classId') ?? '';
-      await fetch(
-        `/progress/student?userId=${constStudentId}&classId=${constClassId}`,
-      )
+    const cookie = Cookies.get('authToken').toString();
+    const fetchUserId = async () => {
+      await fetch(`/api/user/ac/${cookie}`)
         .then((response) => response.json())
-        .then((data) => setProgress(data));
+        .then((data) => {
+          // setUserShort(data);
+          fetchClass(data.id);
+          // fetchData(data.id);
+        });
     };
-    fetchClass();
-    fetchData();
+    fetchUserId();
   }, []);
 
   return (
@@ -54,16 +57,20 @@ const StudentProgress = () => {
       <div className={styles.main}>
         {progress.map((pr) => (
           <div className={styles.lessonProgress}>
-            <p className={styles.lessonName}>{pr.name}</p>
-            <p className={styles.solvedTasksAmount}>
-              задач решено: {pr.solvedTasksAmount}
-            </p>
-            {pr.tasks.map((task) => (
-              <div className={styles.taskProgress}>
-                <p className={styles.lessonName}>{task.name}</p>
-                <p className={styles.solvedTasksAmount}>{task.status}</p>
-              </div>
-            ))}
+            <div className={styles.lessonInfo}>
+              <p className={styles.lessonName}>{pr.name}</p>
+              <p className={styles.solvedTasksAmount}>
+                задач решено: {pr.solvedTasksAmount}
+              </p>
+            </div>
+            <div className={styles.tasksInfo}>
+              {pr.tasks.map((task) => (
+                <div className={styles.taskProgress}>
+                  <p className={styles.lessonName}>{task.name}</p>
+                  <p className={styles.solvedTasksAmount}>{task.status}</p>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

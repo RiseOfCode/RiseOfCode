@@ -74,10 +74,10 @@ const TeacherDescription = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <div className={styles.navMenu}>
-        <Link href={`/teacherdescription`}>Описание</Link>
-        <Link href={`/teacherlessons`}>Уроки</Link>
-        <Link href={`/teacherstudents`}>Ученики</Link>
-        <Link href={`/teacherprogress`}>Прогресс</Link>
+        <Link href={`/teacher/description`}>Описание</Link>
+        <Link href={`/teacher/lessons`}>Уроки</Link>
+        <Link href={`/teacher/students`}>Ученики</Link>
+        <Link href={`/teacher/progress`}>Прогресс</Link>
       </div>
       <div className={styles.main}>
         <p className={styles.descText}>Название</p>
