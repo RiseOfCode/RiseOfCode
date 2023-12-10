@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import styles from '../../styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import LocalHeader from '../../../client/components/UI/Header';
+import Link from "next/link";
 
 const TasksList = ({
   tasks,
@@ -157,6 +158,7 @@ const BankPage = () => {
         </select>
       </label>
       <button onClick={handleClear}>Сбросить</button>
+      <Link href="/teacher/tasks/create">Создать</Link>
       <div>
         <h3>Банк задач</h3>
         <TasksList tasks={tasks} />

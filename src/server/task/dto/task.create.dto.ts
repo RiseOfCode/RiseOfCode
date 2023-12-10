@@ -8,7 +8,6 @@ export class TaskCreateDto {
     this.themes = new Array<Theme>();
     this.description = '';
     this.tests = new Array<TaskTestDto>();
-    this.checker = '';
   }
   @IsNotEmpty()
   @IsString()
@@ -20,7 +19,4 @@ export class TaskCreateDto {
   description: string;
   @IsNotEmpty()
   tests: TaskTestDto[];
-  @IsNotEmpty()
-  @IsString()
-  checker: string;
 }

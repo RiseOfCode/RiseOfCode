@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
+import account from './account.png';
+import SubmitButton from '../SubmitButton';
 
 const LocalHeader = () => {
   const router = useRouter();
   const [token, setToken] = useState<boolean>(false);
-  const handleSignOut = () => {
-    localStorage.removeItem('token');
-    router.push('/').then((r) => console.log('User sign out successfully'));
-    console.log('sign out');
+  const handleSignOut = async () => {
+    const response = await fetch('/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      router.push('/').then(() => console.log('User sign out successfully'));
+    } else {
+      console.error('Failed to sign out');
+    }
   };
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
+    const cookie = Cookies.get('authToken');
+    if (cookie) {
       setToken(true);
     }
   }, []);
@@ -50,7 +62,7 @@ const LocalHeader = () => {
                 style={{ marginTop: '10px' }}
               ></img>
             </Link>
-            <Link href="/teacher/tasks/bank">Банк задач</Link>
+            <Link href="/teacher/tasks/bank">Банк</Link>
           </div>
           {token && (
             <SubmitButton

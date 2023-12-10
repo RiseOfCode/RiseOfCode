@@ -81,11 +81,12 @@ export class TaskController {
     return this.taskService.getTasksForTeacherLesson(lessonId);
   }
 
-  @Get('teacher/:taskId')
+  @Get('teacher/:teacherId/:taskId')
   async getTaskForTeacherById(
+    @Param('teacherId', ParseUUIDPipe) teacherId: string,
     @Param('taskId', ParseUUIDPipe) taskId: string,
   ): Promise<TeacherTaskReturnDto> {
-    return this.taskService.getTaskForTeacherById(taskId);
+    return this.taskService.getTaskForTeacherById(teacherId, taskId);
   }
 
   @Post('teacher/:teacherId/estimate/:taskId')

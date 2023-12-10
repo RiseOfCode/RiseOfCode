@@ -13,7 +13,7 @@ const ThemesList = ({ themes }: { themes: string[] }) => {
           </div>
         ))
       ) : (
-        <p>В банке пока нет задач</p>
+        <p>Тема не указана</p>
       )}
     </div>
   );
@@ -21,8 +21,8 @@ const ThemesList = ({ themes }: { themes: string[] }) => {
 
 const TaskPage = () => {
   const router = useRouter();
-  //
-  // const userId = '42d59598-9548-41a3-bb42-d76635abb35c';
+
+  const userId = '42d59598-9548-41a3-bb42-d76635abb35c';
 
   const { id } = router.query;
 
@@ -30,6 +30,7 @@ const TaskPage = () => {
     id: '',
     name: '',
     themes: [],
+    teacherRating: '',
     rating: 0,
     description: '',
     tests: [{ input: '', output: '' }],
@@ -37,7 +38,7 @@ const TaskPage = () => {
 
   const fetchTask = async () => {
     try {
-      const taskResponse = await fetch(`/api/task/teacher/${id}`);
+      const taskResponse = await fetch(`/api/task/teacher/${userId}/${id}`);
       if (taskResponse.ok) {
         const taskData = await taskResponse.json();
         setTask(taskData);
@@ -69,8 +70,8 @@ const TaskPage = () => {
         </thead>
         <tbody>
           {task.tests.map((test, index) => (
-            <tr key={index}>
-              <td>{index}</td>
+            <tr key={index + 1}>
+              <td>{index + 1}</td>
               <td>{test.input}</td>
               <td>{test.output}</td>
             </tr>
