@@ -1,12 +1,9 @@
 import styles from '../styles/description.module.css';
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
 import Cookies from 'js-cookie';
 const StudentProgress = () => {
-  const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [progress, setProgress] = useState([
     { solvedTasksAmount: 0, name: '', tasks: [{ name: '', status: '' }] },
   ]);
@@ -15,20 +12,6 @@ const StudentProgress = () => {
     teacherInfo: '',
     description: '',
   });
-
-  const router = useRouter();
-
-  useEffect(() => {
-    const cookie = Cookies.get('authToken').toString();
-    const fetchUserId = async () => {
-      await fetch(`/api/user/ac/${cookie}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setUserShort(data);
-        });
-    };
-    fetchUserId();
-  }, []);
 
   useEffect(() => {
     const fetchClass = async () => {
@@ -45,16 +28,23 @@ const StudentProgress = () => {
         console.error('An error occurred', error);
       }
     };
-    const fetchData = async () => {
+    const fetchData = async (userId: string) => {
       const constClassId = localStorage.getItem('classId') ?? '';
-      await fetch(
-        `/progress/student?userId=${userShort.id}&classId=${constClassId}`,
-      )
+      await fetch(`/progress/student?userId=${userId}&classId=${constClassId}`)
         .then((response) => response.json())
         .then((data) => setProgress(data));
     };
-    fetchClass();
-    fetchData();
+    const cookie = Cookies.get('authToken').toString();
+    const fetchUserId = async () => {
+      await fetch(`/api/user/ac/${cookie}`)
+        .then((response) => response.json())
+        .then((data) => {
+          // setUserShort(data);
+          fetchClass();
+          fetchData(data.id);
+        });
+    };
+    fetchUserId();
   }, []);
 
   return (

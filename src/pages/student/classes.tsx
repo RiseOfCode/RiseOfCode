@@ -9,24 +9,20 @@ const StudentClasses = () => {
 
   useEffect(() => {
     const cookie = Cookies.get('authToken').toString();
+    const fetchData = async (userId: string) => {
+      await fetch(`/api/class/student/${userId}`)
+        .then((response) => response.json())
+        .then((data) => setClasses(data));
+    };
     const fetchUserId = async () => {
       await fetch(`/api/user/ac/${cookie}`)
         .then((response) => response.json())
         .then((data) => {
           setUserShort(data);
+          fetchData(data.id);
         });
     };
     fetchUserId();
-  }, []);
-
-  useEffect(() => {
-    const constClassId = localStorage.getItem('classId') ?? '';
-    const fetchData = async () => {
-      await fetch(`/api/class/student/${userShort.id}`)
-        .then((response) => response.json())
-        .then((data) => setClasses(data));
-    };
-    fetchData();
   }, []);
 
   const postClassStudent = async ({

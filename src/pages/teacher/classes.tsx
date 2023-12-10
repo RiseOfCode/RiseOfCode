@@ -9,24 +9,21 @@ const TeacherClasses = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const fetchData = async (userId: string) => {
+      await fetch(`/api/class/teacher/${userId}`)
+        .then((response) => response.json())
+        .then((data) => setClasses(data));
+    };
     const cookie = Cookies.get('authToken').toString();
     const fetchUserId = async () => {
       await fetch(`/api/user/ac/${cookie}`)
         .then((response) => response.json())
         .then((data) => {
           setUserShort(data);
+          fetchData(data.id);
         });
     };
     fetchUserId();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await fetch(`/api/class/teacher/${userShort.id}`)
-        .then((response) => response.json())
-        .then((data) => setClasses(data));
-    };
-    fetchData();
   }, []);
 
   const postNewClass = async ({
