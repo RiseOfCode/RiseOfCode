@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LocalHeader from '../client/components/UI/Header';
@@ -6,6 +6,13 @@ import styles from './styles/signin.module.css';
 import SubmitButton from '../client/components/UI/SubmitButton';
 const Home = () => {
   const router = useRouter();
+  const [userFull, setUser] = useState({
+    nickname: '',
+    name: '',
+    role: '',
+    surname: '',
+    email: '',
+  });
   const handleAuth = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -33,9 +40,8 @@ const Home = () => {
       });
 
       if (response.ok) {
-        router
-          .push('/student/classes')
-          .then(() => console.log('User sign in successfully'));
+        const data = await response.json();
+        setUser(data);
       } else {
         alert('Ошибка! Попробуйте еще раз!');
         console.error('Failed to sign in');
@@ -44,6 +50,20 @@ const Home = () => {
       console.error('An error occurred', error);
     }
   };
+
+  useEffect(() => {
+    if (userFull.role === 'STUDENT') {
+      router
+        .push('/student/classes')
+        .then(() => console.log('student/classes'));
+    }
+    if (userFull.role === 'TEACHER') {
+      router
+        .push('/teacher/classes')
+        .then(() => console.log('teacher/classes'));
+    }
+  }, [userFull]);
+
   return (
     <div className={styles.mainContainer}>
       <LocalHeader />

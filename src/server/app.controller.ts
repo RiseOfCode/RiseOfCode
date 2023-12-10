@@ -95,14 +95,14 @@ export class AppController {
     return {};
   }
 
-  @Get('/lessons/:id')
-  @Render('lesson')
+  @Get('lessons/:id')
+  @Render('lessons/:id')
   lesson(@Req() req: Request) {
     return req.user;
   }
 
-  @Get('/lessons/:id/tasks/:taskId')
-  @Render('task')
+  @Get('lessons/:id/tasks/:taskId')
+  @Render('lessons/:id/tasks/:taskId')
   task(@Req() req: Request) {
     return req.user;
   }

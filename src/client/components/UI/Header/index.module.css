@@ -1,0 +1,21 @@
+.logoRow{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.logoIcon{
+    margin-top: 6px;
+    border-radius: 50px;
+    background-color: #ec9b59;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.logoText{
+    margin-top: 15px;
+}

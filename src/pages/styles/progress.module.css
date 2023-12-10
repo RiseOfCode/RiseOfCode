@@ -36,14 +36,43 @@
 
 }
 
+.lessonInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 500px;
+    background-color: #D0E6CF;
+    border: 1px solid #236566;
+    border-radius: 3px;
+    box-shadow: 3px 3px 1px 0 #236566;
+    margin: 10px;
+    padding: 0 5px 0 5px;
+}
+
 .lessonName {
+    font-size: medium;
 
 }
 
 .solvedTasksAmount {
+    font-size: medium;
+}
+
+.tasksInfo {
 
 }
 
 .taskProgress {
-
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 500px;
+    margin-left: 20px;
+    padding: 0 5px 0 5px;
+    background-color: #f4d8cd;
+    border: 1px solid #ec9b59;
+    border-radius: 3px;
+    box-shadow: 3px 3px 1px 0 #ec9b59;
 }

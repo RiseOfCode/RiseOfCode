@@ -4,10 +4,19 @@ import Link from 'next/link';
 import Cookies from 'js-cookie';
 import account from './account.png';
 import SubmitButton from '../SubmitButton';
+import styles from './index.module.css';
 
 const LocalHeader = () => {
   const router = useRouter();
   const [token, setToken] = useState<boolean>(false);
+  const [userShort, setUserShort] = useState({ id: '', nickname: '' });
+  const [user, setUser] = useState({
+    nickname: '',
+    name: '',
+    role: '',
+    surname: '',
+    email: '',
+  });
   const handleSignOut = async () => {
     const response = await fetch('/auth/logout', {
       method: 'POST',
@@ -30,6 +39,37 @@ const LocalHeader = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const cookie = Cookies.get('authToken').toString();
+    const fetchUserId = async () => {
+      await fetch(`/api/user/ac/${cookie}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUserShort(data);
+        });
+    };
+    fetchUserId();
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (userShort && userShort.id) {
+        try {
+          const response = await fetch(`/api/user/acc/${userShort.id}`);
+          if (response.ok) {
+            const data = await response.json();
+            setUser(data);
+          } else {
+            console.error('Error:', response.status);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+    };
+    fetchUser();
+  }, [userShort]);
+
   return (
     <div
       style={{
@@ -40,32 +80,28 @@ const LocalHeader = () => {
         width: '100%',
       }}
     >
-      <Link href="/student/classes">
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '5px',
-          }}
-        >
-          <div
-            style={{
-              marginTop: '6px',
-              borderRadius: '50px',
-              backgroundColor: '#ec9b59',
-              height: '35px',
-              width: '35px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              color: 'white',
-            }}
-          >
-            &lt;/&gt;
+      {user.role === 'STUDENT' && (
+        <Link href="/student/classes">
+          <div className={styles.logoRow}>
+            <div className={styles.logoIcon}>&lt;/&gt;</div>
+            <div className={styles.logoText}>Rise of Code</div>
           </div>
-          <div style={{ marginTop: '15px' }}>Rise of Code</div>
+        </Link>
+      )}
+      {user.role === 'TEACHER' && (
+        <Link href="/teacher/classes">
+          <div className={styles.logoRow}>
+            <div className={styles.logoIcon}>&lt;/&gt;</div>
+            <div className={styles.logoText}>Rise of Code</div>
+          </div>
+        </Link>
+      )}
+      {!user.role && (
+        <div className={styles.logoRow}>
+          <div className={styles.logoIcon}>&lt;/&gt;</div>
+          <div className={styles.logoText}>Rise of Code</div>
         </div>
-      </Link>
+      )}
       <div
         style={{
           display: 'flex',
@@ -78,14 +114,16 @@ const LocalHeader = () => {
           onClick={() => router.push('teacher/tasks/bank')}
           title={'Банк задач'}
         ></SubmitButton>
-        <Link href="/account">
-          <img
-            src={account.src}
-            width="25"
-            height="25"
-            style={{ marginTop: '10px' }}
-          ></img>
-        </Link>
+        {token && (
+          <Link href="/account">
+            <img
+              src={account.src}
+              width="25"
+              height="25"
+              style={{ marginTop: '10px' }}
+            ></img>
+          </Link>
+        )}
         {token && (
           <SubmitButton
             style={{ marginTop: '10px' }}

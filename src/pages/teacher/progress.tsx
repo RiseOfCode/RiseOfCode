@@ -6,22 +6,19 @@ import React, {
   useState,
 } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 const TeacherProgress = () => {
-  // const constClassId = '7046f5c8-7291-11ee-b962-0242ac120002';
-
   const [lessons, setLessons] = useState<
     [ReactElement<{ onClick: () => void }, string | JSXElementConstructor<any>>]
   >([
     <button onClick={(e: any) => handleLesson({ lessonId: '' })}>name</button>,
   ]);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
-    const constClassId = localStorage.getItem('classId') ?? '';
+    const classId = localStorage.getItem('classId') ?? '';
     const fetchLessonData = async () => {
-      await fetch(`/lesson/class/${constClassId}`)
+      await fetch(`/lesson/class/${classId}`)
         .then((response) => response.json())
         .then(({ data }: { data: any }) =>
           setLessons(
@@ -35,7 +32,6 @@ const TeacherProgress = () => {
     };
     fetchLessonData();
   }, []);
-  console.log(lessons);
 
   const getProgress = async ({ lessonId }: { lessonId: string }) => {
     return await fetch(`/progress/teacher?lessonId=${lessonId}`).then(
@@ -55,10 +51,10 @@ const TeacherProgress = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <div className={styles.navMenu}>
-        <Link href={`/teacherdescription`}>Описание</Link>
-        <Link href={`/teacherlessons`}>Уроки</Link>
-        <Link href={`/teacherstudents`}>Ученики</Link>
-        <Link href={`/teacherprogress`}>Прогресс</Link>
+        <Link href={`/teacher/description`}>Описание</Link>
+        <Link href={`/teacher/lessons`}>Уроки</Link>
+        <Link href={`/teacher/students`}>Ученики</Link>
+        <Link href={`/teacher/progress`}>Прогресс</Link>
       </div>
       <div className={styles.main}>
         <Dropdown

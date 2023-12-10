@@ -2,19 +2,27 @@ import styles from '../styles/classes.module.css';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
+import Cookies from 'js-cookie';
 const StudentClasses = () => {
-  const constStudentId = '42d59598-9548-41a3-bb42-d76635abb35c';
-
+  const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
 
   useEffect(() => {
-    const constClassId = localStorage.getItem('classId') ?? '';
-    const fetchData = async () => {
-      await fetch(`/api/class/student/${constStudentId}`)
+    const cookie = Cookies.get('authToken').toString();
+    const fetchData = async (userId: string) => {
+      await fetch(`/api/class/student/${userId}`)
         .then((response) => response.json())
         .then((data) => setClasses(data));
     };
-    fetchData();
+    const fetchUserId = async () => {
+      await fetch(`/api/user/ac/${cookie}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUserShort(data);
+          fetchData(data.id);
+        });
+    };
+    fetchUserId();
   }, []);
 
   const postClassStudent = async ({
@@ -37,7 +45,7 @@ const StudentClasses = () => {
   const addClass = async () => {
     await postClassStudent({
       code: classCode,
-      studentId: constStudentId,
+      studentId: userShort.id,
     });
     setSeed(Math.random());
   };
@@ -46,7 +54,7 @@ const StudentClasses = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <div className={styles.main}>
-        <p>Классы</p>
+        <p className={styles.headText}>Классы</p>
         <div className={styles.addClass}>
           <p>Добавиться в класс</p>
           <input

@@ -28,20 +28,37 @@
     width: 400px;
 }
 
-.desc {
-
-}
+/*.desc {*/
+/*    width: 500px;*/
+/*    border: 1px solid #174344;*/
+/*    border-radius: 10px;*/
+/*    margin: 5px;*/
+/*    padding: 7px;*/
+/*    !*background-color: #9fb09e;*!*/
+/*    box-shadow: 3px 3px 3px 0 #9fb09e;*/
+/*}*/
 
 .descText {
-    width: 500px;
+    font-size: large;
 }
 
 .descInput {
     width: 500px;
+    border: 1px solid #174344;
+    border-radius: 10px;
     margin: 5px;
-    padding: 5px;
+    padding: 7px;
+    /*background-color: #9fb09e;*/
+    box-shadow: 3px 3px 3px 0 #9fb09e;
+
+    /*width: 490px;*/
+    /*border: none;*/
 }
 
 .saveChangesBtn {
-
+    margin: 10px;
+    background-color: #ec9b59;
+    color: #ffffff;
+    border-color: #ec9b59;
+    border-radius: 5px;
 }
