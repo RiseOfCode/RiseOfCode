@@ -1,4 +1,4 @@
-import styles from '../styles/description.module.css';
+import styles from '../styles/progress.module.css';
 import React, { useEffect, useState } from 'react';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
@@ -57,16 +57,20 @@ const StudentProgress = () => {
       <div className={styles.main}>
         {progress.map((pr) => (
           <div className={styles.lessonProgress}>
-            <p className={styles.lessonName}>{pr.name}</p>
-            <p className={styles.solvedTasksAmount}>
-              задач решено: {pr.solvedTasksAmount}
-            </p>
-            {pr.tasks.map((task) => (
-              <div className={styles.taskProgress}>
-                <p className={styles.lessonName}>{task.name}</p>
-                <p className={styles.solvedTasksAmount}>{task.status}</p>
-              </div>
-            ))}
+            <div className={styles.lessonInfo}>
+              <p className={styles.lessonName}>{pr.name}</p>
+              <p className={styles.solvedTasksAmount}>
+                задач решено: {pr.solvedTasksAmount}
+              </p>
+            </div>
+            <div className={styles.tasksInfo}>
+              {pr.tasks.map((task) => (
+                <div className={styles.taskProgress}>
+                  <p className={styles.lessonName}>{task.name}</p>
+                  <p className={styles.solvedTasksAmount}>{task.status}</p>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
