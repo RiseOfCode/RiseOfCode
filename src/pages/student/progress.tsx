@@ -14,13 +14,20 @@ const StudentProgress = () => {
   });
 
   useEffect(() => {
-    const fetchClass = async () => {
+    const fetchData = async (userId: string, classId: string) => {
+      // const constClassId = localStorage.getItem('classId') ?? '';
+      await fetch(`/progress/student?userId=${userId}&classId=${classId}`)
+        .then((response) => response.json())
+        .then((data) => setProgress(data));
+    };
+    const fetchClass = async (userId: string) => {
       const constClassId = localStorage.getItem('classId') ?? '';
       try {
         const response = await fetch(`/api/class/${constClassId}`);
         if (response.ok) {
           const data = await response.json();
           setClassData(data);
+          fetchData(userId, constClassId);
         } else {
           console.error('Failed to fetch class details');
         }
@@ -28,20 +35,14 @@ const StudentProgress = () => {
         console.error('An error occurred', error);
       }
     };
-    const fetchData = async (userId: string) => {
-      const constClassId = localStorage.getItem('classId') ?? '';
-      await fetch(`/progress/student?userId=${userId}&classId=${constClassId}`)
-        .then((response) => response.json())
-        .then((data) => setProgress(data));
-    };
     const cookie = Cookies.get('authToken').toString();
     const fetchUserId = async () => {
       await fetch(`/api/user/ac/${cookie}`)
         .then((response) => response.json())
         .then((data) => {
           // setUserShort(data);
-          fetchClass();
-          fetchData(data.id);
+          fetchClass(data.id);
+          // fetchData(data.id);
         });
     };
     fetchUserId();

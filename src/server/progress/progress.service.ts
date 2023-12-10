@@ -51,15 +51,17 @@ export class ProgressService {
         });
 
         const taskName = taskInfo.name;
-        let finalTaskStatus =
-          taskInfo.solving[0].solving_attempts[0].task_status;
-        if (
-          taskInfo.solving[0].solving_attempts.some(
-            (attempt) => attempt.task_status == 'SOLVED',
-          )
-        ) {
-          finalTaskStatus = 'SOLVED';
-          solvedTaskAmount++;
+        let finalTaskStatus = 'NOT_STARTED';
+        if (taskInfo.solving[0] != null) {
+          finalTaskStatus = taskInfo.solving[0].solving_attempts[0].task_status;
+          if (
+            taskInfo.solving[0].solving_attempts.some(
+              (attempt) => attempt.task_status == 'SOLVED',
+            )
+          ) {
+            finalTaskStatus = 'SOLVED';
+            solvedTaskAmount++;
+          }
         }
 
         tasks[tasks.length] = new ProgressTaskStatusDto(
