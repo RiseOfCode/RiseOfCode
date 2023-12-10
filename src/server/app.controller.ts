@@ -34,48 +34,56 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('student/classes')
+  @Render('student/classes')
   getStudentClasses(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('student/lessons')
+  @Render('student/lessons')
   getStudentLessons(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('student/description')
+  @Render('student/description')
   getStudentDescription(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('student/progress')
+  @Render('student/progress')
   getStudentProgress(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('teacher/classes')
+  @Render('teacher/classes')
   getTeacherClasses(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('teacher/lessons')
+  @Render('teacher/lessons')
   getTeacherLessons(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('teacher/description')
+  @Render('teacher/description')
   getTeacherDescription(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('teacher/progress')
+  @Render('teacher/progress')
   getTeacherProgress(@Req() req: Request) {
     return req.user;
   }

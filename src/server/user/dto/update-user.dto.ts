@@ -4,11 +4,9 @@ export class UpdateUserDto {
     this.surname = '';
     this.nickname = '';
     this.email = '';
-    this.password = '';
   }
   name: string;
   surname: string;
   nickname: string;
   email: string | null;
-  password: string;
 }

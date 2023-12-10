@@ -31,46 +31,63 @@ const LocalHeader = () => {
   }, []);
 
   return (
-    <div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '80px',
-        }}
-      >
-        <div style={{ margin: 'auto' }}>Rise of Code</div>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+      }}
+    >
+      <Link href="/student/classes">
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
+            flexDirection: 'row',
+            gap: '5px',
           }}
         >
           <div
             style={{
+              marginTop: '6px',
+              borderRadius: '50px',
+              backgroundColor: '#ec9b59',
+              height: '35px',
+              width: '35px',
               display: 'flex',
               justifyContent: 'center',
-              marginBottom: '5px',
+              alignItems: 'center',
+              color: 'white',
             }}
           >
-            <Link href="/account">
-              <img
-                src={account.src}
-                width="25"
-                height="25"
-                style={{ marginTop: '10px' }}
-              ></img>
-            </Link>
-            <Link href="/teacher/tasks/bank">Банк</Link>
+            &lt;/&gt;
           </div>
-          {token && (
-            <SubmitButton
-              onClick={handleSignOut}
-              title={'Log out'}
-            ></SubmitButton>
-          )}
+          <div style={{ marginTop: '15px' }}>Rise of Code</div>
         </div>
+      </Link>
+      <div
+        style={{
+          display: 'flex',
+          marginRight: '0',
+          gap: '10px',
+        }}
+      >
+        <Link href="/account">
+          <img
+            src={account.src}
+            width="25"
+            height="25"
+            style={{ marginTop: '10px' }}
+          ></img>
+        </Link>
+        {token && (
+          <SubmitButton
+            style={{ marginTop: '10px' }}
+            onClick={handleSignOut}
+            title={'Log out'}
+          ></SubmitButton>
+        )}
       </div>
     </div>
   );
