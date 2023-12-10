@@ -37,17 +37,16 @@ const StudentClasses = () => {
     });
   };
 
-  let classCode = '';
-  const changeClassCode = ({ e }: { e: any }) => {
-    classCode = e.target.value;
+  const [classCode, setClassCode] = useState('');
+  const changeClassCode = (event: any) => {
+    setClassCode(event.target.value);
   };
-  const [seed, setSeed] = useState(1);
   const addClass = async () => {
     await postClassStudent({
       code: classCode,
       studentId: userShort.id,
     });
-    setSeed(Math.random());
+    window.location.reload();
   };
 
   return (
@@ -61,13 +60,14 @@ const StudentClasses = () => {
             type="text"
             className={styles.newClass}
             name="className"
-            onChange={(e: any) => changeClassCode}
+            value={classCode}
+            onChange={changeClassCode}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
             добавиться
           </button>
         </div>
-        <ClassesList classes={classes} key={seed} />
+        <ClassesList classes={classes} />
       </div>
     </div>
   );
