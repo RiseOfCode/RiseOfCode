@@ -27,10 +27,10 @@ const StudentDescription = () => {
 
       <div>
         <div className={styles.main}>
-          <div className={styles.desc}>
+          <div className={styles.descInput}>
             <p className={styles.descText}>{classInfo.teacherInfo}</p>
           </div>
-          <div className={styles.desc}>
+          <div className={styles.descInput}>
             <p className={styles.descText}>{classInfo.description}</p>
           </div>
         </div>
