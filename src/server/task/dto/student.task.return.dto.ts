@@ -12,7 +12,7 @@ export class StudentTaskReturnDto extends TeacherTaskReturnDto {
     attempts: TaskAttemptDto[] | null,
     finalAttempt: TaskAttemptDto | null,
   ) {
-    super(task, themes, rating, tests);
+    super(task, themes, 0, rating, tests);
     this.attempts = attempts;
     this.finalAttempt = finalAttempt;
   }

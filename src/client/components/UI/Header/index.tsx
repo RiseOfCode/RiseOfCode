@@ -73,6 +73,11 @@ const LocalHeader = () => {
           gap: '10px',
         }}
       >
+        <SubmitButton
+          style={{ marginTop: '10px' }}
+          onClick={() => router.push('teacher/tasks/bank')}
+          title={'Банк задач'}
+        ></SubmitButton>
         <Link href="/account">
           <img
             src={account.src}
