@@ -1,41 +1,64 @@
 import { useRouter } from 'next/router';
-import styles from '../../styles/classes.module.css';
+import styles from '../../styles/teacher.tasks.module.css';
 import React, { useEffect, useState } from 'react';
 import LocalHeader from '../../../client/components/UI/Header';
-import Link from "next/link";
-
-const TasksList = ({
-  tasks,
-}: {
-  tasks: {
-    rating: number;
-    name: string;
-    id: string;
-  }[];
-}) => {
-  const router = useRouter();
-
-  const handleTaskClick = (id: string) => {
-    router.push(`/teacher/tasks/${id}`);
-  };
-
-  return (
-    <div className={styles.classes}>
-      {tasks.length > 0 ? (
-        tasks.map((task) => (
-          <div className={styles.classesPiece} key={task.id}>
-            <p onClick={() => handleTaskClick(task.id)}>{task.name}</p>
-            <p>{task.rating}</p>
-          </div>
-        ))
-      ) : (
-        <p>В банке пока нет задач</p>
-      )}
-    </div>
-  );
-};
+import Modal from 'react-modal';
+import star from './star.orange.png';
 
 const BankPage = () => {
+  const router = useRouter();
+
+  const TasksList = ({
+    tasks,
+  }: {
+    tasks: {
+      rating: number;
+      name: string;
+      id: string;
+    }[];
+  }) => {
+    const handleTaskClick = (id: string) => {
+      router.push(`/teacher/tasks/${id}`);
+    };
+
+    const renderRating = (task: any) => {
+      if (task.rating === 0) {
+        return <div className={styles.taskRatingText}>Нет оценок</div>;
+      }
+
+      return (
+        <div className={styles.themeContainer}>
+          <div className={styles.taskRatingText}>{task.rating}</div>
+          <img
+            src={star.src}
+            width="27"
+            height="27"
+            style={{ paddingTop: '0' }}
+          ></img>
+        </div>
+      );
+    };
+
+    return (
+      <div className={styles.classes}>
+        {tasks.length > 0 ? (
+          tasks.map((task) => (
+            <div
+              className={styles.taskContainer}
+              key={task.id}
+              onClick={() => handleTaskClick(task.id)}
+            >
+              <div className={styles.taskText}>{task.name}</div>
+              {renderRating(task)}
+            </div>
+          ))
+        ) : (
+          <p>В банке пока нет задач</p>
+        )}
+      </div>
+    );
+  };
+
   const [tasks, setTasks] = useState([
     {
       id: '',
@@ -50,33 +73,32 @@ const BankPage = () => {
     isDesc: 'true',
   });
 
-  const fetchTasks = async () => {
-    const data = {
-      themes: filter.themes,
-      minRating: filter.minRating,
-      isDesc: true,
-    };
-    if (filter.isDesc == 'false') data.isDesc = false;
-    try {
-      const tasksResponse = await fetch(`/api/task/bank`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (tasksResponse.ok) {
-        const tasksData = await tasksResponse.json();
-        setTasks(tasksData);
-      } else {
-        console.error('Failed to fetch tasks');
-      }
-    } catch (error) {
-      console.error('An error occurred', error);
-    }
-  };
-
   useEffect(() => {
+    const fetchTasks = async () => {
+      const data = {
+        themes: filter.themes,
+        minRating: filter.minRating,
+        isDesc: true,
+      };
+      if (filter.isDesc == 'false') data.isDesc = false;
+      try {
+        const tasksResponse = await fetch(`/api/task/bank`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        if (tasksResponse.ok) {
+          const tasksData = await tasksResponse.json();
+          setTasks(tasksData);
+        } else {
+          console.error('Failed to fetch tasks');
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    };
     fetchTasks();
   });
 
@@ -121,13 +143,20 @@ const BankPage = () => {
     });
   };
 
-  if (!tasks) {
-    return <div>Loading...</div>;
-  }
+  Modal.setAppElement('*');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  return (
-    <div className={styles.pageContainer}>
-      <LocalHeader />
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setFilter(filter);
+  };
+
+  const modalContent = (
+    <div>
       <label>
         Темы:
         <select
@@ -158,9 +187,38 @@ const BankPage = () => {
         </select>
       </label>
       <button onClick={handleClear}>Сбросить</button>
-      <Link href="/teacher/tasks/create">Создать</Link>
+      {/*<button onClick={closeModal}>Закрыть</button>*/}
+    </div>
+  );
+
+  if (!tasks) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className={styles.pageContainer}>
+      <LocalHeader />
       <div>
-        <h3>Банк задач</h3>
+        <h2>Банк задач</h2>
+        <div className={styles.btnContainer}>
+          <button
+            className={styles.greenBtn}
+            onClick={() => router.push('/teacher/tasks/create')}
+          >
+            Добавить задачу
+          </button>
+          <button className={styles.greenBtn} onClick={openModal}>
+            Фильтр
+          </button>
+        </div>
+        <Modal
+          className={styles.modal}
+          portalClassName="filter"
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+        >
+          {modalContent}
+        </Modal>
         <TasksList tasks={tasks} />
       </div>
     </div>

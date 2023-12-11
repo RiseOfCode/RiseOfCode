@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
-import styles from '../../styles/task.module.css';
+import styles from '../../styles/teacher.tasks.module.css';
 import LocalHeader from '../../../client/components/UI/Header';
 
 const TaskPage = () => {
@@ -135,18 +135,21 @@ const TaskPage = () => {
 
   const renderThemesList = () => {
     return (
-      <div className={styles.classes}>
+      <div className={styles.themeContainer}>
         {task.themes.length > 0 && task.themes[0] != '' ? (
           task.themes.map((theme) => (
-            <div className={styles.classesPiece} key={theme}>
-              <p>{theme}</p>
-              <button onClick={() => handleThemeDelete(theme)}>
-                удалить тему
+            <div className={styles.theme} key={theme}>
+              <div>{theme}</div>
+              <button
+                className={styles.closeBtn}
+                onClick={() => handleThemeDelete(theme)}
+              >
+                x
               </button>
             </div>
           ))
         ) : (
-          <p>Выберите тему</p>
+          <div className={styles.themeChoose}>Выберите тему</div>
         )}
       </div>
     );
@@ -158,7 +161,7 @@ const TaskPage = () => {
     }
 
     return (
-      <table className={styles.attemptsTable}>
+      <table className={styles.testsTable}>
         <thead>
           <tr>
             <th>N</th>
@@ -180,64 +183,94 @@ const TaskPage = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.pageContainer}>
       <LocalHeader />
+      <div>
+        <div className={styles.columnContainer}>
+          <h2>Создание задачи</h2>
+          <button className={styles.greenBtn} onClick={handleSubmit}>
+            Создать задачу
+          </button>
+        </div>
 
-      <input
-        placeholder="Введите название"
-        type="text"
-        value={task.name}
-        name="name"
-        onChange={handleNameChange}
-      />
-      {renderThemesList()}
-      <select defaultValue="BASE" onChange={handleThemeAdd}>
-        <option value="BASE">Базовые операции</option>
-        <option value="ARITHMETIC">Арифметика</option>
-        <option value="LOGICS">Логические операторы</option>
-        <option value="IF">Условия</option>
-      </select>
-      <button className={styles.button} onClick={handleThemeSubmit}>
-        добавить тему
-      </button>
+        <div className={styles.columnContainer}>
+          <div className={styles.nameContainer}>
+            <input
+              className={styles.inputText}
+              placeholder="Введите название"
+              type="text"
+              value={task.name}
+              name="name"
+              onChange={handleNameChange}
+            />
+            {renderThemesList()}
+            <div className={styles.themeContainer}>
+              <div>
+                <select defaultValue="BASE" onChange={handleThemeAdd}>
+                  <option value="BASE">Базовые операции</option>
+                  <option value="ARITHMETIC">Арифметика</option>
+                  <option value="LOGICS">Логические операторы</option>
+                  <option value="IF">Условия</option>
+                </select>
+              </div>
 
-      <textarea
-        className={`${styles.textarea} ${styles.button}`}
-        name="description"
-        placeholder="Введите условие"
-        value={task.description}
-        onChange={handleDescriptionChange}
-      />
+              <div className={styles.themeBtn}>
+                <button
+                  className={styles.smallGreenBtn}
+                  onClick={handleThemeSubmit}
+                >
+                  добавить
+                </button>
+              </div>
+            </div>
 
-      <label>input</label>
-      <input
-        className={`${styles.fileInput} ${styles.button}`}
-        name="input"
-        type="file"
-        accept=".txt"
-        onChange={handleFileChange}
-        ref={fileInputTestRef}
-      />
+            <textarea
+              className={`${styles.inputText} ${styles.descriptionContainer}`}
+              name="description"
+              placeholder="Введите условие"
+              value={task.description}
+              onChange={handleDescriptionChange}
+            />
+          </div>
 
-      <label>output</label>
-      <input
-        className={`${styles.fileInput} ${styles.button}`}
-        name="output"
-        type="file"
-        accept=".txt"
-        onChange={handleFileChange}
-        ref={fileOutputTestRef}
-      />
+          <div className={styles.testContainer}>
+            <div className={styles.testElement}>
+              <label className={styles.testElement}>input</label>
+              <input
+                className={`${styles.fileInput} ${styles.button}`}
+                name="input"
+                type="file"
+                accept=".txt"
+                onChange={handleFileChange}
+                ref={fileInputTestRef}
+              />
+            </div>
 
-      <button className={styles.button} onClick={handleFileSubmit}>
-        добавить тест
-      </button>
+            <div className={styles.testElement}>
+              <label className={styles.testElement}>output</label>
+              <input
+                className={`${styles.fileInput} ${styles.button}`}
+                name="output"
+                type="file"
+                accept=".txt"
+                onChange={handleFileChange}
+                ref={fileOutputTestRef}
+              />
+            </div>
 
-      {renderTestsTable()}
+            <div className={styles.testBtn}>
+              <button
+                className={styles.smallGreenBtn}
+                onClick={handleFileSubmit}
+              >
+                добавить тест
+              </button>
+            </div>
+          </div>
+        </div>
 
-      <button className={styles.button} onClick={handleSubmit}>
-        Создать задачу
-      </button>
+        {renderTestsTable()}
+      </div>
     </div>
   );
 };

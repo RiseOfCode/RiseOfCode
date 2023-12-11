@@ -32,6 +32,26 @@ const LocalHeader = () => {
     }
   };
 
+  const renderBankButton = () => {
+    if (router.asPath != '/teacher/tasks/bank')
+      if (router.asPath.startsWith('/teacher/tasks'))
+        return (
+          <SubmitButton
+            style={{ marginTop: '10px' }}
+            onClick={() => router.push('bank')}
+            title={'Банк задач'}
+          ></SubmitButton>
+        );
+      else
+        return (
+          <SubmitButton
+            style={{ marginTop: '10px' }}
+            onClick={() => router.push('teacher/tasks/bank')}
+            title={'Банк задач'}
+          ></SubmitButton>
+        );
+  };
+
   useEffect(() => {
     const cookie = Cookies.get('authToken');
     if (cookie) {
@@ -109,11 +129,7 @@ const LocalHeader = () => {
           gap: '10px',
         }}
       >
-        <SubmitButton
-          style={{ marginTop: '10px' }}
-          onClick={() => router.push('teacher/tasks/bank')}
-          title={'Банк задач'}
-        ></SubmitButton>
+        {renderBankButton()}
         {token && (
           <Link href="/account">
             <img
