@@ -18,7 +18,7 @@ const LocalHeader = () => {
     email: '',
   });
   const handleSignOut = async () => {
-    localStorage.removeItem("classId")
+    localStorage.removeItem('classId');
     const response = await fetch('/auth/logout', {
       method: 'POST',
       headers: {
@@ -34,23 +34,16 @@ const LocalHeader = () => {
   };
 
   const renderBankButton = () => {
-    if (router.asPath != '/teacher/tasks/bank')
-      if (router.asPath.startsWith('/teacher/tasks'))
-        return (
-          <SubmitButton
-            style={{ marginTop: '10px' }}
-            onClick={() => router.push('bank')}
-            title={'Банк задач'}
-          ></SubmitButton>
-        );
-      else
-        return (
-          <SubmitButton
-            style={{ marginTop: '10px' }}
-            onClick={() => router.push('teacher/tasks/bank')}
-            title={'Банк задач'}
-          ></SubmitButton>
-        );
+    if (user.role === 'TEACHER' && router.asPath != '/teacher/tasks/bank')
+      return (
+        <SubmitButton
+          style={{ marginTop: '10px' }}
+          onClick={() => {
+            router.push('/teacher/tasks/bank');
+          }}
+          title={'Банк задач'}
+        ></SubmitButton>
+      );
   };
 
   useEffect(() => {
@@ -145,7 +138,7 @@ const LocalHeader = () => {
           <SubmitButton
             style={{ marginTop: '10px' }}
             onClick={handleSignOut}
-            title={'Log out'}
+            title={'Выйти'}
           ></SubmitButton>
         )}
       </div>

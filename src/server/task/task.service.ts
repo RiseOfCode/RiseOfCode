@@ -179,6 +179,7 @@ export class TaskService {
       await this.prisma.taskRating.findFirst({
         where: {
           teacher_id: teacherId,
+          task_id: taskId,
         },
         select: {
           rating: true,
@@ -204,7 +205,7 @@ export class TaskService {
       },
     });
     if (result._avg.rating == null) return 0;
-    else return result._avg.rating;
+    else return parseFloat(result._avg.rating.toFixed(2));
   }
   async getTaskForStudentById(
     studentId: string,

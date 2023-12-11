@@ -3,13 +3,34 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../styles/teacher.tasks.module.css';
 import LocalHeader from '../../../client/components/UI/Header';
 import star from './star.orange.png';
+import Cookies from 'js-cookie';
 
 const ThemesList = ({ themes }: { themes: string[] }) => {
+  const translateTheme = (theme: string) => {
+    switch (theme) {
+      case 'BASE': {
+        return 'Базовые операции';
+      }
+      case 'IF': {
+        return 'Условия';
+      }
+      case 'ARITHMETIC': {
+        return 'Арифметика';
+      }
+      case 'LOGICS': {
+        return 'Логические операторы';
+      }
+      case 'OTHER': {
+        return 'Другое';
+      }
+    }
+  };
+
   return (
     <div className={styles.themeContainer}>
       {themes.length > 0 ? (
         themes.map((theme) => (
-          <div className={styles.taskPageTheme}>{theme}</div>
+          <div className={styles.taskPageTheme}>{translateTheme(theme)}</div>
         ))
       ) : (
         <p>Тема не указана</p>
@@ -21,7 +42,7 @@ const ThemesList = ({ themes }: { themes: string[] }) => {
 const TaskPage = () => {
   const router = useRouter();
 
-  const userId = '42d59598-9548-41a3-bb42-d76635abb35c';
+  const [userShort, setUserShort] = useState({ id: '', nickname: '' });
 
   const { id } = router.query;
 
@@ -35,7 +56,7 @@ const TaskPage = () => {
     tests: [{ input: '', output: '' }],
   });
 
-  const fetchTask = async () => {
+  const fetchTask = async (userId: string) => {
     try {
       const taskResponse = await fetch(`/api/task/teacher/${userId}/${id}`);
       if (taskResponse.ok) {
@@ -50,7 +71,16 @@ const TaskPage = () => {
   };
 
   useEffect(() => {
-    fetchTask();
+    const cookie = Cookies.get('authToken').toString();
+    const fetchUserId = async () => {
+      await fetch(`/api/user/ac/${cookie}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUserShort(data);
+          fetchTask(data.id);
+        });
+    };
+    fetchUserId();
   }, [id]);
 
   const renderTestsTable = () => {
@@ -82,7 +112,7 @@ const TaskPage = () => {
 
   const handleEstimate = async (rating: number) => {
     const response = await fetch(
-      `/api/task/teacher/${userId}/estimate/${id}?rating=${rating}`,
+      `/api/task/teacher/${userShort.id}/estimate/${id}?rating=${rating}`,
       {
         method: 'POST',
         headers: {
@@ -90,7 +120,7 @@ const TaskPage = () => {
         },
       },
     );
-    if (response.ok) await fetchTask();
+    if (response.ok) await fetchTask(userShort.id);
   };
 
   const renderRating = () => {
@@ -390,7 +420,7 @@ const TaskPage = () => {
       <LocalHeader />
       <div>
         <div className={styles.columnContainer}>
-          <h3 className={styles.taskName}>{task.name}</h3>
+          <h2 className={styles.headText}>{task.name}</h2>
           {renderRating()}
         </div>
         <div>

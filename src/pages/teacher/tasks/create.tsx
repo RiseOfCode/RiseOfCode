@@ -2,9 +2,10 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import styles from '../../styles/teacher.tasks.module.css';
 import LocalHeader from '../../../client/components/UI/Header';
+import Cookies from 'js-cookie';
 
 const TaskPage = () => {
-  const userId = '500a7c0a-6a69-4a57-bd6c-434f7be81af0';
+  const [userShort, setUserShort] = useState({ id: '', nickname: '' });
 
   const router = useRouter();
   const [task, setTask] = useState({
@@ -31,9 +32,17 @@ const TaskPage = () => {
     }));
   };
 
-  // useEffect(() => {
-  //   renderThemesList();
-  // });
+  useEffect(() => {
+    const cookie = Cookies.get('authToken').toString();
+    const fetchUserId = async () => {
+      await fetch(`/api/user/ac/${cookie}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUserShort(data);
+        });
+    };
+    fetchUserId();
+  });
 
   const [theme, setTheme] = useState('BASE');
   const handleThemeAdd = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -111,6 +120,20 @@ const TaskPage = () => {
     }
   };
 
+  const handleTestDelete = (index: number) => {
+    const newTests = [{ input: '', output: '' }];
+    if (task.tests.length != 1) {
+      newTests.pop();
+      task.tests.forEach((t, i) => {
+        if (i != index) newTests.push(t);
+      });
+    }
+    setTask((prevState) => ({
+      ...prevState,
+      tests: newTests,
+    }));
+  };
+
   const handleSubmit = async () => {
     if (
       task.name != '' &&
@@ -120,7 +143,7 @@ const TaskPage = () => {
       task.tests &&
       task.tests.length != 0
     ) {
-      const response = await fetch(`/api/task/teacher/${userId}`, {
+      const response = await fetch(`/api/task/teacher/${userShort.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,12 +157,32 @@ const TaskPage = () => {
   };
 
   const renderThemesList = () => {
+    const translateTheme = (theme: string) => {
+      switch (theme) {
+        case 'BASE': {
+          return 'Базовые операции';
+        }
+        case 'IF': {
+          return 'Условия';
+        }
+        case 'ARITHMETIC': {
+          return 'Арифметика';
+        }
+        case 'LOGICS': {
+          return 'Логические операторы';
+        }
+        case 'OTHER': {
+          return 'Другое';
+        }
+      }
+    };
+
     return (
       <div className={styles.themeContainer}>
         {task.themes.length > 0 && task.themes[0] != '' ? (
           task.themes.map((theme) => (
             <div className={styles.theme} key={theme}>
-              <div>{theme}</div>
+              <div>{translateTheme(theme)}</div>
               <button
                 className={styles.closeBtn}
                 onClick={() => handleThemeDelete(theme)}
@@ -167,6 +210,7 @@ const TaskPage = () => {
             <th>N</th>
             <th>Входные данные</th>
             <th>Выходные данные</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -175,6 +219,14 @@ const TaskPage = () => {
               <td>{index + 1}</td>
               <td>{test.input}</td>
               <td>{test.output}</td>
+              <td>
+                <button
+                  className={styles.smallGreenBtn}
+                  onClick={() => handleTestDelete(index)}
+                >
+                  удалить
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -187,9 +239,9 @@ const TaskPage = () => {
       <LocalHeader />
       <div>
         <div className={styles.columnContainer}>
-          <h2>Создание задачи</h2>
+          <h2 className={styles.headText}>Создание задачи</h2>
           <button className={styles.greenBtn} onClick={handleSubmit}>
-            Создать задачу
+            создать
           </button>
         </div>
 
@@ -211,6 +263,7 @@ const TaskPage = () => {
                   <option value="ARITHMETIC">Арифметика</option>
                   <option value="LOGICS">Логические операторы</option>
                   <option value="IF">Условия</option>
+                  <option value="OTHER">Другое</option>
                 </select>
               </div>
 

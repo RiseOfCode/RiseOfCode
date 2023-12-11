@@ -100,7 +100,7 @@ const BankPage = () => {
       }
     };
     fetchTasks();
-  });
+  }, [filter]);
 
   const handleFilterThemes = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const fieldName = e.target.name;
@@ -156,8 +156,8 @@ const BankPage = () => {
   };
 
   const modalContent = (
-    <div>
-      <label>
+    <div className={styles.pageContainer}>
+      <label className={styles.filterContainer}>
         Темы:
         <select
           value={filter.themes}
@@ -169,9 +169,10 @@ const BankPage = () => {
           <option value="ARITHMETIC">Арифметика</option>
           <option value="LOGICS">Логические операторы</option>
           <option value="IF">Условия</option>
+          <option value="OTHER">Другое</option>
         </select>
       </label>
-      <label>Минимальный рейтинг:</label>
+      <label className={styles.filterContainer}>Минимальный рейтинг:</label>
       <input
         placeholder="0"
         type="text"
@@ -179,15 +180,16 @@ const BankPage = () => {
         name="minRating"
         onChange={handleFilterRating}
       />
-      <label>
+      <label className={styles.filterContainer}>
         Рейтинг:
         <select value={filter.isDesc} name="isDesc" onChange={handleFilterDesc}>
           <option value="true">по уменьшению</option>
           <option value="false">по возрастанию</option>
         </select>
       </label>
-      <button onClick={handleClear}>Сбросить</button>
-      {/*<button onClick={closeModal}>Закрыть</button>*/}
+      <button className={styles.greenBtn} onClick={handleClear}>
+        Сбросить
+      </button>
     </div>
   );
 
@@ -199,16 +201,16 @@ const BankPage = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <div>
-        <h2>Банк задач</h2>
+        <h2 className={styles.headText}>Банк задач</h2>
         <div className={styles.btnContainer}>
           <button
             className={styles.greenBtn}
             onClick={() => router.push('/teacher/tasks/create')}
           >
-            Добавить задачу
+            добавить задачу
           </button>
           <button className={styles.greenBtn} onClick={openModal}>
-            Фильтр
+            фильтр
           </button>
         </div>
         <Modal
