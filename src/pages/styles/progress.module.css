@@ -10,31 +10,11 @@
     cursor: pointer;
 }
 
-.header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 .main {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.navMenu {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px;
-    width: 400px;
-}
-
-.lessonsBtn {
-    margin: 7px;
 }
 
 .lessonProgress {
@@ -80,4 +60,62 @@
     border: 1px solid #ec9b59;
     border-radius: 3px;
     box-shadow: 3px 3px 1px 0 #ec9b59;
+}
+
+/*.header {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.navMenu {*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    align-items: center;*/
+/*    justify-content: space-between;*/
+/*    padding: 5px;*/
+/*    width: 400px;*/
+/*}*/
+
+.lessonsBtn {
+    margin: 15px;
+    padding: 7px;
+    background-color: #ffffff;
+    font-family: 'Poiret One', sans-serif;
+    font-size: 18px;
+    color: #ec9b59e0;
+    border-color: #ec9b59;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.lessonsBtn:hover {
+    background-color: #f4d8cd;
+}
+
+.chooseItem {
+    margin: 3px;
+    padding: 7px;
+    background-color: #ffffff;
+    font-family: 'Poiret One', sans-serif;
+    font-size: 18px;
+    color: #ec9b59e0;
+    border-color: #ec9b59;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.chooseItem:hover {
+    background-color: #f4d8cd;
+}
+
+.list {
+    list-style-type: none;
+}
+
+.taskName {
+    padding: 5px;
+    border-bottom: 2px solid #D0E6CF;
+    border-top: 2px solid #D0E6CF;
 }
