@@ -10,6 +10,7 @@ export class TaskCreateDto {
     this.tests = new Array<TaskTestDto>();
     this.checker = '';
   }
+
   @IsNotEmpty()
   @IsString()
   name: string;

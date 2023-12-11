@@ -1,22 +1,29 @@
 import styles from '../styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
+import TeacherPages from './Header';
+
 const TeacherDescription = () => {
-  const [teacherInfo, setTeacherInfo] = useState('');
-  const [description, setDescription] = useState('');
-  const [name, setName] = useState('');
+  const [classInfo, setClassInfo] = useState({
+    teacherInfo: '',
+    description: '',
+    name: '',
+  });
+
+  const [teacherInfo, setTeacherInfo] = useState(classInfo.teacherInfo);
+  const [description, setDescription] = useState(classInfo.description);
+  const [name, setName] = useState(classInfo.name);
+
+  const router = useRouter();
 
   useEffect(() => {
     const constClassId = localStorage.getItem('classId') ?? '';
     const fetchData = async () => {
       await fetch(`/api/class/${constClassId}`)
         .then((response) => response.json())
-        .then((data) => {
-          setTeacherInfo(data.teacherInfo);
-          setDescription(data.description);
-          setName(data.name);
-        });
+        .then((data) => setClassInfo(data));
     };
     fetchData();
   }, []);
@@ -46,14 +53,16 @@ const TeacherDescription = () => {
     });
   };
 
-  const changeTeacherInfo = (event: any) => {
-    setTeacherInfo(event.target.value);
+  const changeTeacherInfo = ({ e }: { e: any }) => {
+    setTeacherInfo(e.target.value);
   };
-  const changeDescription = (event: any) => {
-    setDescription(event.target.value);
+
+  const changeDescription = ({ e }: { e: any }) => {
+    setDescription(e.target.value);
   };
-  const changeName = (event: any) => {
-    setName(event.target.value);
+
+  const changeName = ({ e }: { e: any }) => {
+    setName(e.target.value);
   };
 
   const saveChanges = async () => {
@@ -64,18 +73,16 @@ const TeacherDescription = () => {
       description: description,
       teacherInfo: teacherInfo,
     });
-    window.location.reload();
+    router.reload();
   };
 
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <div className={styles.navMenu}>
-        <Link href={`/teacher/description`}>Описание</Link>
-        <Link href={`/teacher/lessons`}>Уроки</Link>
-        <Link href={`/teacher/students`}>Ученики</Link>
-        <Link href={`/teacher/progress`}>Прогресс</Link>
-      </div>
+      <Link href="/teacher/classes">
+        <h2 className={styles.className}>{classInfo ? classInfo.name : ''}</h2>
+      </Link>
+      <TeacherPages />
       <div className={styles.main}>
         <p className={styles.descText}>Название</p>
         <div className={styles.desc}>
@@ -83,8 +90,8 @@ const TeacherDescription = () => {
             type="text"
             className={styles.descInput}
             name="name"
-            value={name}
-            onChange={changeName}
+            onChange={(e: any) => changeName({ e })}
+            defaultValue={classInfo.name}
           />
         </div>
         <p className={styles.descText}>Информация о преподавателе</p>
@@ -93,8 +100,8 @@ const TeacherDescription = () => {
             type="text"
             className={styles.descInput}
             name="teacherInfo"
-            value={teacherInfo}
-            onChange={changeTeacherInfo}
+            onChange={(e: any) => changeTeacherInfo({ e })}
+            defaultValue={classInfo.teacherInfo}
           />
         </div>
         <p className={styles.descText}>Описание</p>
@@ -103,8 +110,8 @@ const TeacherDescription = () => {
             type="text"
             className={styles.descInput}
             name="description"
-            value={description}
-            onChange={changeDescription}
+            onChange={(e: any) => changeDescription({ e })}
+            defaultValue={classInfo.description}
           />
         </div>
         <button className={styles.saveChangesBtn} onClick={saveChanges}>

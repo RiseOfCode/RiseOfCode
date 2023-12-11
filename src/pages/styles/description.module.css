@@ -5,6 +5,11 @@
     justify-content: center;
 }
 
+.className {
+    color: #ec9b59;
+    cursor: pointer;
+}
+
 .header {
     display: flex;
     flex-direction: column;
@@ -17,6 +22,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 20px;
 }
 
 .navMenu {
@@ -38,27 +44,53 @@
 /*    box-shadow: 3px 3px 3px 0 #9fb09e;*/
 /*}*/
 
-.descText {
-    font-size: large;
-}
 
 .descInput {
-    width: 500px;
-    border: 1px solid #174344;
-    border-radius: 10px;
-    margin: 5px;
-    padding: 7px;
-    /*background-color: #9fb09e;*/
-    box-shadow: 3px 3px 3px 0 #9fb09e;
+    width: 750px;
+    border-radius: 4px;
+    margin: 15px;
+    padding: 20px 30px;
+    box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.1);
+    font-family: 'Poiret One', sans-serif;
+    font-size: 20px;
+    border: none;
+    word-wrap: break-word;
+    resize: vertical;
+}
 
-    /*width: 490px;*/
-    /*border: none;*/
+.textarea::-webkit-scrollbar {
+    width: 12px;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+    background-color: #D0E6CF;
+    border-radius: 6px;
+}
+
+.textarea::-webkit-scrollbar-track {
+    background-color: #fbfbfb;
+}
+
+.descTeacher {
+    font-weight: bold;
+    color: #01212c;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #D0E6CF;
+    width: 75%;
 }
 
 .saveChangesBtn {
     margin: 10px;
-    background-color: #ec9b59;
+    padding: 10px;
+    background-color: #ec9b59e0;
+    font-family: 'Poiret One', sans-serif;
+    font-size: 18px;
     color: #ffffff;
     border-color: #ec9b59;
     border-radius: 5px;
+    font-weight: bold;
+}
+
+.saveChangesBtn:hover {
+    background-color: #ec9b59;
 }

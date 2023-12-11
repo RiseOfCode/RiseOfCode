@@ -1,10 +1,34 @@
 .navLink {
+    position: relative;
     text-decoration: none;
     margin-right: 10px;
     color: black;
 }
 
+.navLink::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #D0E6CF;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.navLink:hover::after {
+    transform: scaleX(1);
+    background-color: #D0E6CF;
+}
+
 .active {
     color: #01212c;
     font-weight: bold;
+    padding: 4px;
+}
+
+.active::after {
+    transform: scaleX(1);
+    background-color: #D0E6CF;
 }

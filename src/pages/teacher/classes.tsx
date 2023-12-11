@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 import Cookies from 'js-cookie';
+import bin from './src/trashbin.png';
+
 const TeacherClasses = () => {
   const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
@@ -104,20 +106,13 @@ const TeacherClasses = () => {
                 >
                   к урокам
                 </button>
-                <button
-                  className={styles.deleteClassBtn}
-                  // onClick={(e: any) => deleteLessons({ classId: cl.id })}
-                  onClick={() => {
-                    const confirmBox = window.confirm('Хотите удалить класс?');
-                    if (confirmBox) {
-                      deleteLessons({ classId: cl.id }).then(() =>
-                        window.location.reload(),
-                      );
-                    }
-                  }}
-                >
-                  удалить
-                </button>
+                <img
+                  src={bin.src}
+                  width="25"
+                  height="25"
+                  style={{ marginTop: '10px' }}
+                  onClick={(e: any) => deleteLessons({ classId: cl.id })}
+                ></img>
               </div>
             </div>
           ))}
