@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 import Cookies from 'js-cookie';
+
 const StudentClasses = () => {
   const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
@@ -34,40 +35,46 @@ const StudentClasses = () => {
   }) => {
     await fetch(`/api/class/add/code?code=${code}&studentId=${studentId}`, {
       method: 'POST',
+    }).then((response) => {
+      if (!response.ok) {
+        alert('Код класса неверен, попробуйте еще раз');
+      } else {
+        window.location.reload();
+      }
     });
   };
 
-  let classCode = '';
-  const changeClassCode = ({ e }: { e: any }) => {
-    classCode = e.target.value;
+  const [classCode, setClassCode] = useState('');
+  const changeClassCode = (event: any) => {
+    setClassCode(event.target.value);
   };
-  const [seed, setSeed] = useState(1);
   const addClass = async () => {
     await postClassStudent({
       code: classCode,
       studentId: userShort.id,
     });
-    setSeed(Math.random());
   };
 
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
+      <h2 className={styles.headText}>Классы</h2>
       <div className={styles.main}>
-        <p className={styles.headText}>Классы</p>
         <div className={styles.addClass}>
           <p>Добавиться в класс</p>
           <input
             type="text"
             className={styles.newClass}
             name="className"
-            onChange={(e: any) => changeClassCode}
+            value={classCode}
+            placeholder="Введите код класса"
+            onChange={changeClassCode}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
             добавиться
           </button>
         </div>
-        <ClassesList classes={classes} key={seed} />
+        <ClassesList classes={classes} />
       </div>
     </div>
   );
@@ -79,19 +86,21 @@ const ClassesList = ({
   classes: { name: string; id: string }[];
 }) => {
   const router = useRouter();
-  const goToLessons = (classId: string) => () => {
+
+  const goToLessons = (classId: string) => {
     localStorage.setItem('classId', classId);
-    router.push('/student/description');
+    router.push(`/student/description`);
   };
 
   return (
     <div className={styles.classes}>
       {classes.map((cl) => (
-        <div className={styles.classesPiece}>
+        <div
+          key={cl.id}
+          className={styles.classesPiece}
+          onClick={() => goToLessons(cl.id)}
+        >
           <p className={styles.className}>{cl.name}</p>
-          <button className={styles.goToClassBtn} onClick={goToLessons(cl.id)}>
-            к урокам
-          </button>
         </div>
       ))}
     </div>

@@ -18,6 +18,7 @@ const LocalHeader = () => {
     email: '',
   });
   const handleSignOut = async () => {
+    localStorage.removeItem("classId")
     const response = await fetch('/auth/logout', {
       method: 'POST',
       headers: {

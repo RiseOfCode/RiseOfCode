@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 import Cookies from 'js-cookie';
+import bin from './src/trashbin.png';
+
 const TeacherClasses = () => {
   const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
@@ -35,7 +37,12 @@ const TeacherClasses = () => {
   }) => {
     await fetch(`/api/class/${teacherId}?name=${name}`, {
       method: 'POST',
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.setItem('classId', data.id);
+        router.push(`/teacher/description`);
+      });
   };
 
   const deleteClass = async ({ classId }: { classId: string }) => {
@@ -44,22 +51,24 @@ const TeacherClasses = () => {
     });
   };
 
-  let className = '';
-  const changeClassName = ({ e }: { e: any }) => {
-    className = e.target.value;
+  const [className, setClassName] = useState('');
+  const changeClassName = (event: any) => {
+    setClassName(event.target.value);
   };
 
   const addClass = async () => {
-    await postNewClass({
-      name: className,
-      teacherId: userShort.id,
-    }).then((response) => window.location.reload());
+    if (className == '') {
+      alert('Введите название класса');
+    } else {
+      await postNewClass({
+        name: className,
+        teacherId: userShort.id,
+      });
+    }
   };
 
   const deleteLessons = async ({ classId }: { classId: any }) => {
-    await deleteClass({ classId: classId }).then((response) =>
-      window.location.reload(),
-    );
+    await deleteClass({ classId: classId });
   };
 
   const goToLessons = ({ classId }: { classId: any }) => {
@@ -71,14 +80,16 @@ const TeacherClasses = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <div className={styles.main}>
-        <p>Классы</p>
+        <p className={styles.headText}>Классы</p>
         <div className={styles.addClass}>
           <p>Создать класс</p>
           <input
             type="text"
             className={styles.newClass}
             name="className"
-            onChange={(e: any) => changeClassName}
+            value={className}
+            placeholder="Введите имя класса"
+            onChange={changeClassName}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
             создать
@@ -95,12 +106,13 @@ const TeacherClasses = () => {
                 >
                   к урокам
                 </button>
-                <button
-                  className={styles.deleteClassBtn}
+                <img
+                  src={bin.src}
+                  width="25"
+                  height="25"
+                  style={{ marginTop: '10px' }}
                   onClick={(e: any) => deleteLessons({ classId: cl.id })}
-                >
-                  удалить
-                </button>
+                ></img>
               </div>
             </div>
           ))}

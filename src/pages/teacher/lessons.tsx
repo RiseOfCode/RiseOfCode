@@ -4,6 +4,8 @@ import styles from '../styles/classes.module.css';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
 import Link from 'next/link';
+import TeacherPages from './Header';
+import bin from './src/trashbin.png';
 
 const LessonsList = ({
   lessons,
@@ -16,6 +18,18 @@ const LessonsList = ({
     router.push(`/lessons/${lessonId}`);
   };
 
+  const deleteLessonReq = async ({ lessonId }: { lessonId: string }) => {
+    await fetch(`/api/lesson/${lessonId}`, {
+      method: 'DELETE',
+    });
+  };
+
+  const deleteLesson = async ({ lessonId }: { lessonId: any }) => {
+    await deleteLessonReq({ lessonId: lessonId }).then((response) =>
+      router.reload(),
+    );
+  };
+
   return (
     <div className={styles.classes}>
       {lessons.map((lesson) => (
@@ -25,17 +39,23 @@ const LessonsList = ({
           onClick={() => handleClassesPieceClick(lesson.id)}
         >
           <p className={styles.className}>{lesson.name}</p>
+          <img
+            src={bin.src}
+            width="25"
+            height="25"
+            style={{ marginTop: '10px' }}
+            onClick={(e: any) => deleteLesson({ lessonId: lesson.id })}
+          ></img>
         </div>
       ))}
     </div>
   );
 };
 
-const StudentLessons = () => {
+const TeacherLessons = () => {
   const [classData, setClassData] = useState({
     name: '',
-    teacherInfo: '',
-    description: '',
+    id: '',
   });
   const [lessonsData, setLessonsData] = useState([]);
 
@@ -77,20 +97,43 @@ const StudentLessons = () => {
     }
   });
 
+  const createNewLesson = async () => {
+    try {
+      const response = await fetch(`/api/lesson/${classData.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const newLessonData = await response.json();
+        router.push(`/lessons/${newLessonData.id}`);
+      } else {
+        console.error('Failed to create a new lesson');
+      }
+    } catch (error) {
+      console.error('An error occurred', error);
+    }
+  };
+
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <Link href="/student/classes">
+      <Link href="/teacher/classes">
         <h2 className={styles.mainClassName}>
           {classData ? classData.name : ''}
         </h2>
       </Link>
-      <StudentPages />
+      <TeacherPages />
       <div>
+        <button className={styles.newLesson} onClick={createNewLesson}>
+          Новый урок
+        </button>
         <LessonsList lessons={lessonsData} />
       </div>
     </div>
   );
 };
 
-export default StudentLessons;
+export default TeacherLessons;

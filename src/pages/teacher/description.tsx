@@ -3,12 +3,19 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
+import TeacherPages from './Header';
+
 const TeacherDescription = () => {
   const [classInfo, setClassInfo] = useState({
     teacherInfo: '',
     description: '',
     name: '',
   });
+
+  const [teacherInfo, setTeacherInfo] = useState(classInfo.teacherInfo);
+  const [description, setDescription] = useState(classInfo.description);
+  const [name, setName] = useState(classInfo.name);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -46,17 +53,16 @@ const TeacherDescription = () => {
     });
   };
 
-  let teacherInfo = classInfo.teacherInfo;
-  let description = classInfo.description;
-  let name = classInfo.name;
   const changeTeacherInfo = ({ e }: { e: any }) => {
-    teacherInfo = e.target.value;
+    setTeacherInfo(e.target.value);
   };
+
   const changeDescription = ({ e }: { e: any }) => {
-    description = e.target.value;
+    setDescription(e.target.value);
   };
+
   const changeName = ({ e }: { e: any }) => {
-    name = e.target.value;
+    setName(e.target.value);
   };
 
   const saveChanges = async () => {
@@ -67,18 +73,16 @@ const TeacherDescription = () => {
       description: description,
       teacherInfo: teacherInfo,
     });
-    window.location.reload();
+    router.reload();
   };
 
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <div className={styles.navMenu}>
-        <Link href={`/teacher/description`}>Описание</Link>
-        <Link href={`/teacher/lessons`}>Уроки</Link>
-        <Link href={`/teacher/students`}>Ученики</Link>
-        <Link href={`/teacher/progress`}>Прогресс</Link>
-      </div>
+      <Link href="/teacher/classes">
+        <h2 className={styles.className}>{classInfo ? classInfo.name : ''}</h2>
+      </Link>
+      <TeacherPages />
       <div className={styles.main}>
         <p className={styles.descText}>Название</p>
         <div className={styles.desc}>
@@ -86,7 +90,7 @@ const TeacherDescription = () => {
             type="text"
             className={styles.descInput}
             name="name"
-            onChange={(e: any) => changeName}
+            onChange={(e: any) => changeName({ e })}
             defaultValue={classInfo.name}
           />
         </div>
@@ -96,7 +100,7 @@ const TeacherDescription = () => {
             type="text"
             className={styles.descInput}
             name="teacherInfo"
-            onChange={(e: any) => changeTeacherInfo}
+            onChange={(e: any) => changeTeacherInfo({ e })}
             defaultValue={classInfo.teacherInfo}
           />
         </div>
@@ -106,7 +110,7 @@ const TeacherDescription = () => {
             type="text"
             className={styles.descInput}
             name="description"
-            onChange={(e: any) => changeDescription}
+            onChange={(e: any) => changeDescription({ e })}
             defaultValue={classInfo.description}
           />
         </div>
