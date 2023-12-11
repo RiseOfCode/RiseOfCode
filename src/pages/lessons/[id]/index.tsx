@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import styles from '../../styles/classes.module.css';
 import LocalHeader from '../../../client/components/UI/Header';
 import StudentPages from '../../student/Header';
+import Cookies from "js-cookie";
+import Link from "next/link";
 
 const TasksList = ({
   tasks,
@@ -24,12 +26,13 @@ const TasksList = ({
     <div className={styles.classes}>
       {tasks.length > 0 ? (
         tasks.map((task) => (
-          <div className={styles.classesPiece} key={task.id}>
+          <div className={styles.classesPiece} key={task.id}
+               onClick={() => handleLessonClick(task.id)}>
             <p className={styles.className}>{task.name}</p>
-            <p>{task.finalAttempt ? task.finalAttempt.status : ''}</p>
+            <p style={{ color: task.finalAttempt?.status === 'SOLVED' ? '#236566' : 'inherit' }}>
+              {task.finalAttempt ? task.finalAttempt.status : ''}</p>
             <button
               className={styles.goToClassBtn}
-              onClick={() => handleLessonClick(task.id)}
             >
               Решить
             </button>
@@ -41,10 +44,11 @@ const TasksList = ({
     </div>
   );
 };
+
 const LessonPage = () => {
   const router = useRouter();
   const { id } = router.query;
-
+  const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [lessonData, setLessonData] = useState(null);
   const [tasks, setTasks] = useState([
     {
@@ -53,14 +57,31 @@ const LessonPage = () => {
       finalAttempt: null,
     },
   ]);
-
-  const userId = '42d59598-9548-41a3-bb42-d76635abb35c';
-
   const [classData, setClassData] = useState({
     name: '',
     teacherInfo: '',
     description: '',
   });
+
+  useEffect(() => {
+    const cookie = Cookies.get('authToken')?.toString();
+
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch(`/api/user/ac/${cookie}`);
+        if (response.ok) {
+          const data = await response.json();
+          setUserShort(data);
+        } else {
+          console.error('Failed to fetch user details');
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
 
   useEffect(() => {
     const classId = localStorage.getItem('classId');
@@ -78,35 +99,36 @@ const LessonPage = () => {
         console.error('An error occurred', error);
       }
     };
+
     const fetchData = async () => {
       try {
-        const lessonResponse = await fetch(`/api/lesson/${id}`);
-        if (lessonResponse.ok) {
-          const lessonData = await lessonResponse.json();
-          setLessonData(lessonData);
-        } else {
-          console.error('Failed to fetch lesson details');
-        }
+        if (id && userShort.id) {
+          const lessonResponse = await fetch(`/api/lesson/${id}`);
+          if (lessonResponse.ok) {
+            const lessonData = await lessonResponse.json();
+            setLessonData(lessonData);
+          } else {
+            console.error('Failed to fetch lesson details');
+          }
 
-        const tasksResponse = await fetch(
-          `/api/task/student/${userId}/lesson/${id}`,
-        );
-        if (tasksResponse.ok) {
-          const tasksData = await tasksResponse.json();
-          setTasks(tasksData);
-        } else {
-          console.error('Failed to fetch tasks');
+          const tasksResponse = await fetch(`/api/task/student/${userShort.id}/lesson/${id}`);
+          if (tasksResponse.ok) {
+            const tasksData = await tasksResponse.json();
+            setTasks(tasksData);
+          } else {
+            console.error('Failed to fetch tasks');
+          }
         }
       } catch (error) {
         console.error('An error occurred', error);
       }
     };
 
-    if (id) {
+    if (id && userShort.id) {
       fetchData();
       fetchClass();
     }
-  }, [id]);
+  }, [id, userShort]);
 
   if (!lessonData || !tasks) {
     return <div>Loading...</div>;
@@ -121,10 +143,10 @@ const LessonPage = () => {
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <h2>{classData ? classData.name : ''}</h2>
+      <h2 className={styles.mainClassName}>{classData ? classData.name : ' '}</h2>
       <StudentPages />
       <div>
-        <h3>{name}</h3>
+        <Link href={"/student/lessons"}><h3 className={styles.mainName}>{name}</h3></Link>
         <p>{theory}</p>
         <TasksList tasks={tasks} />
       </div>
@@ -133,3 +155,4 @@ const LessonPage = () => {
 };
 
 export default LessonPage;
+

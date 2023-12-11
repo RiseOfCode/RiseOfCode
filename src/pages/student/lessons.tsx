@@ -3,29 +3,28 @@ import { useRouter } from 'next/router';
 import styles from '../styles/classes.module.css';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
+import Link from "next/link";
 
 const LessonsList = ({
-  lessons,
-}: {
+                       lessons,
+                     }: {
   lessons: { name: string; id: string }[];
 }) => {
   const router = useRouter();
 
-  const handleLessonClick = (lessonId: string) => {
+  const handleClassesPieceClick = (lessonId: string) => {
     router.push(`/lessons/${lessonId}`);
   };
 
   return (
     <div className={styles.classes}>
       {lessons.map((lesson) => (
-        <div className={styles.classesPiece}>
+        <div
+          key={lesson.id}
+          className={styles.classesPiece}
+          onClick={() => handleClassesPieceClick(lesson.id)}
+        >
           <p className={styles.className}>{lesson.name}</p>
-          <button
-            className={styles.goToClassBtn}
-            onClick={() => handleLessonClick(lesson.id)}
-          >
-            Выполнить
-          </button>
         </div>
       ))}
     </div>
@@ -81,7 +80,9 @@ const StudentLessons = () => {
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <h2>{classData ? classData.name : ''}</h2>
+      <Link href="/student/classes">
+        <h2 className={styles.mainClassName}>{classData ? classData.name : ''}</h2>
+      </Link>
       <StudentPages />
       <div>
         <LessonsList lessons={lessonsData} />

@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 import styles from '../../../styles/task.module.css';
 import LocalHeader from '../../../../client/components/UI/Header';
 import StudentPages from '../../../student/Header';
+import { fontWeight } from "@material-ui/system";
+import { bold } from "colorette";
+import Link from "next/link";
 
 const TaskPage = () => {
   const router = useRouter();
@@ -176,7 +179,7 @@ const TaskPage = () => {
     return (
       <table className={styles.attemptsTable}>
         <thead>
-          <tr>
+          <tr className={styles.tableHeaders}>
             <th>N</th>
             <th>Время</th>
             <th>Статус</th>
@@ -194,7 +197,7 @@ const TaskPage = () => {
           )}
           {task.attempts.map((attempt, index) => (
             <tr key={task.attempts.length - index}>
-              <td>{task.attempts.length - index}</td>
+              <td style={{ fontWeight: 'bold' }}>{task.attempts.length - index}</td>
               <td>{new Date(attempt.date).toLocaleString()}</td>
               <td
                 className={
@@ -218,10 +221,12 @@ const TaskPage = () => {
   return (
     <div className={styles.container}>
       <LocalHeader />
-      <h2>{classData ? classData.name : ''}</h2>
+      <Link href="/student/classes">
+        <h2 className={styles.mainClassName}>{classData ? classData.name : ''}</h2>
+      </Link>
       <StudentPages />
-      <h3 className={styles.lessonName}>{lessonData.name}</h3>
-      <h3 className={styles.taskName}>{task.name}</h3>
+      <Link href={"/student/lessons"}><h3 className={`${styles.lessonName} ${styles.mainName}`}>{lessonData.name}</h3></Link>
+      <Link href={`/lessons/${lessonData.id}`}><h3 className={`${styles.taskName} ${styles.mainName}`}>{task.name}</h3></Link>
       <p>{task.description}</p>
 
       <textarea
@@ -232,14 +237,14 @@ const TaskPage = () => {
       />
 
       <input
-        className={`${styles.fileInput} ${styles.button}`}
+        className={`${styles.button} ${styles.fileInput}`}
         type="file"
         accept=".pas"
         onChange={handleFileChange}
         ref={fileInputRef}
       />
 
-      <button className={styles.button} onClick={handleSubmit}>
+      <button className={`${styles.send} ${styles.button}`} onClick={handleSubmit}>
         Отправить
       </button>
 

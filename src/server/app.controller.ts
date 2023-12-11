@@ -95,14 +95,16 @@ export class AppController {
     return {};
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('lessons/:id')
   @Render('lessons/:id')
   lesson(@Req() req: Request) {
     return req.user;
   }
 
-  @Get('lessons/:id/tasks/:taskId')
-  @Render('lessons/:id/tasks/:taskId')
+  @UseGuards(JwtAuthGuard)
+  @Get('lessons/:id/task/:taskId')
+  @Render('lessons/:id/task/:taskId')
   task(@Req() req: Request) {
     return req.user;
   }

@@ -1,14 +1,15 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from '../styles/class-header.module.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const StudentPages = () => {
-  let page = '';
+  const router = useRouter();
+  const [page, setPage] = useState('');
 
   useEffect(() => {
-    page = window.location.pathname;
-  }, []);
+    setPage(router.pathname);
+  }, [router.pathname]);
 
   return (
     <div>

@@ -2,6 +2,7 @@ import NextApp, { AppProps } from 'next/app';
 import { AppDataContext } from 'src/client/ssr/appData';
 import { AppData } from 'src/shared/types/app-data';
 import { initializeFetch } from 'src/shared/utils/fetch';
+import './styles/globals.css';
 
 class App extends NextApp<AppProps> {
   appData: AppData;
