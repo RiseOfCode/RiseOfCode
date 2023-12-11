@@ -5,15 +5,16 @@ export class TeacherTaskReturnDto extends TaskBaseReturnDto {
   constructor(
     task: Task,
     themes: Theme[] | null,
+    teacherRating: number,
     rating: number,
     tests: TaskTestDto[] | null,
   ) {
     super(task, rating);
     this.themes = themes;
     this.tests = tests;
-    this.checker = task.checker;
+    this.teacherRating = teacherRating;
   }
   themes: Theme[] | null;
   tests: TaskTestDto[] | null;
-  checker: string;
+  teacherRating: number;
 }

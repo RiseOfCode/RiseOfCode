@@ -19,7 +19,7 @@ export class TaskService {
       data: {
         name: dto.name,
         description: dto.description,
-        checker: dto.checker,
+        checker: '',
         teacher_id: teacherId,
       },
     });
@@ -149,7 +149,10 @@ export class TaskService {
       else return solved;
     } else return null;
   }
-  async getTaskForTeacherById(taskId: string): Promise<TeacherTaskReturnDto> {
+  async getTaskForTeacherById(
+    teacherId: string,
+    taskId: string,
+  ): Promise<TeacherTaskReturnDto> {
     const task = await this.prisma.task.findUniqueOrThrow({
       where: {
         id: taskId,
@@ -172,9 +175,22 @@ export class TaskService {
     task.themes.forEach((t) => {
       themes[themes.length] = t.theme;
     });
+    let teacherRating = (
+      await this.prisma.taskRating.findFirst({
+        where: {
+          teacher_id: teacherId,
+          task_id: taskId,
+        },
+        select: {
+          rating: true,
+        },
+      })
+    )?.rating;
+    if (teacherRating == null) teacherRating = 0;
     return new TeacherTaskReturnDto(
       task,
       themes,
+      teacherRating,
       await this.countTaskRating(taskId),
       tests,
     );
@@ -189,7 +205,7 @@ export class TaskService {
       },
     });
     if (result._avg.rating == null) return 0;
-    else return result._avg.rating;
+    else return parseFloat(result._avg.rating.toFixed(2));
   }
   async getTaskForStudentById(
     studentId: string,
