@@ -1,6 +1,7 @@
 import styles from '../styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 import TeacherPages from "./Header";
 
@@ -22,11 +23,7 @@ const TeacherDescription = () => {
     const fetchData = async () => {
       await fetch(`/api/class/${constClassId}`)
         .then((response) => response.json())
-        .then((data) => {
-          setTeacherInfo(data.teacherInfo);
-          setDescription(data.description);
-          setName(data.name);
-        });
+        .then((data) => setClassInfo(data));
     };
     fetchData();
   }, []);
@@ -55,7 +52,6 @@ const TeacherDescription = () => {
       },
     });
   };
-
 
   const changeTeacherInfo = ({ e }: { e: any }) => {
     setTeacherInfo(e.target.value);

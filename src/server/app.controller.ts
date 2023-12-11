@@ -88,6 +88,13 @@ export class AppController {
     return req.user;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('teacher/students')
+  @Render('teacher/students')
+  getTeacherStudents(@Req() req: Request) {
+    return req.user;
+  }
+
   @Get('/')
   @Render('index')
   @UseInterceptors(ParamsInterceptor, ConfigInterceptor)

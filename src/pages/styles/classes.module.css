@@ -140,3 +140,21 @@
     background-color: #f4d8cd99;
 }
 
+.copy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #D0E6CF;
+    margin-top: 35px;
+}
+
+.inCopy {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 15px;
+    padding: 0 10px;
+}
+
