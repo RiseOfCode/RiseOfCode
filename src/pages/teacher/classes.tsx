@@ -35,7 +35,12 @@ const TeacherClasses = () => {
   }) => {
     await fetch(`/api/class/${teacherId}?name=${name}`, {
       method: 'POST',
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.setItem('classId', data.id);
+        router.push(`/teacher/description`);
+      });
   };
 
   const deleteClass = async ({ classId }: { classId: string }) => {
@@ -56,7 +61,7 @@ const TeacherClasses = () => {
       await postNewClass({
         name: className,
         teacherId: userShort.id,
-      }).then(() => window.location.reload());
+      });
     }
   };
 
