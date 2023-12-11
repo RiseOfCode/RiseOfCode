@@ -53,8 +53,21 @@
     font-family: 'Poiret One', sans-serif;
     font-size: 20px;
     border: none;
-    /*width: 490px;*/
-    /*border: none;*/
+    word-wrap: break-word;
+    resize: vertical;
+}
+
+.textarea::-webkit-scrollbar {
+    width: 12px;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+    background-color: #D0E6CF;
+    border-radius: 6px;
+}
+
+.textarea::-webkit-scrollbar-track {
+    background-color: #fbfbfb;
 }
 
 .descTeacher {

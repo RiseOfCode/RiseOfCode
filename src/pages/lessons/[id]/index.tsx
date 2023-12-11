@@ -51,7 +51,11 @@ const LessonPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [userShort, setUserShort] = useState({ id: '', nickname: '' });
-  const [lessonData, setLessonData] = useState(null);
+  const [lessonData, setLessonData] = useState(
+    {
+      name: '',
+      theory: ''
+    });
   const [tasks, setTasks] = useState([
     {
       id: '',
@@ -161,7 +165,7 @@ const LessonPage = () => {
     return <div>Loading...</div>;
   }
 
-  const { name, theory } = lessonData;
+  const { name,  theory } = lessonData;
 
   const handleSolveClick = (taskId: string) => {
     router.push(`/lessons/${id}/task/${taskId}`);
@@ -196,8 +200,8 @@ const LessonPage = () => {
 
   const saveChanges = async () => {
     const updatedInfo = {
-      name: updatedName,
-      theory: updatedTheory,
+      name: updatedName || name,
+      theory: updatedTheory || theory,
     };
 
     try {
@@ -240,12 +244,12 @@ const LessonPage = () => {
         </div>
         <p className={styles.mainName}>Теория</p>
         <div className={descStyles.desc}>
-          <input
-            type="text"
-            className={descStyles.descInput}
+          <textarea
+            className={`${descStyles.descInput} ${descStyles.textarea}`}
             name="teacherInfo"
-            onChange={(e: any) => changeTheory(e)}
+            onChange={(e) => changeTheory(e)}
             defaultValue={theory}
+            rows={6}
           />
         </div>
         <button className={descStyles.saveChangesBtn} onClick={saveChanges}>
