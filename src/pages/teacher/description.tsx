@@ -1,22 +1,22 @@
 import styles from '../styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 const TeacherDescription = () => {
-  const [classInfo, setClassInfo] = useState({
-    teacherInfo: '',
-    description: '',
-    name: '',
-  });
-  const router = useRouter();
+  const [teacherInfo, setTeacherInfo] = useState('');
+  const [description, setDescription] = useState('');
+  const [name, setName] = useState('');
 
   useEffect(() => {
     const constClassId = localStorage.getItem('classId') ?? '';
     const fetchData = async () => {
       await fetch(`/api/class/${constClassId}`)
         .then((response) => response.json())
-        .then((data) => setClassInfo(data));
+        .then((data) => {
+          setTeacherInfo(data.teacherInfo);
+          setDescription(data.description);
+          setName(data.name);
+        });
     };
     fetchData();
   }, []);
@@ -46,17 +46,14 @@ const TeacherDescription = () => {
     });
   };
 
-  let teacherInfo = classInfo.teacherInfo;
-  let description = classInfo.description;
-  let name = classInfo.name;
-  const changeTeacherInfo = ({ e }: { e: any }) => {
-    teacherInfo = e.target.value;
+  const changeTeacherInfo = (event: any) => {
+    setTeacherInfo(event.target.value);
   };
-  const changeDescription = ({ e }: { e: any }) => {
-    description = e.target.value;
+  const changeDescription = (event: any) => {
+    setDescription(event.target.value);
   };
-  const changeName = ({ e }: { e: any }) => {
-    name = e.target.value;
+  const changeName = (event: any) => {
+    setName(event.target.value);
   };
 
   const saveChanges = async () => {
@@ -86,8 +83,8 @@ const TeacherDescription = () => {
             type="text"
             className={styles.descInput}
             name="name"
-            onChange={(e: any) => changeName}
-            defaultValue={classInfo.name}
+            value={name}
+            onChange={changeName}
           />
         </div>
         <p className={styles.descText}>Информация о преподавателе</p>
@@ -96,8 +93,8 @@ const TeacherDescription = () => {
             type="text"
             className={styles.descInput}
             name="teacherInfo"
-            onChange={(e: any) => changeTeacherInfo}
-            defaultValue={classInfo.teacherInfo}
+            value={teacherInfo}
+            onChange={changeTeacherInfo}
           />
         </div>
         <p className={styles.descText}>Описание</p>
@@ -106,8 +103,8 @@ const TeacherDescription = () => {
             type="text"
             className={styles.descInput}
             name="description"
-            onChange={(e: any) => changeDescription}
-            defaultValue={classInfo.description}
+            value={description}
+            onChange={changeDescription}
           />
         </div>
         <button className={styles.saveChangesBtn} onClick={saveChanges}>

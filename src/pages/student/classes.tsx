@@ -34,20 +34,24 @@ const StudentClasses = () => {
   }) => {
     await fetch(`/api/class/add/code?code=${code}&studentId=${studentId}`, {
       method: 'POST',
+    }).then((response) => {
+      if (!response.ok) {
+        alert('Код класса неверен, попробуйте еще раз');
+      } else {
+        window.location.reload();
+      }
     });
   };
 
-  let classCode = '';
-  const changeClassCode = ({ e }: { e: any }) => {
-    classCode = e.target.value;
+  const [classCode, setClassCode] = useState('');
+  const changeClassCode = (event: any) => {
+    setClassCode(event.target.value);
   };
-  const [seed, setSeed] = useState(1);
   const addClass = async () => {
     await postClassStudent({
       code: classCode,
       studentId: userShort.id,
     });
-    setSeed(Math.random());
   };
 
   return (
@@ -61,13 +65,15 @@ const StudentClasses = () => {
             type="text"
             className={styles.newClass}
             name="className"
-            onChange={(e: any) => changeClassCode}
+            value={classCode}
+            placeholder="Введите код класса"
+            onChange={changeClassCode}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
             добавиться
           </button>
         </div>
-        <ClassesList classes={classes} key={seed} />
+        <ClassesList classes={classes} />
       </div>
     </div>
   );

@@ -35,7 +35,12 @@ const TeacherClasses = () => {
   }) => {
     await fetch(`/api/class/${teacherId}?name=${name}`, {
       method: 'POST',
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.setItem('classId', data.id);
+        router.push(`/teacher/description`);
+      });
   };
 
   const deleteClass = async ({ classId }: { classId: string }) => {
@@ -44,22 +49,24 @@ const TeacherClasses = () => {
     });
   };
 
-  let className = '';
-  const changeClassName = ({ e }: { e: any }) => {
-    className = e.target.value;
+  const [className, setClassName] = useState('');
+  const changeClassName = (event: any) => {
+    setClassName(event.target.value);
   };
 
   const addClass = async () => {
-    await postNewClass({
-      name: className,
-      teacherId: userShort.id,
-    }).then((response) => window.location.reload());
+    if (className == '') {
+      alert('Введите название класса');
+    } else {
+      await postNewClass({
+        name: className,
+        teacherId: userShort.id,
+      });
+    }
   };
 
   const deleteLessons = async ({ classId }: { classId: any }) => {
-    await deleteClass({ classId: classId }).then((response) =>
-      window.location.reload(),
-    );
+    await deleteClass({ classId: classId });
   };
 
   const goToLessons = ({ classId }: { classId: any }) => {
@@ -71,14 +78,16 @@ const TeacherClasses = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <div className={styles.main}>
-        <p>Классы</p>
+        <p className={styles.headText}>Классы</p>
         <div className={styles.addClass}>
           <p>Создать класс</p>
           <input
             type="text"
             className={styles.newClass}
             name="className"
-            onChange={(e: any) => changeClassName}
+            value={className}
+            placeholder="Введите имя класса"
+            onChange={changeClassName}
           />
           <button onClick={addClass} className={styles.createClassBtn}>
             создать
@@ -97,7 +106,15 @@ const TeacherClasses = () => {
                 </button>
                 <button
                   className={styles.deleteClassBtn}
-                  onClick={(e: any) => deleteLessons({ classId: cl.id })}
+                  // onClick={(e: any) => deleteLessons({ classId: cl.id })}
+                  onClick={() => {
+                    const confirmBox = window.confirm('Хотите удалить класс?');
+                    if (confirmBox) {
+                      deleteLessons({ classId: cl.id }).then(() =>
+                        window.location.reload(),
+                      );
+                    }
+                  }}
                 >
                   удалить
                 </button>
