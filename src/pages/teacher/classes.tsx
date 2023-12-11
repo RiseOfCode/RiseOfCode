@@ -68,7 +68,11 @@ const TeacherClasses = () => {
   };
 
   const deleteLessons = async ({ classId }: { classId: any }) => {
-    await deleteClass({ classId: classId });
+    const confirmBox = window.confirm('Хотите удалить класс?');
+    if (confirmBox) {
+      await deleteClass({ classId: classId });
+      router.reload();
+    }
   };
 
   const goToLessons = ({ classId }: { classId: any }) => {
@@ -80,7 +84,7 @@ const TeacherClasses = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <div className={styles.main}>
-        <p className={styles.headText}>Классы</p>
+        <h2 className={`${styles.headText} ${styles.mainClassName}`}>Классы</h2>
         <div className={styles.addClass}>
           <p>Создать класс</p>
           <input
@@ -97,15 +101,14 @@ const TeacherClasses = () => {
         </div>
         <div className={styles.classes}>
           {classes.map((cl) => (
-            <div className={styles.classesPiece}>
+            <div
+              className={styles.classesPiece}
+              key={cl.id}
+              onClick={(e: any) => goToLessons({ classId: cl.id })}
+            >
               <p className={styles.className}>{cl.name}</p>
               <div>
-                <button
-                  className={styles.goToClassBtn}
-                  onClick={(e: any) => goToLessons({ classId: cl.id })}
-                >
-                  к урокам
-                </button>
+                <button className={styles.goToClassBtn}>к урокам</button>
                 <img
                   src={bin.src}
                   width="25"
