@@ -19,9 +19,12 @@ const LessonsList = ({
   };
 
   const deleteLessonReq = async ({ lessonId }: { lessonId: string }) => {
-    await fetch(`/api/lesson/${lessonId}`, {
-      method: 'DELETE',
-    });
+    const confirmBox = window.confirm('Хотите удалить урок?');
+    if (confirmBox) {
+      await fetch(`/api/lesson/${lessonId}`, {
+        method: 'DELETE',
+      });
+    }
   };
 
   const deleteLesson = async ({ lessonId }: { lessonId: any }) => {

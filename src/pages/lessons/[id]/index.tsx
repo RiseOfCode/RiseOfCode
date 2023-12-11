@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/classes.module.css';
+import stylesTask from '../../styles/teacher.tasks.module.css';
 import descStyles from '../../styles/description.module.css';
 import LocalHeader from '../../../client/components/UI/Header';
 import StudentPages from '../../student/Header';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import TeacherPages from '../../teacher/Header';
+import Modal from 'react-modal';
+import star from '../../teacher/tasks/star.orange.png';
 
 const TasksList = ({
   tasks,
@@ -232,6 +235,123 @@ const LessonPage = () => {
     router.reload();
   };
 
+  const [filter, setFilter] = useState({
+    themes: undefined,
+    minRating: 0,
+    isDesc: 'true',
+  });
+
+  Modal.setAppElement('*');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setFilter(filter);
+  };
+
+  const [tasksBank, setTasksBank] = useState([
+    {
+      id: '',
+      name: '',
+      rating: 0,
+    },
+  ]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const data = {
+        themes: filter.themes,
+        minRating: filter.minRating,
+        isDesc: true,
+      };
+      if (filter.isDesc == 'false') data.isDesc = false;
+      try {
+        const tasksResponse = await fetch(`/api/task/bank`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        if (tasksResponse.ok) {
+          const tasksData = await tasksResponse.json();
+          setTasksBank(tasksData);
+        } else {
+          console.error('Failed to fetch tasks');
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    };
+    fetchTasks();
+  }, [filter]);
+  const TasksBank = ({
+    tasksBank,
+  }: {
+    tasksBank: {
+      rating: number;
+      name: string;
+      id: string;
+    }[];
+  }) => {
+    const handleTaskClick = async (taskId: string) => {
+      await fetch(` /api/task/teacher/${taskId}/lesson/${id} `, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      window.location.reload();
+    };
+
+    const renderRating = (task: any) => {
+      if (task.rating === 0) {
+        return <div className={stylesTask.taskRatingText}>Нет оценок</div>;
+      }
+
+      return (
+        <div className={stylesTask.themeContainer}>
+          <div className={stylesTask.taskRatingText}>{task.rating}</div>
+          <img
+            src={star.src}
+            width="27"
+            height="27"
+            style={{ paddingTop: '0' }}
+          ></img>
+        </div>
+      );
+    };
+
+    return (
+      <div className={stylesTask.classes}>
+        {tasksBank.length > 0 ? (
+          tasksBank.map((task) => (
+            <div
+              className={stylesTask.taskContainer}
+              key={task.id}
+              onClick={() => handleTaskClick(task.id)}
+            >
+              <div className={stylesTask.taskText}>{task.name}</div>
+              {renderRating(task)}
+            </div>
+          ))
+        ) : (
+          <p>В банке пока нет задач</p>
+        )}
+      </div>
+    );
+  };
+
+  const modalContent = (
+    <div className={stylesTask.pageContainer}>
+      <TasksBank tasksBank={tasksBank} />
+    </div>
+  );
+
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
@@ -267,7 +387,17 @@ const LessonPage = () => {
         </button>
       </div>
       <div>
-        <button className={descStyles.saveChangesBtn}>Новая задача</button>
+        <button className={descStyles.saveChangesBtn} onClick={openModal}>
+          Новая задача
+        </button>
+        <Modal
+          className={stylesTask.modal}
+          portalClassName="filter"
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+        >
+          {modalContent}
+        </Modal>
         <TasksList tasks={tasks} />
       </div>
     </div>
