@@ -115,4 +115,22 @@ export class AppController {
   task(@Req() req: Request) {
     return req.user;
   }
+
+  @Get('teacher/tasks/bank')
+  @Render('teacher/tasks/bank')
+  tasksBank(@Req() req: Request) {
+    return req.user;
+  }
+
+  @Get('teacher/tasks/:id')
+  @Render('teacher/tasks/:id')
+  teacherTask(@Req() req: Request) {
+    return req.user;
+  }
+
+  @Get('teacher/tasks/create')
+  @Render('teacher/tasks/create')
+  teacherTaskCreate(@Req() req: Request) {
+    return req.user;
+  }
 }

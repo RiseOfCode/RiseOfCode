@@ -18,7 +18,7 @@ const LocalHeader = () => {
     email: '',
   });
   const handleSignOut = async () => {
-    localStorage.removeItem("classId")
+    localStorage.removeItem('classId');
     const response = await fetch('/auth/logout', {
       method: 'POST',
       headers: {
@@ -31,6 +31,19 @@ const LocalHeader = () => {
     } else {
       console.error('Failed to sign out');
     }
+  };
+
+  const renderBankButton = () => {
+    if (user.role === 'TEACHER' && router.asPath != '/teacher/tasks/bank')
+      return (
+        <SubmitButton
+          style={{ marginTop: '10px' }}
+          onClick={() => {
+            router.push('/teacher/tasks/bank');
+          }}
+          title={'Банк задач'}
+        ></SubmitButton>
+      );
   };
 
   useEffect(() => {
@@ -110,6 +123,7 @@ const LocalHeader = () => {
           gap: '10px',
         }}
       >
+        {renderBankButton()}
         {token && (
           <Link href="/account">
             <img
@@ -124,7 +138,7 @@ const LocalHeader = () => {
           <SubmitButton
             style={{ marginTop: '10px' }}
             onClick={handleSignOut}
-            title={'Log out'}
+            title={'Выйти'}
           ></SubmitButton>
         )}
       </div>
