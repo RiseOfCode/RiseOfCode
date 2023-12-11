@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
-import TeacherPages from "./Header";
+import TeacherPages from './Header';
 
 const TeacherDescription = () => {
   const [classInfo, setClassInfo] = useState({
@@ -29,11 +29,11 @@ const TeacherDescription = () => {
   }, []);
 
   const changeClassInfo = async ({
-                                   classId,
-                                   name,
-                                   description,
-                                   teacherInfo,
-                                 }: {
+    classId,
+    name,
+    description,
+    teacherInfo,
+  }: {
     classId: string;
     name: string;
     description: string;

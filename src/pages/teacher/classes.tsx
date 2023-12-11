@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 import Cookies from 'js-cookie';
-import bin from "./src/trashbin.png"
+import bin from './src/trashbin.png';
+
 const TeacherClasses = () => {
   const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [classes, setClasses] = useState([{ name: '', id: '' }]);

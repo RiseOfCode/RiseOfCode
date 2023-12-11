@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import LocalHeader from '../../client/components/UI/Header';
 import Cookies from 'js-cookie';
+
 const StudentClasses = () => {
   const [userShort, setUserShort] = useState({ id: '', nickname: '' });
   const [classes, setClasses] = useState([{ name: '', id: '' }]);
@@ -59,7 +60,6 @@ const StudentClasses = () => {
       <LocalHeader />
       <h2 className={styles.headText}>Классы</h2>
       <div className={styles.main}>
-
         <div className={styles.addClass}>
           <p>Добавиться в класс</p>
           <input
@@ -81,8 +81,8 @@ const StudentClasses = () => {
 };
 
 const ClassesList = ({
-                       classes,
-                     }: {
+  classes,
+}: {
   classes: { name: string; id: string }[];
 }) => {
   const router = useRouter();

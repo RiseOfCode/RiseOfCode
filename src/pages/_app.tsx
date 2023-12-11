@@ -6,6 +6,7 @@ import './styles/globals.css';
 
 class App extends NextApp<AppProps> {
   appData: AppData;
+
   // authData: any;
 
   constructor(props: AppProps) {

@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import styles from '../styles/classes.module.css';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
-import Link from "next/link";
+import Link from 'next/link';
 
 const LessonsList = ({
-                       lessons,
-                     }: {
+  lessons,
+}: {
   lessons: { name: string; id: string }[];
 }) => {
   const router = useRouter();
@@ -81,7 +81,9 @@ const StudentLessons = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <Link href="/student/classes">
-        <h2 className={styles.mainClassName}>{classData ? classData.name : ''}</h2>
+        <h2 className={styles.mainClassName}>
+          {classData ? classData.name : ''}
+        </h2>
       </Link>
       <StudentPages />
       <div>

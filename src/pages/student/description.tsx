@@ -2,7 +2,7 @@ import styles from '../styles/description.module.css';
 import React, { useEffect, useState } from 'react';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
-import Link from "next/link";
+import Link from 'next/link';
 
 const StudentDescription = () => {
   const [classInfo, setClassInfo] = useState({
@@ -50,7 +50,9 @@ const StudentDescription = () => {
             <p className={styles.descText}>{classInfo.description}</p>
           </div>
           <div className={styles.descInput}>
-            <p className={styles.descTeacher}>{`${teacherInfo.name} ${teacherInfo.surname}`}</p>
+            <p
+              className={styles.descTeacher}
+            >{`${teacherInfo.name} ${teacherInfo.surname}`}</p>
             <p>{classInfo.teacherInfo}</p>
           </div>
         </div>

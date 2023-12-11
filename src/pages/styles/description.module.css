@@ -9,6 +9,7 @@
     color: #ec9b59;
     cursor: pointer;
 }
+
 .header {
     display: flex;
     flex-direction: column;
@@ -89,6 +90,7 @@
     border-radius: 5px;
     font-weight: bold;
 }
+
 .saveChangesBtn:hover {
     background-color: #ec9b59;
 }

@@ -1,15 +1,15 @@
-import styles from "../styles/classes.module.css";
-import LocalHeader from "../../client/components/UI/Header";
-import Link from "next/link";
-import TeacherPages from "./Header";
-import React, { useEffect, useState } from "react";
-import ClipboardJS from "clipboard";
-import copy from "./src/copy.png";
+import styles from '../styles/classes.module.css';
+import LocalHeader from '../../client/components/UI/Header';
+import Link from 'next/link';
+import TeacherPages from './Header';
+import React, { useEffect, useState } from 'react';
+import ClipboardJS from 'clipboard';
+import copy from './src/copy.png';
 
 const Students = () => {
   const [classInfo, setClassInfo] = useState({
     name: '',
-    code: ''
+    code: '',
   });
 
   useEffect(() => {
@@ -50,14 +50,14 @@ const Students = () => {
       </Link>
       <TeacherPages />
       <div className={styles.copy}>
-        <h4>Код для входа в класс:  </h4>
+        <h4>Код для входа в класс: </h4>
         <div className={styles.inCopy}>
           <p>{classInfo ? classInfo.code : ''}</p>
           <img
             src={copy.src}
             width="25"
             height="25"
-            style={{ margin: '10px', cursor: "pointer" }}
+            style={{ margin: '10px', cursor: 'pointer' }}
             data-clipboard-text={classInfo ? classInfo.code : ''}
           ></img>
         </div>

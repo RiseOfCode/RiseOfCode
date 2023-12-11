@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/classes.module.css';
-import descStyles from '../../styles/description.module.css'
+import descStyles from '../../styles/description.module.css';
 import LocalHeader from '../../../client/components/UI/Header';
 import StudentPages from '../../student/Header';
-import Cookies from "js-cookie";
-import Link from "next/link";
-import TeacherPages from "../../teacher/Header";
+import Cookies from 'js-cookie';
+import Link from 'next/link';
+import TeacherPages from '../../teacher/Header';
 
 const TasksList = ({
   tasks,
@@ -28,16 +28,23 @@ const TasksList = ({
     <div className={styles.classes}>
       {tasks.length > 0 ? (
         tasks.map((task) => (
-          <div className={styles.classesPiece} key={task.id}
-               onClick={() => handleLessonClick(task.id)}>
+          <div
+            className={styles.classesPiece}
+            key={task.id}
+            onClick={() => handleLessonClick(task.id)}
+          >
             <p className={styles.className}>{task.name}</p>
-            <p style={{ color: task.finalAttempt?.status === 'SOLVED' ? '#236566' : 'inherit' }}>
-              {task.finalAttempt ? task.finalAttempt.status : ''}</p>
-            <button
-              className={styles.goToClassBtn}
+            <p
+              style={{
+                color:
+                  task.finalAttempt?.status === 'SOLVED'
+                    ? '#236566'
+                    : 'inherit',
+              }}
             >
-              Решить
-            </button>
+              {task.finalAttempt ? task.finalAttempt.status : ''}
+            </p>
+            <button className={styles.goToClassBtn}>Решить</button>
           </div>
         ))
       ) : (
@@ -51,11 +58,10 @@ const LessonPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [userShort, setUserShort] = useState({ id: '', nickname: '' });
-  const [lessonData, setLessonData] = useState(
-    {
-      name: '',
-      theory: ''
-    });
+  const [lessonData, setLessonData] = useState({
+    name: '',
+    theory: '',
+  });
   const [tasks, setTasks] = useState([
     {
       id: '',
@@ -142,7 +148,9 @@ const LessonPage = () => {
             console.error('Failed to fetch lesson details');
           }
 
-          const tasksResponse = await fetch(`/api/task/student/${userShort.id}/lesson/${id}`);
+          const tasksResponse = await fetch(
+            `/api/task/student/${userShort.id}/lesson/${id}`,
+          );
           if (tasksResponse.ok) {
             const tasksData = await tasksResponse.json();
             setTasks(tasksData);
@@ -165,7 +173,7 @@ const LessonPage = () => {
     return <div>Loading...</div>;
   }
 
-  const { name,  theory } = lessonData;
+  const { name, theory } = lessonData;
 
   const handleSolveClick = (taskId: string) => {
     router.push(`/lessons/${id}/task/${taskId}`);
@@ -257,9 +265,7 @@ const LessonPage = () => {
         </button>
       </div>
       <div>
-        <button className={descStyles.saveChangesBtn}>
-          Новая задача
-        </button>
+        <button className={descStyles.saveChangesBtn}>Новая задача</button>
         <TasksList tasks={tasks} />
       </div>
     </div>

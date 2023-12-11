@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import styles from '../styles/classes.module.css';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
-import Link from "next/link";
-import TeacherPages from "./Header";
-import bin from "./src/trashbin.png";
+import Link from 'next/link';
+import TeacherPages from './Header';
+import bin from './src/trashbin.png';
 
 const LessonsList = ({
-                       lessons,
-                     }: {
+  lessons,
+}: {
   lessons: { name: string; id: string }[];
 }) => {
   const router = useRouter();
@@ -55,12 +55,11 @@ const LessonsList = ({
 const TeacherLessons = () => {
   const [classData, setClassData] = useState({
     name: '',
-    id: ''
+    id: '',
   });
   const [lessonsData, setLessonsData] = useState([]);
 
   const router = useRouter();
-
 
   useEffect(() => {
     const classId = localStorage.getItem('classId');
@@ -104,7 +103,7 @@ const TeacherLessons = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
       });
 
       if (response.ok) {
@@ -122,11 +121,15 @@ const TeacherLessons = () => {
     <div className={styles.pageContainer}>
       <LocalHeader />
       <Link href="/teacher/classes">
-        <h2 className={styles.mainClassName}>{classData ? classData.name : ''}</h2>
+        <h2 className={styles.mainClassName}>
+          {classData ? classData.name : ''}
+        </h2>
       </Link>
       <TeacherPages />
       <div>
-        <button className={styles.newLesson} onClick={createNewLesson}>Новый урок</button>
+        <button className={styles.newLesson} onClick={createNewLesson}>
+          Новый урок
+        </button>
         <LessonsList lessons={lessonsData} />
       </div>
     </div>

@@ -1,4 +1,4 @@
-.mainContainer{
+.mainContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,6 +13,7 @@
     height: 100vh;
     gap: 30px;
 }
+
 .wrapper {
     margin-top: -2em;
     padding: 20px;
@@ -20,22 +21,27 @@
     border-radius: 25px;
     list-style-type: none;
 }
+
 .formRow {
     display: flex;
     justify-content: flex-end;
     padding: .5em;
 }
+
 .formRow > label {
     padding: .5em 1em .5em 0;
     flex: 1;
 }
+
 .formRow > input {
     flex: 2;
 }
+
 .formRow > input,
 .formRow > button {
     padding: .5em;
 }
+
 .formRow > button {
     background: #ec9b59;
     color: white;

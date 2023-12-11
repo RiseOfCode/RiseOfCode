@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import LocalHeader from '../../client/components/UI/Header';
 import StudentPages from './Header';
 import Cookies from 'js-cookie';
-import Link from "next/link";
+import Link from 'next/link';
+
 const StudentProgress = () => {
   const [progress, setProgress] = useState([
     { solvedTasksAmount: 0, name: '', tasks: [{ name: '', status: '' }] },

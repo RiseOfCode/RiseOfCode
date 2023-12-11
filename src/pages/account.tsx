@@ -4,7 +4,7 @@ import LocalHeader from '../client/components/UI/Header';
 import SubmitButton from '../client/components/UI/SubmitButton';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import Link from "next/link";
+import Link from 'next/link';
 
 const Account = () => {
   const router = useRouter();

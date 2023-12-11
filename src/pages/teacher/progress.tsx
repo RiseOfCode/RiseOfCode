@@ -7,7 +7,8 @@ import React, {
 } from 'react';
 import Link from 'next/link';
 import LocalHeader from '../../client/components/UI/Header';
-import TeacherPages from "./Header";
+import TeacherPages from './Header';
+
 const TeacherProgress = () => {
   const [lessons, setLessons] = useState<
     [ReactElement<{ onClick: () => void }, string | JSXElementConstructor<any>>]

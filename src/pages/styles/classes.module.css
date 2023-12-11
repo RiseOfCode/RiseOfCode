@@ -107,12 +107,15 @@
     padding: 7px;
     border-radius: 5px;
 }
+
 .deleteClassBtn:hover {
     background-color: #ec9b59;
 }
+
 .goToClassBtn:active {
     transform: scale(0.95);
 }
+
 .mainName {
     font-weight: bold;
     color: #01212c;

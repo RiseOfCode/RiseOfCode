@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import styles from '../../../styles/task.module.css';
 import LocalHeader from '../../../../client/components/UI/Header';
 import StudentPages from '../../../student/Header';
-import { fontWeight } from "@material-ui/system";
-import { bold } from "colorette";
-import Link from "next/link";
+import { fontWeight } from '@material-ui/system';
+import { bold } from 'colorette';
+import Link from 'next/link';
 
 const TaskPage = () => {
   const router = useRouter();
@@ -149,6 +149,7 @@ const TaskPage = () => {
     }
 
     setTextAnswer('');
+
     async function sendRequest() {
       try {
         setNewAttempt({
@@ -197,7 +198,9 @@ const TaskPage = () => {
           )}
           {task.attempts.map((attempt, index) => (
             <tr key={task.attempts.length - index}>
-              <td style={{ fontWeight: 'bold' }}>{task.attempts.length - index}</td>
+              <td style={{ fontWeight: 'bold' }}>
+                {task.attempts.length - index}
+              </td>
               <td>{new Date(attempt.date).toLocaleString()}</td>
               <td
                 className={
@@ -222,11 +225,19 @@ const TaskPage = () => {
     <div className={styles.container}>
       <LocalHeader />
       <Link href="/student/classes">
-        <h2 className={styles.mainClassName}>{classData ? classData.name : ''}</h2>
+        <h2 className={styles.mainClassName}>
+          {classData ? classData.name : ''}
+        </h2>
       </Link>
       <StudentPages />
-      <Link href={"/student/lessons"}><h3 className={`${styles.lessonName} ${styles.mainName}`}>{lessonData.name}</h3></Link>
-      <Link href={`/lessons/${lessonData.id}`}><h3 className={`${styles.taskName} ${styles.mainName}`}>{task.name}</h3></Link>
+      <Link href={'/student/lessons'}>
+        <h3 className={`${styles.lessonName} ${styles.mainName}`}>
+          {lessonData.name}
+        </h3>
+      </Link>
+      <Link href={`/lessons/${lessonData.id}`}>
+        <h3 className={`${styles.taskName} ${styles.mainName}`}>{task.name}</h3>
+      </Link>
       <p>{task.description}</p>
 
       <textarea
@@ -244,7 +255,10 @@ const TaskPage = () => {
         ref={fileInputRef}
       />
 
-      <button className={`${styles.send} ${styles.button}`} onClick={handleSubmit}>
+      <button
+        className={`${styles.send} ${styles.button}`}
+        onClick={handleSubmit}
+      >
         Отправить
       </button>
 
