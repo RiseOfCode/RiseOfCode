@@ -7,18 +7,34 @@ import React, {
 } from 'react';
 import Link from 'next/link';
 import LocalHeader from '../../client/components/UI/Header';
+import TeacherPages from "./Header";
 const TeacherProgress = () => {
   const [lessons, setLessons] = useState<
     [ReactElement<{ onClick: () => void }, string | JSXElementConstructor<any>>]
   >([
     <button onClick={(e: any) => handleLesson({ lessonId: '' })}>name</button>,
   ]);
-  // const router = useRouter();
+  const [classData, setClassData] = useState({
+    name: '',
+  });
 
   useEffect(() => {
     const classId = localStorage.getItem('classId') ?? '';
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/class/${classId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setClassData(data);
+        } else {
+          console.error('Failed to fetch class details');
+        }
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
+    };
     const fetchLessonData = async () => {
-      await fetch(`/lesson/class/${classId}`)
+      await fetch(`/api/lesson/class/${classId}`)
         .then((response) => response.json())
         .then(({ data }: { data: any }) =>
           setLessons(
@@ -30,6 +46,7 @@ const TeacherProgress = () => {
           ),
         );
     };
+    fetchData();
     fetchLessonData();
   }, []);
 
@@ -50,12 +67,10 @@ const TeacherProgress = () => {
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <div className={styles.navMenu}>
-        <Link href={`/teacher/description`}>Описание</Link>
-        <Link href={`/teacher/lessons`}>Уроки</Link>
-        <Link href={`/teacher/students`}>Ученики</Link>
-        <Link href={`/teacher/progress`}>Прогресс</Link>
-      </div>
+      <Link href="/teacher/classes">
+        <h2 className={styles.className}>{classData ? classData.name : ''}</h2>
+      </Link>
+      <TeacherPages />
       <div className={styles.main}>
         <Dropdown
           trigger={<button className={styles.lessonsBtn}>Выбрать урок</button>}

@@ -50,6 +50,9 @@
     margin: 15px;
     padding: 20px 30px;
     box-shadow: 0 2px 5px 3px rgba(0, 0, 0, 0.1);
+    font-family: 'Poiret One', sans-serif;
+    font-size: 20px;
+    border: none;
     /*width: 490px;*/
     /*border: none;*/
 }
@@ -64,8 +67,15 @@
 
 .saveChangesBtn {
     margin: 10px;
-    background-color: #ec9b59;
+    padding: 10px;
+    background-color: #ec9b59e0;
+    font-family: 'Poiret One', sans-serif;
+    font-size: 18px;
     color: #ffffff;
     border-color: #ec9b59;
     border-radius: 5px;
+    font-weight: bold;
+}
+.saveChangesBtn:hover {
+    background-color: #ec9b59;
 }

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/classes.module.css';
+import descStyles from '../../styles/description.module.css'
 import LocalHeader from '../../../client/components/UI/Header';
 import StudentPages from '../../student/Header';
 import Cookies from "js-cookie";
 import Link from "next/link";
+import TeacherPages from "../../teacher/Header";
 
 const TasksList = ({
   tasks,
@@ -62,6 +64,12 @@ const LessonPage = () => {
     teacherInfo: '',
     description: '',
   });
+  const [userFull, setUser] = useState({
+    nickname: '',
+    role: '',
+  });
+  const [updatedName, setUpdatedName] = useState('');
+  const [updatedTheory, setUpdatedTheory] = useState('');
 
   useEffect(() => {
     const cookie = Cookies.get('authToken')?.toString();
@@ -82,6 +90,25 @@ const LessonPage = () => {
 
     fetchUserId();
   }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (userShort && userShort.id) {
+        try {
+          const response = await fetch(`/api/user/acc/${userShort.id}`);
+          if (response.ok) {
+            const data = await response.json();
+            setUser(data);
+          } else {
+            console.error('Error:', response.status);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+    };
+    fetchUser();
+  }, [userShort]);
 
   useEffect(() => {
     const classId = localStorage.getItem('classId');
@@ -140,14 +167,95 @@ const LessonPage = () => {
     router.push(`/lessons/${id}/task/${taskId}`);
   };
 
+  if (userFull.role === 'STUDENT') {
+    return (
+      <div className={styles.pageContainer}>
+        <LocalHeader />
+        <h2 className={styles.mainClassName}>
+          {classData ? classData.name : ' '}
+        </h2>
+        <StudentPages />
+        <div>
+          <Link href={'/student/lessons'}>
+            <h3 className={styles.mainName}>{name}</h3>
+          </Link>
+          <p>{theory}</p>
+          <TasksList tasks={tasks} />
+        </div>
+      </div>
+    );
+  }
+
+  const changeName = (e: any) => {
+    setUpdatedName(e.target.value);
+  };
+
+  const changeTheory = (e: any) => {
+    setUpdatedTheory(e.target.value);
+  };
+
+  const saveChanges = async () => {
+    const updatedInfo = {
+      name: updatedName,
+      theory: updatedTheory,
+    };
+
+    try {
+      const response = await fetch(`/api/lesson/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedInfo),
+      });
+
+      if (response.ok) {
+        console.log('Lesson info updated successfully');
+      } else {
+        console.error('Failed to update lesson info');
+      }
+    } catch (error) {
+      console.error('An error occurred', error);
+    }
+    router.reload();
+  };
+
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <h2 className={styles.mainClassName}>{classData ? classData.name : ' '}</h2>
-      <StudentPages />
+      <h2 className={styles.mainClassName}>
+        {classData ? classData.name : ' '}
+      </h2>
+      <TeacherPages />
       <div>
-        <Link href={"/student/lessons"}><h3 className={styles.mainName}>{name}</h3></Link>
-        <p>{theory}</p>
+        <p className={styles.mainName}>Название</p>
+        <div className={descStyles.desc}>
+          <input
+            type="text"
+            className={descStyles.descInput}
+            name="name"
+            onChange={(e: any) => changeName(e)}
+            defaultValue={name}
+          />
+        </div>
+        <p className={styles.mainName}>Теория</p>
+        <div className={descStyles.desc}>
+          <input
+            type="text"
+            className={descStyles.descInput}
+            name="teacherInfo"
+            onChange={(e: any) => changeTheory(e)}
+            defaultValue={theory}
+          />
+        </div>
+        <button className={descStyles.saveChangesBtn} onClick={saveChanges}>
+          сохранить
+        </button>
+      </div>
+      <div>
+        <button className={descStyles.saveChangesBtn}>
+          Новая задача
+        </button>
         <TasksList tasks={tasks} />
       </div>
     </div>
@@ -155,4 +263,3 @@ const LessonPage = () => {
 };
 
 export default LessonPage;
-
