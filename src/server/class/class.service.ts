@@ -98,6 +98,36 @@ export class ClassService {
     return classes;
   }
 
+  async getStudents(classId: string) {
+    const classStudents = await this.prisma.classStudent.findMany({
+      where: {
+        class_id: classId,
+      },
+      select: {
+        student_id: true,
+      },
+    });
+
+    if (!classStudents || classStudents.length === 0) {
+      return null; // Можете вернуть пустой список или обработать случай отсутствия студентов
+    }
+
+    const studentIds = classStudents.map((cs) => cs.student_id);
+
+    return this.prisma.user.findMany({
+      where: {
+        id: {
+          in: studentIds,
+        },
+      },
+      select: {
+        name: true,
+        surname: true,
+        nickname: true,
+      },
+    });
+  }
+
   async changeClass(id: string, dto: ClassUpdateDto): Promise<ClassReturnDto> {
     return new ClassReturnDto(
       await this.prisma.class.update({

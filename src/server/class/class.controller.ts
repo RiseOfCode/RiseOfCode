@@ -13,6 +13,7 @@ import { ClassService } from './class.service';
 import { ApiTags } from '@nestjs/swagger';
 import { ClassReturnDto } from './dto/class.return.dto';
 import { ClassUpdateDto } from './dto/class.update.dto';
+
 @ApiTags('class')
 @Controller('api/class')
 export class ClassController {
@@ -47,6 +48,11 @@ export class ClassController {
     @Param('classId', ParseUUIDPipe) classId: string,
   ): Promise<ClassReturnDto> {
     return this.classService.findClass(classId);
+  }
+
+  @Get(':classId/students')
+  async getStudentsByClass(@Param('classId', ParseUUIDPipe) classId: string) {
+    return this.classService.getStudents(classId);
   }
 
   @Get('/teacher/:teacherId')
