@@ -1,4 +1,5 @@
 import { Class } from '@prisma/client';
+
 export class ClassReturnDto {
   constructor(dbClass: Class) {
     this.id = dbClass.id;
@@ -8,6 +9,7 @@ export class ClassReturnDto {
     this.teacherInfo = dbClass.teacher_info;
     this.teacherId = dbClass.teacher_id;
   }
+
   id: string;
   name: string;
   code: string;

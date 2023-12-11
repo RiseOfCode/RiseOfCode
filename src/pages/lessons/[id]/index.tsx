@@ -235,9 +235,11 @@ const LessonPage = () => {
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <h2 className={styles.mainClassName}>
-        {classData ? classData.name : ' '}
-      </h2>
+      <Link href={'/teacher/classes'}>
+        <h2 className={styles.mainClassName}>
+          {classData ? classData.name : ' '}
+        </h2>
+      </Link>
       <TeacherPages />
       <div>
         <p className={styles.mainName}>Название</p>

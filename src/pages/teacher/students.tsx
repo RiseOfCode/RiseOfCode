@@ -5,6 +5,8 @@ import TeacherPages from './Header';
 import React, { useEffect, useState } from 'react';
 import ClipboardJS from 'clipboard';
 import copy from './src/copy.png';
+import descStyles from '../styles/description.module.css';
+import { width } from '@material-ui/system';
 
 const Students = () => {
   const [classInfo, setClassInfo] = useState({
@@ -40,6 +42,10 @@ const Students = () => {
     };
   }, []);
 
+  const addUser = (e: any) => {
+    // (e.target.value);
+  };
+
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
@@ -61,6 +67,16 @@ const Students = () => {
             data-clipboard-text={classInfo ? classInfo.code : ''}
           ></img>
         </div>
+      </div>
+      <div>
+        <input
+          type="text"
+          className={descStyles.descInput}
+          style={{ width: '500px' }}
+          name="name"
+          placeholder="Новый студент"
+          onChange={(e: any) => addUser(e)}
+        />
       </div>
     </div>
   );
