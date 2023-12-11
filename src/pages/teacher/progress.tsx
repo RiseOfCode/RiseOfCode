@@ -33,21 +33,24 @@ const TeacherProgress = () => {
       }
     };
     const fetchLessonData = async () => {
-      await fetch(`/api/lesson/class/${classId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          setLessons(
-            data.map((lesson: any) => (
-              <button
-                className={styles.chooseItem}
-                onClick={(e: any) => handleLesson(lesson.id)}
-              >
-                {lesson.name}
-              </button>
-            )),
-          );
-        });
+      try {
+        await fetch(`/api/lesson/class/${classId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setLessons(
+              data.map((lesson: any) => (
+                <button
+                  className={styles.chooseItem}
+                  onClick={(e: any) => handleLesson(lesson.id)}
+                >
+                  {lesson.name}
+                </button>
+              )),
+            );
+          });
+      } catch (error) {
+        console.error('An error occurred', error);
+      }
     };
     fetchData();
     fetchLessonData();
