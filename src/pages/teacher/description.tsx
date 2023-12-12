@@ -69,9 +69,9 @@ const TeacherDescription = () => {
     const constClassId = localStorage.getItem('classId') ?? '';
     await changeClassInfo({
       classId: constClassId,
-      name: name,
-      description: description,
-      teacherInfo: teacherInfo,
+      name: name || classInfo.name,
+      description: description || classInfo.description,
+      teacherInfo: teacherInfo || classInfo.teacherInfo,
     });
     router.reload();
   };
