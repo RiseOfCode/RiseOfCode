@@ -67,12 +67,12 @@ export class TaskController {
     return this.taskService.addTaskToLesson(lessonId, taskId);
   }
 
-  @Delete('teacher/:taskId/lesson/:lessonId')
+  @Delete('teacher/:taskId/lesson/:lessonId/del')
   async deleteTaskFromLesson(
     @Param('taskId', ParseUUIDPipe) taskId: string,
     @Param('lessonId', ParseUUIDPipe) lessonId: string,
   ) {
-    return this.taskService.deleteTaskFromLesson(lessonId, taskId);
+    return this.taskService.deleteTaskFromLesson(taskId, lessonId);
   }
 
   @Get('teacher/lesson/:lessonId')

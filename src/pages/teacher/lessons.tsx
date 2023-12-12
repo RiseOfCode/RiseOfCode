@@ -15,7 +15,7 @@ const LessonsList = ({
   const router = useRouter();
 
   const handleClassesPieceClick = (lessonId: string) => {
-    router.push(`/lessons/${lessonId}`);
+    router.push(`/lessons/teacher/${lessonId}`);
   };
 
   const deleteLessonReq = async ({ lessonId }: { lessonId: string }) => {
