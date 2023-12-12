@@ -10,6 +10,9 @@ import Link from 'next/link';
 import Modal from 'react-modal';
 import star from '../../teacher/tasks/star.orange.png';
 import bin from '../../teacher/src/trashbin.png';
+import TaskDetailsPage from '../../teacher/tasks/TaskDetales';
+import arrow from '../../teacher/src/arrow.png';
+import add from '../../teacher/src/add+.png';
 
 const TasksList = ({
   tasks,
@@ -230,6 +233,9 @@ const TeacherLessonPage = () => {
   Modal.setAppElement('*');
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const [taskDetailsModalIsOpen, setTaskDetailsModalIsOpen] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -275,16 +281,21 @@ const TeacherLessonPage = () => {
     };
     fetchTasks();
   }, [filter]);
-  const TasksBank = ({
-    tasksBank,
-  }: {
-    tasksBank: {
-      rating: number;
-      name: string;
-      id: string;
-    }[];
-  }) => {
-    const handleTaskClick = async (taskId: string) => {
+
+  const handleTaskClick = (taskId: string) => {
+    closeModal();
+    setSelectedTaskId(taskId);
+    setTaskDetailsModalIsOpen(true);
+  };
+
+  const closeTaskDetailsModal = () => {
+    setTaskDetailsModalIsOpen(false);
+    setSelectedTaskId(null);
+    openModal();
+  };
+
+  const handleAddSelectedTssk = async (taskId: string | null) => {
+    if (taskId) {
       try {
         await fetch(` /api/task/teacher/${taskId}/lesson/${id} `, {
           method: 'POST',
@@ -294,8 +305,17 @@ const TeacherLessonPage = () => {
         });
         window.location.reload();
       } catch (error) {}
-    };
-
+    }
+  };
+  const TasksBank = ({
+    tasksBank,
+  }: {
+    tasksBank: {
+      rating: number;
+      name: string;
+      id: string;
+    }[];
+  }) => {
     const renderRating = (task: any) => {
       if (task.rating === 0) {
         return <div className={stylesTask.taskRatingText}>Нет оценок</div>;
@@ -385,11 +405,40 @@ const TeacherLessonPage = () => {
           onRequestClose={closeModal}
         >
           {modalContent}
+          <img
+            src={arrow.src}
+            width="25"
+            height="25"
+            style={{ marginTop: '10px', cursor: 'pointer' }}
+            onClick={(e: any) => closeModal()}
+          ></img>
+        </Modal>
+        <Modal
+          className={stylesTask.modal}
+          isOpen={taskDetailsModalIsOpen}
+          onRequestClose={closeModal}
+        >
+          <TaskDetailsPage id={selectedTaskId} />
+          <div className={stylesTask.buttonsContainer}>
+            <img
+              src={arrow.src}
+              width="25"
+              height="25"
+              style={{ cursor: 'pointer' }}
+              onClick={(e: any) => closeTaskDetailsModal()}
+            />
+            <img
+              src={add.src}
+              width="25"
+              height="25"
+              style={{ cursor: 'pointer', marginLeft: '10px' }}
+              onClick={(e: any) => handleAddSelectedTssk(selectedTaskId)}
+            />
+          </div>
         </Modal>
         <TasksList tasks={tasks} />
       </div>
     </div>
   );
 };
-
 export default TeacherLessonPage;
