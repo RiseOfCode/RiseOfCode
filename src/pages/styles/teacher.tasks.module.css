@@ -114,9 +114,9 @@
     width: 50vw;
     height: 50vh;
     margin: 10% 25%;
-    border-style: solid;
-    border-color: #236566;
+    border: none;
     background-color: white;
+
 }
 
 .inputText{

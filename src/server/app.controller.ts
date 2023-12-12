@@ -103,16 +103,28 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('lessons/:id')
-  @Render('lessons/:id')
-  lesson(@Req() req: Request) {
+  @Get('lessons/teacher/:id')
+  @Render('lessons/teacher/:id')
+  lessonTeacher(@Req() req: Request) {
+    return req.user;
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('lessons/student/:id')
+  @Render('lessons/student/:id')
+  lessonStudent(@Req() req: Request) {
     return req.user;
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('lessons/:id/task/:taskId')
-  @Render('lessons/:id/task/:taskId')
-  task(@Req() req: Request) {
+  @Get('lessons/:id/task/teacher/:taskId')
+  @Render('lessons/:id/task/teacher/:taskId')
+  taskTeacher(@Req() req: Request) {
+    return req.user;
+  }
+  @UseGuards(JwtAuthGuard)
+  @Get('lessons/:id/task/student/:taskId')
+  @Render('lessons/:id/task/student/:taskId')
+  taskStudent(@Req() req: Request) {
     return req.user;
   }
 

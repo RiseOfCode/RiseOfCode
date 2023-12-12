@@ -4,12 +4,12 @@ import styles from '../../styles/classes.module.css';
 import stylesTask from '../../styles/teacher.tasks.module.css';
 import descStyles from '../../styles/description.module.css';
 import LocalHeader from '../../../client/components/UI/Header';
-import StudentPages from '../../student/Header';
+import TeacherPages from '../../teacher/Header';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
-import TeacherPages from '../../teacher/Header';
 import Modal from 'react-modal';
 import star from '../../teacher/tasks/star.orange.png';
+import bin from '../../teacher/src/trashbin.png';
 
 const TasksList = ({
   tasks,
@@ -22,9 +22,26 @@ const TasksList = ({
 }) => {
   const router = useRouter();
 
+  let isDeleted = false;
   const { id } = router.query;
   const handleLessonClick = (taskId: string) => {
-    router.push(`/lessons/${id}/task/${taskId}`);
+    if (!isDeleted) router.push(`/lessons/${id}/task/teacher/${taskId}`);
+  };
+
+  const deleteTaskFromLesson = async ({ taskId }: { taskId: any }) => {
+    isDeleted = true;
+    await deleteTaskReq({ taskId: taskId });
+  };
+  const deleteTaskReq = async ({ taskId }: { taskId: string }) => {
+    const confirmBox = window.confirm('Хотите удалить задачу из урока?');
+    console.log(confirmBox);
+    if (confirmBox) {
+      await fetch(`/api/task/teacher/${taskId}/lesson/${id}/del`, {
+        method: 'DELETE',
+      });
+    }
+    router.reload();
+    isDeleted = false;
   };
 
   return (
@@ -36,18 +53,30 @@ const TasksList = ({
             key={task.id}
             onClick={() => handleLessonClick(task.id)}
           >
-            <p className={styles.className}>{task.name}</p>
+            <p className={styles.className} style={{ width: '45%' }}>
+              {task.name}
+            </p>
             <p
               style={{
                 color:
                   task.finalAttempt?.status === 'SOLVED'
                     ? '#236566'
                     : 'inherit',
+                width: '25%',
               }}
             >
               {task.finalAttempt ? task.finalAttempt.status : ''}
             </p>
-            <button className={styles.goToClassBtn}>Решить</button>
+            <button className={styles.goToClassBtn} style={{ width: '20%' }}>
+              Решить
+            </button>
+            <img
+              src={bin.src}
+              width="25"
+              height="25"
+              style={{ margin: '15px' }}
+              onClick={(e: any) => deleteTaskFromLesson({ taskId: task.id })}
+            ></img>
           </div>
         ))
       ) : (
@@ -57,7 +86,7 @@ const TasksList = ({
   );
 };
 
-const LessonPage = () => {
+const TeacherLessonPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [userShort, setUserShort] = useState({ id: '', nickname: '' });
@@ -77,10 +106,7 @@ const LessonPage = () => {
     teacherInfo: '',
     description: '',
   });
-  const [userFull, setUser] = useState({
-    nickname: '',
-    role: '',
-  });
+
   const [updatedName, setUpdatedName] = useState('');
   const [updatedTheory, setUpdatedTheory] = useState('');
 
@@ -103,25 +129,6 @@ const LessonPage = () => {
 
     fetchUserId();
   }, []);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (userShort && userShort.id) {
-        try {
-          const response = await fetch(`/api/user/acc/${userShort.id}`);
-          if (response.ok) {
-            const data = await response.json();
-            setUser(data);
-          } else {
-            console.error('Error:', response.status);
-          }
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      }
-    };
-    fetchUser();
-  }, [userShort]);
 
   useEffect(() => {
     const classId = localStorage.getItem('classId');
@@ -151,9 +158,7 @@ const LessonPage = () => {
             console.error('Failed to fetch lesson details');
           }
 
-          const tasksResponse = await fetch(
-            `/api/task/student/${userShort.id}/lesson/${id}`,
-          );
+          const tasksResponse = await fetch(`/api/task/teacher/lesson/${id}`);
           if (tasksResponse.ok) {
             const tasksData = await tasksResponse.json();
             setTasks(tasksData);
@@ -181,25 +186,6 @@ const LessonPage = () => {
   const handleSolveClick = (taskId: string) => {
     router.push(`/lessons/${id}/task/${taskId}`);
   };
-
-  if (userFull.role === 'STUDENT') {
-    return (
-      <div className={styles.pageContainer}>
-        <LocalHeader />
-        <h2 className={styles.mainClassName}>
-          {classData ? classData.name : ' '}
-        </h2>
-        <StudentPages />
-        <div>
-          <Link href={'/student/lessons'}>
-            <h3 className={styles.mainName}>{name}</h3>
-          </Link>
-          <p>{theory}</p>
-          <TasksList tasks={tasks} />
-        </div>
-      </div>
-    );
-  }
 
   const changeName = (e: any) => {
     setUpdatedName(e.target.value);
@@ -299,13 +285,15 @@ const LessonPage = () => {
     }[];
   }) => {
     const handleTaskClick = async (taskId: string) => {
-      await fetch(` /api/task/teacher/${taskId}/lesson/${id} `, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      window.location.reload();
+      try {
+        await fetch(` /api/task/teacher/${taskId}/lesson/${id} `, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        window.location.reload();
+      } catch (error) {}
     };
 
     const renderRating = (task: any) => {
@@ -404,4 +392,4 @@ const LessonPage = () => {
   );
 };
 
-export default LessonPage;
+export default TeacherLessonPage;

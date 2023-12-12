@@ -13,7 +13,7 @@ const LessonsList = ({
   const router = useRouter();
 
   const handleClassesPieceClick = (lessonId: string) => {
-    router.push(`/lessons/${lessonId}`);
+    router.push(`/lessons/student/${lessonId}`);
   };
 
   return (
