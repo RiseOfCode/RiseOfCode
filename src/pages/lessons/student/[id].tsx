@@ -152,9 +152,11 @@ const StudentLessonPage = () => {
   return (
     <div className={styles.pageContainer}>
       <LocalHeader />
-      <h2 className={styles.mainClassName}>
-        {classData ? classData.name : ''}
-      </h2>
+      <Link href={'/student/classes'}>
+        <h2 className={styles.mainClassName}>
+          {classData ? classData.name : ' '}
+        </h2>
+      </Link>
       <StudentPages />
       <div style={{ width: '750px' }}>
         <Link href={'/student/lessons'}>
