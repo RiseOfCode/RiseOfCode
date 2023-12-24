@@ -54,7 +54,7 @@ const LocalHeader = () => {
   }, []);
 
   useEffect(() => {
-    const cookie = Cookies.get('authToken').toString();
+    const cookie = Cookies.get('authToken');
     const fetchUserId = async () => {
       await fetch(`/api/user/ac/${cookie}`)
         .then((response) => response.json())
